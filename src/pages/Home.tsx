@@ -354,33 +354,44 @@ export default function Home() {
 
               {/* Eyebrow */}
               <motion.div initial={{ opacity: 0, y: -12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15, duration: 0.6, ease }}>
-                <EyebrowLabel>pareto.plus · São Paulo · Palo Alto · Est. 2011</EyebrowLabel>
+                <EyebrowLabel>Holding · IA Aplicada a Negócios · São Paulo · Palo Alto · Est. 2011</EyebrowLabel>
               </motion.div>
 
               {/* H1 */}
               <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.28, duration: 0.85, ease }}>
                 <H1 style={{ marginBottom: 24 }}>
-                  <span style={{ color: '#fff', display: 'block' }}>Inteligência Artificial</span>
-                  <span className="shimmer-text">como ativo estratégico.</span>
+                  <span style={{ color: 'rgba(255,255,255,0.55)', display: 'block', fontSize: '0.55em', fontWeight: 400, letterSpacing: '0.02em', marginBottom: 6, fontFamily: "'Inter', sans-serif" }}>AI First:</span>
+                  <span style={{ color: '#fff', display: 'block' }}>2026 é o último ano</span>
+                  <span className="shimmer-text">em que isso ainda é opcional.</span>
                 </H1>
               </motion.div>
 
               {/* Subline */}
               <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45, duration: 0.7, ease }}>
-                <Body style={{ fontSize: 17, lineHeight: 1.75, marginBottom: 36, maxWidth: 560, color: '#8892A4' }}>
-                  A Pareto implementa IA que gera retorno financeiro mensurável — não projetos-piloto sem fim. 13 anos de operação. 300+ empresas. Tess AI, a <span style={{ color: '#fff', fontWeight: 500 }}>6ª melhor plataforma de IA do mundo</span> (G2 2024).
+                <Body style={{ fontSize: 16, lineHeight: 1.75, marginBottom: 36, maxWidth: 580, color: '#8892A4' }}>
+                  A Pareto é a holding especializada em <span style={{ color: '#fff', fontWeight: 500 }}>IA Aplicada a Negócios</span> que opera desde 2013. Não entregamos aplicativos genéricos — entendemos a sua operação em profundidade e construímos inteligência integrada que reduz custo, acelera equipes e gera resultado mensurável, com os seus dados.
                 </Body>
               </motion.div>
 
               {/* CTAs */}
               <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6, duration: 0.6, ease }}
-                style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center', marginBottom: 56 }}>
+                style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center', marginBottom: 32 }}>
                 <PrimaryBtn href={CALENDLY_URL}>
-                  <Calendar size={16} /> Diagnóstico Gratuito
+                  <Calendar size={16} /> Agendar com Especialista
                 </PrimaryBtn>
-                <GhostBtn onClick={() => scrollToSection('argumento')}>
-                  Ver os dados <ChevronDown size={15} />
+                <GhostBtn onClick={() => scrollToSection('resultados')}>
+                  Principais cases <ArrowRight size={14} />
                 </GhostBtn>
+              </motion.div>
+
+              {/* Scroll down — visível acima da dobra */}
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.9 }}
+                onClick={() => scrollToSection('sobre-pareto')}
+                style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 6, cursor: 'pointer', marginBottom: 40 }}>
+                <Mono color="rgba(108,99,255,0.45)" size={10}>scroll</Mono>
+                <motion.div animate={{ y: [0, 7, 0] }} transition={{ repeat: Infinity, duration: 1.8 }}>
+                  <ChevronDown size={18} style={{ color: 'rgba(108,99,255,0.4)' }} />
+                </motion.div>
               </motion.div>
 
               {/* Trust badges */}
@@ -410,14 +421,89 @@ export default function Home() {
             </motion.div>
           </motion.div>
 
-          {/* Scroll indicator */}
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5 }}
-            onClick={() => scrollToSection('argumento')}
-            style={{ position: 'absolute', bottom: 320, left: '50%', transform: 'translateX(-50%)', cursor: 'pointer', zIndex: 10, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
-            <motion.div animate={{ y: [0, 8, 0] }} transition={{ repeat: Infinity, duration: 1.8 }}>
-              <ChevronDown size={18} style={{ color: 'rgba(108,99,255,0.45)' }} />
+          {/* scroll indicator moved inline above */}
+        </section>
+
+        {/* ══════════════════════════════════════════════════════
+            01B · SOBRE A PARETO — Segunda dobra
+        ══════════════════════════════════════════════════════ */}
+        <section id="sobre-pareto" style={{ padding: '80px 24px 72px', position: 'relative', overflow: 'hidden', background: 'rgba(18,21,31,0.55)' }}>
+          <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 65% 55% at 80% 50%, rgba(108,99,255,0.09) 0%, transparent 70%)', pointerEvents: 'none' }} />
+          <div className="data-grid" />
+          <div style={{ maxWidth: 1280, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 64, alignItems: 'center' }} className="grid-cols-1 lg:grid-cols-2">
+
+            {/* Left — texto */}
+            <Reveal>
+              <EyebrowLabel>Pareto · AI for Business</EyebrowLabel>
+              <H2 style={{ marginBottom: 20 }}>
+                <span className="gradient-text">Inteligência Artificial</span><br />
+                como ativo estratégico.
+              </H2>
+              <Body style={{ fontSize: 16, lineHeight: 1.8, marginBottom: 28 }}>
+                Expandindo internacionalmente com sua plataforma proprietária <span style={{ color: '#fff', fontWeight: 500 }}>Tess AI</span>, a Pareto implementa IA que gera retorno financeiro mensurável — não projetos-piloto sem fim. 13 anos de operação. 300+ empresas. Tess AI, a <span style={{ color: '#00D4FF', fontWeight: 500 }}>6ª melhor plataforma de IA do mundo</span> (G2 2024).
+              </Body>
+
+              {/* 4 ícones Premium — o que a Pareto faz */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 32 }}>
+                {[
+                  { icon: '⚙️', label: 'Automação de Processos', desc: 'RPA, workflows e integrações 24/7 sem headcount extra' },
+                  { icon: '🤖', label: 'AI Workers', desc: 'Colaboradores digitais com funções e reporte real' },
+                  { icon: '🧠', label: 'Agentes Inteligentes', desc: 'IA generativa integrada ao seu ERP, CRM e dados' },
+                  { icon: '🎯', label: 'AI Builders Alocados', desc: 'Time sênior embarcado com ROI rastreado por sprint' },
+                ].map((item) => (
+                  <GlassCard key={item.label} style={{ padding: '16px 18px', display: 'flex', gap: 12 }} hover={false}>
+                    <span style={{ fontSize: 22, flexShrink: 0 }}>{item.icon}</span>
+                    <div>
+                      <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, fontSize: 12, color: '#fff', marginBottom: 3 }}>{item.label}</div>
+                      <Body muted style={{ fontSize: 11 }}>{item.desc}</Body>
+                    </div>
+                  </GlassCard>
+                ))}
+              </div>
+
+              <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+                <PrimaryBtn href={CALENDLY_URL}><Calendar size={15} /> Agendar com Especialista</PrimaryBtn>
+                <GhostBtn onClick={() => scrollToSection('solucoes')}>Ver soluções <ArrowRight size={13} /></GhostBtn>
+              </div>
+            </Reveal>
+
+            {/* Right — visual metrics premium */}
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={scaleIn}
+              style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+
+              {/* Big stat card */}
+              <GlassCard style={{ padding: '32px 36px', textAlign: 'center', background: 'rgba(108,99,255,0.07)', borderColor: 'rgba(108,99,255,0.3)' }}>
+                <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'clamp(3rem, 6vw, 4.5rem)', fontWeight: 600, color: V, letterSpacing: '-0.04em', lineHeight: 1, marginBottom: 10 }}>
+                  <AnimatedNumber value={285} suffix="%" />
+                </div>
+                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 500, fontSize: 14, color: '#fff', marginBottom: 6 }}>ROI médio com stack de IA bem implementado</div>
+                <Body muted style={{ fontSize: 12 }}>vs. abaixo do custo de aquisição sem IA estruturada</Body>
+              </GlassCard>
+
+              {/* 3 mini stats */}
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
+                {[
+                  { v: '3×',   l: 'Custo real por colaborador',     c: V },
+                  { v: '~40%', l: 'Tempo em tarefas repetitivas',   c: C },
+                  { v: '12m',  l: 'Payback médio de automação IA',   c: A },
+                ].map((s) => (
+                  <GlassCard key={s.l} style={{ padding: '18px 14px', textAlign: 'center' }}>
+                    <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '1.4rem', fontWeight: 600, color: s.c, marginBottom: 6 }}>{s.v}</div>
+                    <Body muted style={{ fontSize: 10, lineHeight: 1.45 }}>{s.l}</Body>
+                  </GlassCard>
+                ))}
+              </div>
+
+              {/* Tess AI badge */}
+              <GlassCard style={{ padding: '20px 24px', display: 'flex', alignItems: 'center', gap: 20 }}>
+                <div style={{ width: 52, height: 52, borderRadius: 14, background: `linear-gradient(135deg, ${V}25, ${C}12)`, border: `1px solid ${V}30`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22, flexShrink: 0 }}>🏆</div>
+                <div>
+                  <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, fontSize: 13, color: '#fff', marginBottom: 3 }}>Tess AI — G2 Best Software Awards 2024</div>
+                  <Body muted style={{ fontSize: 12 }}>#6 Melhor IA do mundo · Acima do ChatGPT (#10) e Google Gemini (#22)</Body>
+                </div>
+              </GlassCard>
             </motion.div>
-          </motion.div>
+          </div>
         </section>
 
         {/* ─── Partner Badges Bar ──────────────────────────── */}

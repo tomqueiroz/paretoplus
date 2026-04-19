@@ -72,31 +72,33 @@ export function Header() {
         </nav>
 
         {/* Desktop CTA */}
-        <div style={{ display: 'none', alignItems: 'center', gap: 12 }} className="lg:flex">
-          <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer"
-            style={{
-              fontFamily: "'Inter', sans-serif", fontWeight: 600, fontSize: 13,
-              color: 'rgba(255,255,255,0.7)', padding: '8px 18px', borderRadius: 6,
-              textDecoration: 'none', transition: 'color 0.2s ease',
-              border: '1px solid rgba(255,255,255,0.12)',
-            }}
-            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#fff'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(108,99,255,0.4)'; }}
-            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.7)'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.12)'; }}>
-            WhatsApp
-          </a>
-          <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer"
-            style={{
-              fontFamily: "'Inter', sans-serif", fontWeight: 600, fontSize: 13,
-              color: '#fff', padding: '9px 22px', borderRadius: 6,
-              background: '#6C63FF', textDecoration: 'none',
-              boxShadow: '0 0 0 rgba(108,99,255,0)', transition: 'box-shadow 0.25s ease, transform 0.2s ease',
-              display: 'flex', alignItems: 'center', gap: 6,
-            }}
-            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = '0 0 20px rgba(108,99,255,0.45)'; (e.currentTarget as HTMLElement).style.transform = 'translateY(-1px)'; }}
-            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = '0 0 0 rgba(108,99,255,0)'; (e.currentTarget as HTMLElement).style.transform = ''; }}>
-            Diagnóstico Gratuito <ArrowRight size={14} />
-          </a>
-        </div>
+          <div style={{ display: 'none', alignItems: 'center', gap: 10 }} className="lg:flex">
+            <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer"
+              style={{
+                fontFamily: "'Inter', sans-serif", fontWeight: 500, fontSize: 12,
+                color: 'rgba(255,255,255,0.55)', padding: '7px 16px', borderRadius: 6,
+                textDecoration: 'none', transition: 'all 0.2s ease',
+                border: '1px solid rgba(255,255,255,0.08)',
+              }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#fff'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(108,99,255,0.35)'; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.55)'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.08)'; }}>
+              WhatsApp
+            </a>
+            {/* Diagnóstico Gratuito — fim do nav conforme solicitado */}
+            <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer"
+              style={{
+                fontFamily: "'Inter', sans-serif", fontWeight: 700, fontSize: 12,
+                color: '#0B0D14', padding: '8px 20px', borderRadius: 6,
+                background: 'linear-gradient(135deg, #6C63FF 0%, #00D4FF 100%)',
+                textDecoration: 'none',
+                boxShadow: '0 0 0 rgba(108,99,255,0)', transition: 'box-shadow 0.25s ease, transform 0.2s ease',
+                display: 'flex', alignItems: 'center', gap: 6, letterSpacing: '0.01em',
+              }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = '0 0 20px rgba(108,99,255,0.5)'; (e.currentTarget as HTMLElement).style.transform = 'translateY(-1px)'; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = '0 0 0 rgba(108,99,255,0)'; (e.currentTarget as HTMLElement).style.transform = ''; }}>
+              Diagnóstico Gratuito <ArrowRight size={13} />
+            </a>
+          </div>
 
         {/* Mobile hamburger */}
         <button className="lg:hidden" onClick={() => setMenuOpen(!menuOpen)}
