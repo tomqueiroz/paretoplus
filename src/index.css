@@ -1,0 +1,229 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;700;900&family=Roboto+Mono:wght@400;500&display=swap");
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+==========================================================================
+【AI HANDOVER NOTE】
+1. DESIGN PHILOSOPHY:
+   - Atmosphere-First: Dark cinematic AI-futuristic aesthetic inspired by premium banking/consulting visual identity but with cutting-edge tech edge
+   - Neo-minimalism meets Physicality: Clean executive-grade layouts with subtle rim-light effects, neural network particle systems, and depth through layering
+   - NOT feminine, NOT playful — masculine, authoritative, strategic. Think Bloomberg Terminal meets sci-fi command center
+   - Bento surfaces with glassmorphism 2.0: Modular card-based sections with subtle backdrop-blur on dark surfaces, maintaining readability while creating depth
+   - This is a high-conversion B2B landing page for qualified SMB decision-makers (R$1M+ revenue) — every design choice serves lead generation and self-qualification
+
+2. TYPOGRAPHY:
+   - Montserrat (brand-mandated): Geometric sans-serif with strong vertical stress, perfect for bold headlines and executive-grade readability. Weights 700-900 for hero headlines, 600 for subheads, 400-500 for body. The distinctive triangular 'A' echoes the Pareto logo geometry
+   - JetBrains Mono: For technical specs, data points, code snippets, and metric displays — reinforces AI/tech credibility without being overly techy
+   - Hierarchy: 64-96px hero headlines, 32-48px section headers, 18-24px body, 14-16px captions
+
+3. COLOR SYSTEM:
+   - Brand primary: Electric Violet #8800FF (H=280°) — represents AI innovation, premium positioning, strategic thinking. Used for primary CTAs, key headlines, gradient overlays
+   - Brand accent: Neon Lime #CDFF00 (H=72°) — urgency, highlight, conversion triggers. Used sparingly for key metrics, urgency markers, hover states
+   - Gradient core: Purple-to-lime (280° → 72°) derived from logo blob — used in hero backgrounds, CTA buttons, section dividers, particle effects
+   - Dark foundation: Near-black #0D0D0D (L=0.05) for primary background, #1c1c1c (L=0.11) for elevated surfaces/cards
+   - Semantic colors: Destructive (red) for urgency stats like '71% missed goals', Success (green) for positive case results, Warning (amber) for qualifying statements
+   - --brand maps to --primary (electric violet), --accent (neon lime), --ring (violet with glow effect)
+   - All colors in OKLCH for perceptual uniformity and smooth gradients in dark mode
+
+4. USAGE GUIDE:
+   - Layout: Full-width sections with max-width 1440px containers, generous vertical spacing (120-200px between sections)
+   - Hero: Full-viewport height with Three.js/canvas animated neural network particles in purple-lime gradient, parallax on scroll
+   - Parallax: Subtle (0.3-0.5 speed multiplier) on section backgrounds and large imagery — NOT aggressive, maintains executive feel
+   - Glassmorphism: backdrop-blur-xl on cards/popovers with border-white/10, subtle rim-light via box-shadow in violet/lime
+   - Motion: framer-motion for scroll-triggered fade-ins, slide-ups, and number counter animations. Smooth, not bouncy — easing: [0.25, 0.1, 0.25, 1]
+   - CTAs: Floating buttons with glow effect (box-shadow: 0 0 40px oklch(0.6 0.3 280 / 0.5)), hover state intensifies glow and shifts hue slightly toward lime
+   - Navigation: Sticky top nav (backdrop-blur-lg, border-b border-white/10) with logo left, CTA button right
+   - Conversion elements: Multiple CTAs throughout (hero, after problem section, after results, final CTA block), WhatsApp integration, lead form with LGPD consent
+   - Qualifying copy: Strong language like 'Esta não é para todos', 'Apenas para empresas com faturamento R$1M+', 'Se está em dúvida, não clique' — self-qualification is a feature
+   - Performance: Lazy-load images, code-split sections, optimize particle system for 60fps on mobile
+   - SEO: Structured data for LocalBusiness and Service, OG tags with gradient brand imagery, meta descriptions emphasizing 'AI estratégico para PMEs brasileiras'
+   - Accessibility: WCAG AA contrast maintained even on dark backgrounds, focus states with violet ring, semantic HTML
+==========================================================================
+*/
+
+:root {
+  /* Typography */
+  --font-sans: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-display: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-mono: 'Roboto Mono', 'Courier New', Courier, monospace;
+  
+  /* Radius */
+  --radius: 0.75rem;
+
+  /* Core UI Tokens */
+  --background: oklch(0.98 0.005 280);
+  --foreground: oklch(0.15 0.02 280);
+  --card: oklch(0.96 0.008 280);
+  --card-foreground: oklch(0.18 0.02 280);
+  --popover: oklch(0.99 0.003 280);
+  --popover-foreground: oklch(0.12 0.02 280);
+  --primary: oklch(0.48 0.28 280);
+  --primary-foreground: oklch(0.98 0.005 280);
+  --secondary: oklch(0.88 0.015 72);
+  --secondary-foreground: oklch(0.15 0.02 280);
+  --muted: oklch(0.92 0.01 280);
+  --muted-foreground: oklch(0.45 0.015 280);
+  --accent: oklch(0.85 0.22 72);
+  --accent-foreground: oklch(0.15 0.02 280);
+  --destructive: oklch(0.55 0.25 25);
+  --destructive-foreground: oklch(0.98 0.005 280);
+  --border: oklch(0.88 0.01 280);
+  --input: oklch(0.85 0.012 280);
+  --ring: oklch(0.48 0.28 280);
+  
+  /* Chart Tokens */
+  --chart-1: oklch(0.52 0.26 280);
+  --chart-2: oklch(0.82 0.2 72);
+  --chart-3: oklch(0.58 0.22 150);
+  --chart-4: oklch(0.48 0.18 320);
+  --chart-5: oklch(0.65 0.24 45);
+  
+  /* Sidebar Tokens */
+  --sidebar: oklch(0.96 0.008 280);
+  --sidebar-foreground: oklch(0.18 0.02 280);
+  --sidebar-primary: oklch(0.48 0.28 280);
+  --sidebar-primary-foreground: oklch(0.98 0.005 280);
+  --sidebar-accent: oklch(0.85 0.22 72);
+  --sidebar-accent-foreground: oklch(0.15 0.02 280);
+  --sidebar-border: oklch(0.88 0.01 280);
+  --sidebar-ring: oklch(0.48 0.28 280);
+}
+
+.dark {
+  --background: oklch(0.05 0.01 280);
+  --foreground: oklch(0.95 0.005 280);
+  --card: oklch(0.11 0.015 280);
+  --card-foreground: oklch(0.92 0.008 280);
+  --popover: oklch(0.08 0.012 280);
+  --popover-foreground: oklch(0.96 0.005 280);
+  --primary: oklch(0.58 0.32 280);
+  --primary-foreground: oklch(0.05 0.01 280);
+  --secondary: oklch(0.88 0.25 72);
+  --secondary-foreground: oklch(0.08 0.012 280);
+  --muted: oklch(0.18 0.02 280);
+  --muted-foreground: oklch(0.65 0.015 280);
+  --accent: oklch(0.9 0.28 72);
+  --accent-foreground: oklch(0.08 0.012 280);
+  --destructive: oklch(0.62 0.28 20);
+  --destructive-foreground: oklch(0.96 0.005 280);
+  --border: oklch(0.22 0.02 280);
+  --input: oklch(0.25 0.025 280);
+  --ring: oklch(0.58 0.32 280);
+  
+  /* Chart Tokens */
+  --chart-1: oklch(0.62 0.3 280);
+  --chart-2: oklch(0.88 0.25 72);
+  --chart-3: oklch(0.68 0.26 150);
+  --chart-4: oklch(0.58 0.22 320);
+  --chart-5: oklch(0.72 0.28 45);
+  
+  /* Sidebar Tokens */
+  --sidebar: oklch(0.09 0.013 280);
+  --sidebar-foreground: oklch(0.92 0.008 280);
+  --sidebar-primary: oklch(0.58 0.32 280);
+  --sidebar-primary-foreground: oklch(0.05 0.01 280);
+  --sidebar-accent: oklch(0.9 0.28 72);
+  --sidebar-accent-foreground: oklch(0.08 0.012 280);
+  --sidebar-border: oklch(0.22 0.02 280);
+  --sidebar-ring: oklch(0.58 0.32 280);
+}
+
+@theme inline {
+  /* Shadcn Core Mapping */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Charts Mapping */
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  /* Sidebar Mapping */
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Typography */
+  --font-sans: var(--font-sans);
+  --font-display: var(--font-display);
+  --font-mono: var(--font-mono);
+
+  /* Radius */
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    @apply scroll-smooth antialiased;
+  }
+
+  body {
+    @apply bg-background text-foreground min-h-screen;
+    font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    font-weight: 300;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    font-size: 15px;
+    line-height: 1.6;
+    letter-spacing: -0.01em;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+  }
+
+  code, pre {
+    @apply font-mono;
+  }
+
+  ::selection {
+    @apply bg-primary/20 text-primary;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-muted-foreground/20 rounded-full hover:bg-muted-foreground/40;
+  }
+}
