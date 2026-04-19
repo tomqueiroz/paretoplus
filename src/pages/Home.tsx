@@ -1,69 +1,96 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { motion, AnimatePresence, useInView, useScroll, useTransform } from 'framer-motion';
-import { ArrowRight, MessageCircle, ChevronDown, Calendar, X, Award, Quote } from 'lucide-react';
+import { ArrowRight, Calendar, ChevronDown, X, Award, Quote, Zap, Brain, Settings, Users } from 'lucide-react';
 import { ParticleCanvas } from '@/components/ParticleCanvas';
 import {
   WHATSAPP_URL, CALENDLY_URL, CASES, CLIENT_LOGOS, AWARDS, PARTNER_BADGES, KEY_STATS,
   scrollToSection,
 } from '@/lib/index';
-import { fadeInUp, staggerContainer, staggerItem, scaleIn } from '@/lib/motion';
+
+// ─── Design Tokens ────────────────────────────────────────────────────────────
+const V = '#6C63FF';   // violet
+const C = '#00D4FF';   // cyan
+const A = '#FF6B35';   // amber
+const BG = '#0B0D14';
+const S1 = '#12151F';
+const S2 = '#1A1E2E';
+
+const ease = [0.16, 1, 0.3, 1] as const;
+
+// ─── Animation variants ───────────────────────────────────────────────────────
+const fadeUp = { hidden: { opacity: 0, y: 28 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease } } };
+const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.1 } } };
+const staggerItem = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease } } };
+const scaleIn = { hidden: { opacity: 0, scale: 0.94 }, visible: { opacity: 1, scale: 1, transition: { duration: 0.6, ease } } };
 
 // ─── Primitives ───────────────────────────────────────────────────────────────
 
-function SectionLabel({ children }: { children: React.ReactNode }) {
+function Mono({ children, color = C, size = 12 }: { children: React.ReactNode; color?: string; size?: number }) {
   return (
-    <div className="flex items-center gap-3 mb-6">
-      <div className="w-8 h-px" style={{ background: '#8800FF' }} />
-      <span className="text-xs font-bold tracking-[0.25em] uppercase" style={{ color: '#8800FF' }}>{children}</span>
+    <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: size, fontWeight: 500, color, letterSpacing: '0.04em' }}>
+      {children}
+    </span>
+  );
+}
+
+function EyebrowLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
+      <div style={{ width: 20, height: 1, background: V, opacity: 0.7 }} />
+      <Mono color={C} size={11}>{children}</Mono>
     </div>
   );
 }
 
-function NarrativeBridge({ children }: { children: React.ReactNode }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: '-12%' });
+function H1({ children, style = {} }: { children: React.ReactNode; style?: React.CSSProperties }) {
   return (
-    <motion.div ref={ref} initial={{ opacity: 0, y: 24 }} animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
-      className="max-w-2xl mx-auto text-center">
-      <p className="text-base text-white/50 leading-relaxed italic" style={{ fontWeight: 300 }}>{children}</p>
-    </motion.div>
+    <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: 'clamp(2rem, 4.5vw, 3.8rem)', letterSpacing: '-0.025em', lineHeight: 1.06, margin: 0, ...style }}>
+      {children}
+    </h1>
   );
 }
 
-function PrimaryButton({ href, onClick, children }: {
-  href?: string; onClick?: () => void; children: React.ReactNode;
-}) {
-  const cls = "inline-flex items-center gap-3 px-8 py-4 rounded-full font-black text-base text-white transition-all duration-300 cursor-pointer";
-  const style: React.CSSProperties = {
-    background: 'linear-gradient(135deg, #8800FF 0%, #6600CC 100%)',
-    boxShadow: '0 0 40px rgba(136,0,255,0.45)',
-  };
-  const onEnter = (e: React.MouseEvent<HTMLElement>) => {
-    (e.currentTarget as HTMLElement).style.boxShadow = '0 0 70px rgba(136,0,255,0.7)';
-    (e.currentTarget as HTMLElement).style.transform = 'translateY(-3px) scale(1.02)';
-  };
-  const onLeave = (e: React.MouseEvent<HTMLElement>) => {
-    (e.currentTarget as HTMLElement).style.boxShadow = '0 0 40px rgba(136,0,255,0.45)';
-    (e.currentTarget as HTMLElement).style.transform = '';
-  };
-  if (href) return <a href={href} target="_blank" rel="noopener noreferrer" className={cls} style={style} onMouseEnter={onEnter} onMouseLeave={onLeave}>{children}</a>;
-  return <button onClick={onClick} className={cls} style={style} onMouseEnter={onEnter} onMouseLeave={onLeave}>{children}</button>;
+function H2({ children, style = {} }: { children: React.ReactNode; style?: React.CSSProperties }) {
+  return (
+    <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, fontSize: 'clamp(1.6rem, 3vw, 2.8rem)', letterSpacing: '-0.02em', lineHeight: 1.1, margin: 0, color: '#fff', ...style }}>
+      {children}
+    </h2>
+  );
 }
 
-function SecondaryButton({ href, onClick, children }: { href?: string; onClick?: () => void; children: React.ReactNode }) {
-  return href ? (
-    <a href={href} target="_blank" rel="noopener noreferrer"
-      className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-bold text-sm text-white/80 hover:text-white transition-colors"
-      style={{ border: '1px solid rgba(255,255,255,0.15)' }}>
+function H3({ children, style = {} }: { children: React.ReactNode; style?: React.CSSProperties }) {
+  return (
+    <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 500, fontSize: 'clamp(1.1rem, 2vw, 1.5rem)', letterSpacing: '-0.015em', lineHeight: 1.25, margin: 0, color: '#fff', ...style }}>
       {children}
-    </a>
-  ) : (
-    <button onClick={onClick}
-      className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-bold text-sm text-white/80 hover:text-white transition-colors"
-      style={{ border: '1px solid rgba(255,255,255,0.15)' }}>
+    </h3>
+  );
+}
+
+function Body({ children, muted = false, style = {} }: { children: React.ReactNode; muted?: boolean; style?: React.CSSProperties }) {
+  return (
+    <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 15, lineHeight: 1.75, color: muted ? 'rgba(136,146,164,0.65)' : '#8892A4', margin: 0, fontWeight: 400, ...style }}>
       {children}
-    </button>
+    </p>
+  );
+}
+
+function SectionDivider() {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true });
+  return (
+    <div ref={ref} style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px' }}>
+      <div className={`section-divider ${inView ? 'animate' : ''}`} style={{ transition: 'opacity 0.3s ease', opacity: inView ? 0.4 : 0 }} />
+    </div>
+  );
+}
+
+function Reveal({ children, className = '', style = {} }: { children: React.ReactNode; className?: string; style?: React.CSSProperties }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: '-6%' });
+  return (
+    <motion.div ref={ref} initial="hidden" animate={inView ? 'visible' : 'hidden'} variants={fadeUp} className={className} style={style}>
+      {children}
+    </motion.div>
   );
 }
 
@@ -73,7 +100,7 @@ function AnimatedNumber({ value, suffix = '', prefix = '' }: { value: number; su
   const [count, setCount] = useState(0);
   useEffect(() => {
     if (!inView) return;
-    const dur = 2000; const t0 = performance.now();
+    const dur = 2200; const t0 = performance.now();
     const tick = (now: number) => {
       const p = Math.min((now - t0) / dur, 1);
       setCount(Math.floor((1 - Math.pow(1 - p, 3)) * value));
@@ -81,30 +108,82 @@ function AnimatedNumber({ value, suffix = '', prefix = '' }: { value: number; su
     };
     requestAnimationFrame(tick);
   }, [inView, value]);
-  return <span ref={ref} className="tabular-nums">{prefix}{count}{suffix}</span>;
+  return <span ref={ref}>{prefix}{count}{suffix}</span>;
 }
 
-function RevealSection({ children, className = '' }: { children: React.ReactNode; className?: string }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: '-8%' });
+function PrimaryBtn({ href, onClick, children }: { href?: string; onClick?: () => void; children: React.ReactNode }) {
+  const base: React.CSSProperties = {
+    display: 'inline-flex', alignItems: 'center', gap: 8,
+    padding: '12px 28px', borderRadius: 6, fontFamily: "'Inter', sans-serif",
+    fontWeight: 600, fontSize: 14, color: '#fff', textDecoration: 'none', cursor: 'pointer',
+    background: V, border: 'none', boxShadow: '0 0 0 rgba(108,99,255,0)',
+    transition: 'box-shadow 0.25s ease, transform 0.2s ease',
+  };
+  const enter = (e: React.MouseEvent<HTMLElement>) => {
+    (e.currentTarget as HTMLElement).style.boxShadow = '0 0 24px rgba(108,99,255,0.5)';
+    (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)';
+  };
+  const leave = (e: React.MouseEvent<HTMLElement>) => {
+    (e.currentTarget as HTMLElement).style.boxShadow = '0 0 0 rgba(108,99,255,0)';
+    (e.currentTarget as HTMLElement).style.transform = '';
+  };
+  if (href) return <a href={href} target="_blank" rel="noopener noreferrer" style={base} onMouseEnter={enter} onMouseLeave={leave}>{children}</a>;
+  return <button onClick={onClick} style={base} onMouseEnter={enter} onMouseLeave={leave}>{children}</button>;
+}
+
+function GhostBtn({ href, onClick, children }: { href?: string; onClick?: () => void; children: React.ReactNode }) {
+  const base: React.CSSProperties = {
+    display: 'inline-flex', alignItems: 'center', gap: 8,
+    padding: '11px 24px', borderRadius: 6, fontFamily: "'Inter', sans-serif",
+    fontWeight: 500, fontSize: 14, color: 'rgba(255,255,255,0.75)',
+    textDecoration: 'none', cursor: 'pointer', background: 'rgba(108,99,255,0.05)',
+    border: `1px solid rgba(108,99,255,0.25)`, transition: 'all 0.25s ease',
+  };
+  const enter = (e: React.MouseEvent<HTMLElement>) => {
+    (e.currentTarget as HTMLElement).style.color = '#fff';
+    (e.currentTarget as HTMLElement).style.borderColor = `rgba(108,99,255,0.5)`;
+    (e.currentTarget as HTMLElement).style.background = 'rgba(108,99,255,0.10)';
+  };
+  const leave = (e: React.MouseEvent<HTMLElement>) => {
+    (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.75)';
+    (e.currentTarget as HTMLElement).style.borderColor = `rgba(108,99,255,0.25)`;
+    (e.currentTarget as HTMLElement).style.background = 'rgba(108,99,255,0.05)';
+  };
+  if (href) return <a href={href} target="_blank" rel="noopener noreferrer" style={base} onMouseEnter={enter} onMouseLeave={leave}>{children}</a>;
+  return <button onClick={onClick} style={{ ...base, border: `1px solid rgba(108,99,255,0.25)` }} onMouseEnter={enter} onMouseLeave={leave}>{children}</button>;
+}
+
+function GlassCard({ children, style = {}, hover = true }: { children: React.ReactNode; style?: React.CSSProperties; hover?: boolean }) {
   return (
-    <motion.div ref={ref} initial="hidden" animate={inView ? 'visible' : 'hidden'} variants={fadeInUp} className={className}>
+    <div className={hover ? 'glass-card' : ''} style={{
+      background: 'rgba(18,21,31,0.80)', backdropFilter: 'blur(12px)',
+      border: '1px solid rgba(255,255,255,0.07)', borderRadius: 16,
+      boxShadow: '0 8px 32px rgba(0,0,0,0.30), 0 1px 0 rgba(255,255,255,0.05) inset',
+      ...style,
+    }}>
       {children}
-    </motion.div>
+    </div>
   );
 }
 
-function Marquee({ items, reverse = false }: { items: string[]; reverse?: boolean }) {
+function IconBadge({ icon: Icon, color = V }: { icon: React.ElementType; color?: string }) {
+  return (
+    <div className="icon-badge" style={{ background: `linear-gradient(135deg, ${color}20, ${C}10)`, borderColor: `${color}30` }}>
+      <Icon size={26} />
+    </div>
+  );
+}
+
+function MarqueeRow({ items, reverse = false }: { items: string[]; reverse?: boolean }) {
   const doubled = [...items, ...items];
   return (
-    <div className="overflow-hidden" style={{ maskImage: 'linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%)' }}>
+    <div style={{ overflow: 'hidden', maskImage: 'linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)' }}>
       <motion.div
         animate={{ x: reverse ? ['0%', '50%'] : ['0%', '-50%'] }}
-        transition={{ duration: 35, repeat: Infinity, ease: 'linear' }}
-        className="flex gap-5 whitespace-nowrap">
+        transition={{ duration: 40, repeat: Infinity, ease: 'linear' }}
+        style={{ display: 'flex', gap: 16, whiteSpace: 'nowrap' }}>
         {doubled.map((item, i) => (
-          <div key={i} className="flex-shrink-0 px-6 py-3 rounded-xl text-sm font-semibold"
-            style={{ background: 'rgba(30,30,30,0.9)', border: '1px solid rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.45)' }}>
+          <div key={i} style={{ flexShrink: 0, padding: '8px 20px', borderRadius: 8, fontSize: 13, fontFamily: "'Inter', sans-serif", fontWeight: 500, background: 'rgba(18,21,31,0.7)', border: '1px solid rgba(255,255,255,0.05)', color: '#8892A4' }}>
             {item}
           </div>
         ))}
@@ -113,238 +192,56 @@ function Marquee({ items, reverse = false }: { items: string[]; reverse?: boolea
   );
 }
 
-// ─── Parallax Strips ──────────────────────────────────────────────────────────
+// ─── Parallax image strips ────────────────────────────────────────────────────
 
-function OfficeParallaxStrip() {
+function ParallaxStrip({ img, height = 300, overlay, children }: {
+  img: string; height?: number;
+  overlay?: React.CSSProperties['background'];
+  children?: React.ReactNode;
+}) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
   const y = useTransform(scrollYProgress, [0, 1], ['-10%', '10%']);
   return (
-    <div ref={ref} style={{ position: 'relative', overflow: 'hidden', height: 320 }}>
-      <motion.div style={{ y, position: 'absolute', inset: '-12% 0', height: '124%' }}>
-        <img src="/images/pareto_office1.png" alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.38, filter: 'grayscale(0.3) contrast(1.05)' }} />
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(136,0,255,0.28) 0%, transparent 55%)' }} />
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(26,26,26,0.85) 0%, rgba(26,26,26,0.2) 50%, rgba(26,26,26,0.88) 100%)' }} />
+    <div ref={ref} style={{ position: 'relative', overflow: 'hidden', height }}>
+      <motion.div style={{ y, position: 'absolute', inset: '-14% 0', height: '128%' }}>
+        <img src={img} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.32, filter: 'grayscale(0.5) contrast(1.1)' }} />
+        <div style={{ position: 'absolute', inset: 0, background: overlay ?? `linear-gradient(135deg, rgba(108,99,255,0.25) 0%, rgba(0,212,255,0.08) 100%)` }} />
+        <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(to bottom, rgba(11,13,20,0.9) 0%, rgba(11,13,20,0.15) 50%, rgba(11,13,20,0.9) 100%)` }} />
       </motion.div>
-      <div style={{ position: 'relative', zIndex: 2, height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '0 24px' }}>
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', color: '#8800FF', marginBottom: 14 }}>
-            Pareto · São Paulo · Est. 2011
-          </div>
-          <p style={{ fontSize: 'clamp(1.1rem, 2.5vw, 1.5rem)', fontWeight: 900, color: '#fff', fontFamily: "'Roboto', sans-serif", lineHeight: 1.2, marginBottom: 12 }}>
-            +160 especialistas. Um único objetivo:<br />
-            <span style={{ color: '#CDFF00' }}>resultado financeiro mensurável.</span>
-          </p>
-          <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.4)', fontWeight: 300 }}>
-            300+ empresas transformadas · R$3B+ em mídia gerenciada · 13 anos de operação
-          </p>
-        </motion.div>
-      </div>
-    </div>
-  );
-}
-
-function BuildingParallaxStrip() {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
-  const y = useTransform(scrollYProgress, [0, 1], ['-10%', '10%']);
-  return (
-    <div ref={ref} style={{ position: 'relative', overflow: 'hidden', height: 260 }}>
-      <motion.div style={{ y, position: 'absolute', inset: '-12% 0', height: '124%' }}>
-        <img src="/images/predio.png" alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.35, filter: 'grayscale(0.4) contrast(1.08)' }} />
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(136,0,255,0.22) 0%, transparent 50%, rgba(205,255,0,0.06) 100%)' }} />
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(26,26,26,0.9) 0%, rgba(26,26,26,0.18) 50%, rgba(26,26,26,0.9) 100%)' }} />
-      </motion.div>
-      <div style={{ position: 'relative', zIndex: 2, height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-          <p style={{ fontSize: '1.05rem', fontWeight: 700, color: 'rgba(255,255,255,0.75)', fontFamily: "'Roboto', sans-serif", marginBottom: 8 }}>
-            Consolação, São Paulo · Hub de Inovação em IA
-          </p>
-          <div style={{ fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(205,255,0,0.55)' }}>
-            Pareto HQ · Brasil &amp; Silicon Valley
-          </div>
-        </motion.div>
-      </div>
-    </div>
-  );
-}
-
-function QuoteParallaxBreak({ img, quote, subline }: { img: string; quote: React.ReactNode; subline?: string }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
-  const y = useTransform(scrollYProgress, [0, 1], ['-12%', '12%']);
-  return (
-    <div ref={ref} style={{ position: 'relative', overflow: 'hidden', height: 340 }}>
-      <motion.div style={{ y, position: 'absolute', inset: '-15% 0', height: '130%' }}>
-        <img src={img} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.28, filter: 'grayscale(0.45) contrast(1.1)' }} />
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(136,0,255,0.32) 0%, rgba(0,0,0,0.05) 50%, rgba(205,255,0,0.08) 100%)' }} />
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(26,26,26,0.92) 0%, rgba(26,26,26,0.25) 40%, rgba(26,26,26,0.92) 100%)' }} />
-      </motion.div>
-      <div style={{ position: 'relative', zIndex: 2, height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 24px' }}>
-        <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} style={{ textAlign: 'center', maxWidth: 760 }}>
-          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', color: '#8800FF', marginBottom: 18 }}>
-            Decisão
-          </div>
-          <p style={{ fontSize: 'clamp(1.1rem, 2.8vw, 1.7rem)', fontWeight: 900, color: '#fff', fontFamily: "'Roboto', sans-serif", lineHeight: 1.2, marginBottom: subline ? 14 : 0 }}>
-            {quote}
-          </p>
-          {subline && <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.35)', fontWeight: 300 }}>{subline}</p>}
-        </motion.div>
-      </div>
+      {children && (
+        <div style={{ position: 'relative', zIndex: 2, height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 24px', textAlign: 'center' }}>
+          {children}
+        </div>
+      )}
     </div>
   );
 }
 
 // ─── Partner Badges Bar ───────────────────────────────────────────────────────
 
-function PartnerBadgesBar() {
+function BadgesBar() {
   return (
-    <div style={{ background: 'rgba(18,18,18,1)', borderTop: '1px solid rgba(136,0,255,0.12)', borderBottom: '1px solid rgba(136,0,255,0.12)', padding: '16px 24px' }}>
-      <div style={{ maxWidth: 1280, margin: '0 auto', display: 'flex', flexWrap: 'wrap' as const, alignItems: 'center', justifyContent: 'center', gap: 14 }}>
-        <span style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.14em', textTransform: 'uppercase' as const, color: 'rgba(255,255,255,0.28)', marginRight: 6 }}>
-          Parceiro oficial:
-        </span>
+    <div style={{ background: 'rgba(12,14,22,0.9)', borderTop: '1px solid rgba(255,255,255,0.05)', borderBottom: '1px solid rgba(255,255,255,0.05)', padding: '14px 24px' }}>
+      <div style={{ maxWidth: 1280, margin: '0 auto', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center', gap: 12 }}>
+        <Mono color="rgba(136,146,164,0.35)" size={10}>Parceiro oficial:</Mono>
         {PARTNER_BADGES.map((b) =>
           b.img ? (
             <div key={b.name} title={b.name}
-              style={{ background: 'rgba(255,255,255,0.97)', borderRadius: 44, width: 60, height: 60, padding: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 14px rgba(0,0,0,0.55)', flexShrink: 0, transition: 'transform 0.2s ease, box-shadow 0.2s ease', cursor: 'default' }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.transform = 'translateY(-3px)'; (e.currentTarget as HTMLElement).style.boxShadow = '0 8px 28px rgba(136,0,255,0.35)'; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = ''; (e.currentTarget as HTMLElement).style.boxShadow = '0 2px 14px rgba(0,0,0,0.55)'; }}>
+              style={{ background: 'rgba(255,255,255,0.97)', borderRadius: 40, width: 54, height: 54, padding: 7, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 12px rgba(0,0,0,0.5)', flexShrink: 0, transition: 'transform 0.2s ease, box-shadow 0.2s ease', cursor: 'default' }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.transform = 'translateY(-3px)'; (e.currentTarget as HTMLElement).style.boxShadow = '0 8px 24px rgba(108,99,255,0.3)'; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = ''; (e.currentTarget as HTMLElement).style.boxShadow = '0 2px 12px rgba(0,0,0,0.5)'; }}>
               <img src={b.img} alt={b.name} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
             </div>
-          ) : (
-            <div key={b.name} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '6px 14px', borderRadius: 99, background: 'rgba(26,26,26,0.9)', border: `1px solid ${b.color}28` }}>
-              <span style={{ width: 18, height: 18, borderRadius: '50%', background: b.color, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 9, fontWeight: 900 }}>{b.icon}</span>
-              <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.45)' }}>{b.name}</span>
-            </div>
-          )
+          ) : null
         )}
       </div>
     </div>
   );
 }
 
-// ─── AI for Business Cost Cards ───────────────────────────────────────────────
-
-function AiCostCards() {
-  const items = [
-    {
-      stat: '3×',
-      label: 'Custo real de um funcionário',
-      desc: 'Entre encargos, benefícios, equipamento, gestão e turnover, o custo real é no mínimo o triplo do salário bruto.',
-      accent: '#8800FF',
-    },
-    {
-      stat: '~40%',
-      label: 'Produtividade efetiva do time',
-      desc: 'Em média, colaboradores gastam 60% do tempo em tarefas repetitivas que a IA executa em segundos — por fração do custo.',
-      accent: '#CDFF00',
-    },
-    {
-      stat: '6–12m',
-      label: 'Payback típico com IA',
-      desc: 'Projetos de automação com IA atingem retorno em 6 a 12 meses, com impacto mensurável desde os primeiros sprints.',
-      accent: '#8800FF',
-    },
-  ];
-  return (
-    <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-8%' }} variants={staggerContainer}
-      style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 20, marginTop: 48, marginBottom: 56 }}>
-      {items.map((c) => (
-        <motion.div key={c.label} variants={staggerItem}
-          style={{ padding: 28, borderRadius: 20, background: 'rgba(22,22,22,0.95)', border: `1px solid ${c.accent}22` }}>
-          <div style={{ fontSize: 'clamp(2rem, 4vw, 2.8rem)', fontWeight: 900, color: c.accent, letterSpacing: '-0.04em', fontFamily: "'Roboto', sans-serif", marginBottom: 10 }}>
-            {c.stat}
-          </div>
-          <div style={{ fontSize: 13, fontWeight: 700, color: '#fff', marginBottom: 10 }}>{c.label}</div>
-          <p style={{ fontSize: 12, lineHeight: 1.7, color: 'rgba(255,255,255,0.48)' }}>{c.desc}</p>
-        </motion.div>
-      ))}
-    </motion.div>
-  );
-}
-
-// ─── 4 Soluções Section ───────────────────────────────────────────────────────
-
-function SolucoesSection() {
-  const solutions = [
-    { tag: 'Automation',  emoji: '⚙️', title: 'Processos Automatizados',   arrow: '→ Redução de headcount operacional', desc: 'Mapeamos operações que consomem horas de trabalho humano e substituímos por sistemas que rodam 24/7 sem parar. RPA, integrações e workflows inteligentes. Sem precisar contratar mais para crescer.' },
-    { tag: 'AI Workers',  emoji: '🤖', title: 'Colaboradores Digitais',      arrow: '→ Capacidade sem custo fixo',         desc: 'Implantamos agentes autônomos com funções, atribuições e reporte — exatamente como um funcionário, mas disponíveis 24/7 sem férias nem turnover. Cada AI Worker assume tarefas reais e libera seu time para decidir.' },
-    { tag: 'AI Agents',   emoji: '🧠', title: 'Agentes Inteligentes',        arrow: '→ Processos que adaptam',             desc: 'Desenvolvemos agentes de IA generativa conectados ao seu negócio — treinados com suas bases de conhecimento e integrados ao seu CRM, ERP e APIs. Construímos fluxos que fazem a operação pensar e reagir.' },
-    { tag: 'Consulting',  emoji: '🎯', title: 'AI Builders Alocados',        arrow: '→ ROI mensurável por sprint',          desc: 'Especialistas part-time ou full-time embarcados na sua empresa: mapeamento de processos, priorização por impacto financeiro e implementação em sprints. Equipe sênior de IA sem contratação convencional.' },
-  ];
-  return (
-    <section id="solucoes" style={{ padding: '80px 24px', background: 'rgba(18,18,18,0.98)', position: 'relative', overflow: 'hidden' }}>
-      <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 55% 40% at 80% 50%, rgba(136,0,255,0.07) 0%, transparent 70%)', pointerEvents: 'none' }} />
-      <div style={{ maxWidth: 1280, margin: '0 auto' }}>
-        <RevealSection className="text-center mb-14">
-          <SectionLabel>O que entregamos</SectionLabel>
-          <h2 style={{ fontSize: 'clamp(1.5rem, 3vw, 2.2rem)', fontWeight: 900, color: '#fff', lineHeight: 1.15, marginBottom: 14 }}>
-            4 formas de devolver tempo<br />
-            <span style={{ background: 'linear-gradient(90deg, #8800FF 0%, #CDFF00 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
-              e gerar receita.
-            </span>
-          </h2>
-          <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.42)', fontWeight: 300, maxWidth: 520, margin: '0 auto' }}>
-            Cada solução é desenhada para gerar retorno financeiro mensurável — não para impressionar em apresentações.
-          </p>
-        </RevealSection>
-
-        <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-8%' }} variants={staggerContainer}
-          style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 20, marginBottom: 48 }}>
-          {solutions.map((s) => (
-            <motion.div key={s.tag} variants={staggerItem}
-              style={{ padding: 26, borderRadius: 20, background: 'rgba(24,24,24,0.95)', border: '1px solid rgba(136,0,255,0.18)', display: 'flex', flexDirection: 'column' as const }}>
-              <div style={{ fontSize: 30, marginBottom: 14 }}>{s.emoji}</div>
-              <span style={{ fontSize: 9, fontWeight: 900, letterSpacing: '0.2em', textTransform: 'uppercase' as const, padding: '4px 10px', borderRadius: 99, background: 'rgba(136,0,255,0.1)', color: '#8800FF', border: '1px solid rgba(136,0,255,0.22)', alignSelf: 'flex-start' as const, marginBottom: 14 }}>{s.tag}</span>
-              <h3 style={{ fontSize: 15, fontWeight: 900, color: '#fff', marginBottom: 10 }}>{s.title}</h3>
-              <p style={{ fontSize: 12, lineHeight: 1.7, color: 'rgba(255,255,255,0.46)', flex: 1, marginBottom: 14 }}>{s.desc}</p>
-              <div style={{ fontSize: 11, fontWeight: 700, color: '#CDFF00' }}>{s.arrow}</div>
-            </motion.div>
-          ))}
-        </motion.div>
-
-        {/* How it works — 4 steps */}
-        <RevealSection className="text-center mb-8">
-          <h3 style={{ fontSize: '1.1rem', fontWeight: 900, color: '#fff', marginBottom: 6 }}>Do diagnóstico ao caixa.</h3>
-          <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.35)', fontWeight: 300 }}>12 anos refinando o processo de entrega. Nenhum projeto de prateleira.</p>
-        </RevealSection>
-        <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer}
-          style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 16, marginBottom: 48 }}>
-          {[
-            { n: '01', t: 'Diagnóstico',    d: '1–2 semanas de imersão operacional. Mapeamos processos, identificamos custos ocultos e onde a IA gera os retornos mais rápidos.' },
-            { n: '02', t: 'Priorização',    d: 'Selecionamos juntos o que implementar primeiro — sempre com critério matemático: maior impacto no menor tempo.' },
-            { n: '03', t: 'Implementação',  d: 'Nossos AI Builders desenvolvem e implantam soluções em sprints. Você acompanha em tempo real.' },
-            { n: '04', t: 'Escala',         d: 'Com os primeiros resultados mensuráveis, expandimos para outras áreas. O modelo cresce sem aumentar o risco.' },
-          ].map((s) => (
-            <motion.div key={s.n} variants={staggerItem}
-              style={{ padding: '20px 18px', borderRadius: 16, background: 'rgba(28,28,28,0.9)', border: '1px solid rgba(255,255,255,0.05)' }}>
-              <div style={{ fontSize: 11, fontWeight: 900, color: '#8800FF', marginBottom: 8, letterSpacing: '0.1em' }}>{s.n}</div>
-              <div style={{ fontSize: 13, fontWeight: 700, color: '#fff', marginBottom: 8 }}>{s.t}</div>
-              <p style={{ fontSize: 11, lineHeight: 1.65, color: 'rgba(255,255,255,0.4)' }}>{s.d}</p>
-            </motion.div>
-          ))}
-        </motion.div>
-
-        {/* Mini stats */}
-        <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer}
-          style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 14 }} className="sm:grid-cols-4">
-          {[{ n: 12, s: '+', l: 'Anos de operação' }, { n: 300, s: '+', l: 'Empresas atendidas' }, { n: 500, s: '+', l: 'Projetos de IA entregues' }, { n: 160, s: '+', l: 'Especialistas em IA' }].map((s) => (
-            <motion.div key={s.l} variants={staggerItem}
-              style={{ textAlign: 'center', padding: '18px 14px', borderRadius: 14, background: 'rgba(28,28,28,0.8)', border: '1px solid rgba(255,255,255,0.04)' }}>
-              <div style={{ fontSize: 'clamp(1.5rem, 2.5vw, 1.9rem)', fontWeight: 900, color: '#fff', marginBottom: 4 }}>
-                <AnimatedNumber value={s.n} suffix={s.s} />
-              </div>
-              <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.35)', fontWeight: 300 }}>{s.l}</div>
-            </motion.div>
-          ))}
-        </motion.div>
-      </div>
-    </section>
-  );
-}
-
 // ─── Exit Popup ───────────────────────────────────────────────────────────────
+
 function ExitPopup({ onClose }: { onClose: () => void }) {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -357,53 +254,40 @@ function ExitPopup({ onClose }: { onClose: () => void }) {
   };
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[100] flex items-center justify-center p-4"
-      style={{ background: 'rgba(0,0,0,0.88)', backdropFilter: 'blur(10px)' }}
+      style={{ position: 'fixed', inset: 0, zIndex: 200, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16, background: 'rgba(0,0,0,0.86)', backdropFilter: 'blur(12px)' }}
       onClick={onClose}>
       <motion.div
-        initial={{ scale: 0.88, opacity: 0, y: 50 }} animate={{ scale: 1, opacity: 1, y: 0 }} exit={{ scale: 0.88, opacity: 0 }}
+        initial={{ scale: 0.88, opacity: 0, y: 40 }} animate={{ scale: 1, opacity: 1, y: 0 }} exit={{ scale: 0.88, opacity: 0 }}
         transition={{ type: 'spring', stiffness: 280, damping: 28 }}
-        className="relative w-full max-w-lg p-10 rounded-3xl"
-        style={{ background: '#111', border: '1px solid rgba(136,0,255,0.45)', boxShadow: '0 0 100px rgba(136,0,255,0.3)' }}
-        onClick={(e) => e.stopPropagation()}>
-        <button onClick={onClose} className="absolute top-5 right-5 p-1.5 text-white/30 hover:text-white/70 transition-colors">
-          <X className="w-5 h-5" />
+        onClick={(e) => e.stopPropagation()}
+        style={{ position: 'relative', width: '100%', maxWidth: 480, padding: 40, borderRadius: 20, background: S1, border: `1px solid rgba(108,99,255,0.45)`, boxShadow: `0 0 80px rgba(108,99,255,0.22)` }}>
+        <button onClick={onClose} style={{ position: 'absolute', top: 16, right: 16, background: 'none', border: 'none', color: 'rgba(255,255,255,0.35)', cursor: 'pointer' }}>
+          <X size={20} />
         </button>
         {!done ? (
           <>
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full mb-6"
-              style={{ background: 'rgba(205,255,0,0.08)', border: '1px solid rgba(205,255,0,0.25)' }}>
-              <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: '#CDFF00' }} />
-              <span className="text-xs font-bold tracking-widest uppercase" style={{ color: '#CDFF00' }}>Antes de sair</span>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '6px 14px', borderRadius: 99, background: 'rgba(0,212,255,0.08)', border: '1px solid rgba(0,212,255,0.22)', marginBottom: 20 }}>
+              <span style={{ width: 6, height: 6, borderRadius: '50%', background: C, display: 'inline-block' }} className="pulse-glow" />
+              <Mono color={C} size={10}>Antes de sair</Mono>
             </div>
-            <h3 className="text-2xl font-black text-white leading-tight mb-3">
-              Seu concorrente acabou de<br />
-              <span style={{ color: '#8800FF' }}>agendar com a Pareto.</span>
-            </h3>
-            <p className="text-white/55 text-sm leading-relaxed mb-8">
-              Em 30 minutos de diagnóstico gratuito, um especialista mapeia onde a IA gera retorno financeiro real no seu negócio. Sem apresentação de prateleira. Sem compromisso. Com clareza total.
-            </p>
-            <form onSubmit={submit} className="space-y-3">
-              <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required
-                placeholder="E-mail corporativo" autoFocus
-                className="w-full px-5 py-3.5 rounded-xl text-sm text-white placeholder-white/30 outline-none"
-                style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(136,0,255,0.3)' }} />
-              <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)}
-                placeholder="WhatsApp com DDD"
-                className="w-full px-5 py-3.5 rounded-xl text-sm text-white placeholder-white/30 outline-none"
-                style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(136,0,255,0.2)' }} />
-              <button type="submit" className="w-full py-4 rounded-full font-black text-white text-sm tracking-wide"
-                style={{ background: 'linear-gradient(135deg,#8800FF,#6600CC)', boxShadow: '0 0 40px rgba(136,0,255,0.4)' }}>
+            <H3 style={{ marginBottom: 10 }}>Seu concorrente já agendou.<br /><span style={{ color: V }}>A janela está fechando.</span></H3>
+            <Body style={{ marginBottom: 24 }}>Diagnóstico gratuito de 30 minutos: mapeamos onde a IA gera retorno imediato no seu negócio. Sem compromisso. Sem pitch genérico.</Body>
+            <form onSubmit={submit} style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required placeholder="E-mail corporativo" autoFocus
+                style={{ padding: '12px 16px', borderRadius: 8, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(108,99,255,0.25)', color: '#fff', fontFamily: "'Inter', sans-serif", fontSize: 14, outline: 'none' }} />
+              <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="WhatsApp com DDD"
+                style={{ padding: '12px 16px', borderRadius: 8, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(108,99,255,0.15)', color: '#fff', fontFamily: "'Inter', sans-serif", fontSize: 14, outline: 'none' }} />
+              <button type="submit" style={{ padding: '13px', borderRadius: 8, background: V, color: '#fff', fontFamily: "'Inter', sans-serif", fontWeight: 600, fontSize: 14, border: 'none', cursor: 'pointer', boxShadow: '0 0 24px rgba(108,99,255,0.35)' }}>
                 Quero Meu Diagnóstico Gratuito
               </button>
-              <p className="text-xs text-white/25 text-center">Apenas para empresas com faturamento R$1M+/ano · LGPD</p>
+              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 11, color: 'rgba(136,146,164,0.45)', textAlign: 'center' }}>Operações com múltiplos processos manuais · LGPD</p>
             </form>
           </>
         ) : (
-          <div className="text-center py-10">
-            <div className="text-6xl mb-5">✓</div>
-            <h3 className="text-2xl font-black text-white mb-2">Recebemos seu contato!</h3>
-            <p className="text-white/55">Um especialista Pareto entrará em contato em breve.</p>
+          <div style={{ textAlign: 'center', padding: '32px 0' }}>
+            <div style={{ fontSize: 48, marginBottom: 16 }}>✓</div>
+            <H3 style={{ marginBottom: 8 }}>Recebemos seu contato!</H3>
+            <Body>Um especialista Pareto entrará em contato em breve.</Body>
           </div>
         )}
       </motion.div>
@@ -414,19 +298,18 @@ function ExitPopup({ onClose }: { onClose: () => void }) {
 // ─── HOME ─────────────────────────────────────────────────────────────────────
 export default function Home() {
   const { scrollY } = useScroll();
-  const heroY = useTransform(scrollY, [0, 700], [0, 200]);
-  const heroOpacity = useTransform(scrollY, [0, 450], [1, 0]);
+  const heroY = useTransform(scrollY, [0, 600], [0, 160]);
+  const heroOpacity = useTransform(scrollY, [0, 380], [1, 0]);
 
   const [showExit, setShowExit] = useState(false);
   const exitFired = useRef(false);
   const onMouseLeave = useCallback((e: MouseEvent) => {
     if (e.clientY <= 5 && !exitFired.current) {
-      const d = sessionStorage.getItem('pareto_exit');
-      if (!d) { exitFired.current = true; setShowExit(true); }
+      if (!sessionStorage.getItem('pareto_exit')) { exitFired.current = true; setShowExit(true); }
     }
   }, []);
   useEffect(() => {
-    const t = setTimeout(() => document.addEventListener('mouseleave', onMouseLeave), 10000);
+    const t = setTimeout(() => document.addEventListener('mouseleave', onMouseLeave), 12000);
     return () => { clearTimeout(t); document.removeEventListener('mouseleave', onMouseLeave); };
   }, [onMouseLeave]);
   const closeExit = () => { sessionStorage.setItem('pareto_exit', '1'); setShowExit(false); };
@@ -438,748 +321,733 @@ export default function Home() {
     <>
       <AnimatePresence>{showExit && <ExitPopup onClose={closeExit} />}</AnimatePresence>
 
-      {/* ── BG cinza neutro, zero hue azul ── */}
-      <main style={{ background: '#1A1A1A', color: '#fff', fontFamily: "'Roboto', sans-serif" }}>
+      <main style={{ background: BG, color: '#fff', fontFamily: "'Inter', sans-serif" }}>
 
-        {/* ═══════════════════════════════════════════════════
-            01 · HERO
-        ═══════════════════════════════════════════════════ */}
-        <section id="hero" className="relative min-h-screen flex flex-col justify-center overflow-hidden">
-          {/* Particle canvas bg */}
-          <div className="absolute inset-0"><ParticleCanvas /></div>
-          {/* Violet radial glow */}
-          <div className="absolute inset-0 pointer-events-none"
-            style={{ background: 'radial-gradient(ellipse 90% 70% at 50% 35%, rgba(136,0,255,0.13) 0%, transparent 70%)' }} />
-          {/* Bottom fade to gray (not black) */}
-          <div className="absolute inset-0 pointer-events-none"
-            style={{ background: 'linear-gradient(to bottom, rgba(26,26,26,0) 45%, rgba(26,26,26,1) 100%)' }} />
-          {/* Parallax hero image */}
-          <motion.div className="absolute inset-0 opacity-18 pointer-events-none" style={{ y: heroY }}>
-            <img src="/images/hero_crystal.png" alt="" className="w-full h-full object-cover" aria-hidden
-              style={{ filter: 'saturate(1.4) contrast(1.15)' }} />
-          </motion.div>
+        {/* ══════════════════════════════════════════════════════
+            01 · HERO — Deep Space, Neural Network BG
+        ══════════════════════════════════════════════════════ */}
+        <section id="hero" style={{ position: 'relative', minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', overflow: 'hidden' }}>
 
-          <motion.div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 pt-36 pb-28" style={{ opacity: heroOpacity }}>
-            {/* Badge */}
-            <motion.div initial={{ opacity: 0, y: -16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-              className="inline-flex items-center gap-2.5 px-5 py-2 rounded-full mb-10"
-              style={{ border: '1px solid rgba(136,0,255,0.4)', background: 'rgba(136,0,255,0.07)' }}>
-              <span className="w-2 h-2 rounded-full animate-pulse" style={{ background: '#CDFF00' }} />
-              <span className="text-xs font-bold tracking-[0.2em] uppercase text-white/65">
-                #1 Brasil em Marketing &amp; IA · 16 Prêmios Google Awards · Tess AI #6 Global G2
-              </span>
-            </motion.div>
+          {/* Layer 0: hero gradient */}
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, #0B0D14 0%, #1A1040 50%, #0D1929 100%)' }} />
 
-            {/* Headline */}
-            <motion.h1 initial={{ opacity: 0, y: 48 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.32, duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
-              className="max-w-4xl font-black mb-8"
-              style={{ fontSize: 'clamp(1.9rem, 3.8vw, 3.2rem)', fontFamily: "'Roboto', sans-serif", letterSpacing: '-0.035em', lineHeight: 1.08 }}>
-              <span className="text-white block">2026 é o último ano</span>
-              <span className="block" style={{ background: 'linear-gradient(95deg, #8800FF 0%, #CDFF00 65%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
-                em que isso ainda é opcional.
-              </span>
-            </motion.h1>
+          {/* Layer 1: starfield dots */}
+          <div className="starfield" />
 
-            {/* Sub */}
-            <motion.p initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.52 }}
-              className="max-w-xl text-base leading-relaxed mb-14" style={{ color: 'rgba(255,255,255,0.52)', fontWeight: 300 }}>
-              As empresas brasileiras com faturamento R$1M+ que integram IA customizada em seus processos competitivos agora
-              <span className="text-white font-semibold"> são as que vão ditar as regras do setor de 2027 a 2030</span>.
-              As que esperarem, comprarão do concorrente que não esperou.
-            </motion.p>
+          {/* Layer 2: data grid */}
+          <div className="data-grid" />
 
-            {/* CTAs */}
-            <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }}
-              className="flex flex-wrap gap-4 items-center">
-              <PrimaryButton href={CALENDLY_URL}>
-                <Calendar className="w-5 h-5" />
-                Agendar Diagnóstico Gratuito
-              </PrimaryButton>
-              <SecondaryButton onClick={() => scrollToSection('argumento')}>
-                Ver os dados
-                <ChevronDown className="w-4 h-4" />
-              </SecondaryButton>
-            </motion.div>
+          {/* Layer 3: neural network particles */}
+          <div style={{ position: 'absolute', inset: 0 }}><ParticleCanvas /></div>
 
-            {/* Stats row */}
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.05 }}
-              className="grid grid-cols-2 sm:grid-cols-4 gap-6 mt-24 pt-8"
-              style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-              {KEY_STATS.slice(0, 4).map((s) => (
-                <div key={s.label}>
-                  <div className="text-2xl font-black text-white">
-                    <AnimatedNumber value={s.value} prefix={s.prefix} suffix={s.suffix} />
-                  </div>
-                  <div className="text-xs mt-1 leading-tight" style={{ fontWeight: 300, color: 'rgba(255,255,255,0.38)' }}>{s.label}</div>
-                </div>
-              ))}
-            </motion.div>
-          </motion.div>
+          {/* Layer 4: glow orbs */}
+          <div style={{ position: 'absolute', top: '8%', right: '12%', width: 500, height: 500, borderRadius: '50%', background: 'radial-gradient(ellipse, rgba(108,99,255,0.13) 0%, transparent 70%)', pointerEvents: 'none' }} />
+          <div style={{ position: 'absolute', bottom: '15%', left: '5%', width: 420, height: 420, borderRadius: '50%', background: 'radial-gradient(ellipse, rgba(0,212,255,0.08) 0%, transparent 70%)', pointerEvents: 'none' }} />
+          <div style={{ position: 'absolute', top: '40%', left: '35%', width: 360, height: 360, borderRadius: '50%', background: 'radial-gradient(ellipse, rgba(255,107,53,0.05) 0%, transparent 70%)', pointerEvents: 'none' }} />
 
-          {/* Scroll indicator — 320px acima do bottom */}
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.6 }}
-            className="absolute left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 cursor-pointer"
-            style={{ bottom: 320 }}
-            onClick={() => scrollToSection('argumento')}>
-            <motion.div animate={{ y: [0, 9, 0] }} transition={{ repeat: Infinity, duration: 1.6 }}>
-              <ChevronDown className="w-5 h-5" style={{ color: 'rgba(255,255,255,0.25)' }} />
-            </motion.div>
-          </motion.div>
-        </section>
+          {/* Fade to next section */}
+          <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 240, background: `linear-gradient(to bottom, transparent 0%, ${BG} 100%)`, pointerEvents: 'none' }} />
 
-        {/* ─── Partner Badges Bar ──────────────────────────────── */}
-        <PartnerBadgesBar />
+          {/* Hero content */}
+          <motion.div style={{ opacity: heroOpacity, position: 'relative', zIndex: 10, maxWidth: 1280, margin: '0 auto', padding: '0 24px', width: '100%', paddingTop: 120, paddingBottom: 100 }}>
+            <div style={{ maxWidth: 760 }}>
 
-        {/* ═══════════════════════════════════════════════════
-            02 · O ARGUMENTO — A LÓGICA FRIA DOS NÚMEROS
-        ═══════════════════════════════════════════════════ */}
-        <section id="argumento" className="py-28 md:py-40 relative overflow-hidden">
-          <div className="absolute inset-0 pointer-events-none"
-            style={{ background: 'linear-gradient(135deg, rgba(136,0,255,0.07) 0%, transparent 55%)' }} />
-          <div className="max-w-5xl mx-auto px-6 lg:px-8">
+              {/* Eyebrow */}
+              <motion.div initial={{ opacity: 0, y: -12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15, duration: 0.6, ease }}>
+                <EyebrowLabel>pareto.plus · São Paulo · Palo Alto · Est. 2011</EyebrowLabel>
+              </motion.div>
 
-            <RevealSection className="text-center mb-20">
-              <SectionLabel>A Lógica Fria dos Números</SectionLabel>
-              <div className="font-black leading-none mb-6"
-                style={{ fontSize: 'clamp(3.5rem, 9vw, 7rem)', color: '#CDFF00', fontFamily: "'Roboto', sans-serif", letterSpacing: '-0.05em' }}>
-                71<span style={{ fontSize: '0.45em', verticalAlign: 'super' }}>%</span>
-              </div>
-              <p className="text-base font-semibold text-white/80 max-w-2xl mx-auto leading-relaxed mb-5">
-                das empresas brasileiras com faturamento acima de R$1M não atingiram suas metas de marketing em 2024.
-              </p>
-              <p className="text-sm max-w-2xl mx-auto leading-relaxed" style={{ fontWeight: 300, color: 'rgba(255,255,255,0.48)' }}>
-                Não foi falta de esforço. Não foi falta de verba. Foi o modelo errado — construído para um mercado que não existe mais.
-              </p>
-            </RevealSection>
+              {/* H1 */}
+              <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.28, duration: 0.85, ease }}>
+                <H1 style={{ marginBottom: 24 }}>
+                  <span style={{ color: '#fff', display: 'block' }}>Inteligência Artificial</span>
+                  <span className="shimmer-text">como ativo estratégico.</span>
+                </H1>
+              </motion.div>
 
-            {/* AI for Business stats from pareto.io/ai-for-business */}
-            <AiCostCards />
+              {/* Subline */}
+              <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45, duration: 0.7, ease }}>
+                <Body style={{ fontSize: 17, lineHeight: 1.75, marginBottom: 36, maxWidth: 560, color: '#8892A4' }}>
+                  A Pareto implementa IA que gera retorno financeiro mensurável — não projetos-piloto sem fim. 13 anos de operação. 300+ empresas. Tess AI, a <span style={{ color: '#fff', fontWeight: 500 }}>6ª melhor plataforma de IA do mundo</span> (G2 2024).
+                </Body>
+              </motion.div>
 
-            <NarrativeBridge>
-              Os 29% que acertaram não encontraram uma agência melhor. Eles mudaram o modelo. Trocaram campanhas por infraestrutura. Trocaram tática por aprendizado permanente. E a distância entre eles e os outros está crescendo todo mês — sem parar.
-            </NarrativeBridge>
+              {/* CTAs */}
+              <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6, duration: 0.6, ease }}
+                style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center', marginBottom: 56 }}>
+                <PrimaryBtn href={CALENDLY_URL}>
+                  <Calendar size={16} /> Diagnóstico Gratuito
+                </PrimaryBtn>
+                <GhostBtn onClick={() => scrollToSection('argumento')}>
+                  Ver os dados <ChevronDown size={15} />
+                </GhostBtn>
+              </motion.div>
 
-            {/* The shift cards */}
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-8%' }} variants={staggerContainer}
-              className="grid grid-cols-1 md:grid-cols-3 gap-5 mt-20">
-              {[
-                {
-                  label: 'O que o mercado diz',
-                  before: '"Vou contratar uma boa agência digital."',
-                  after: 'Resultado: mais do mesmo, relatório bonito, metas não atingidas.',
-                  tone: 'dim',
-                },
-                {
-                  label: 'O que os 29% fizeram',
-                  before: '"Vou construir inteligência que aprende o meu negócio."',
-                  after: 'Resultado: sistema que fica mais inteligente todo mês, com seus dados, para o seu mercado.',
-                  tone: 'bright',
-                },
-                {
-                  label: 'O que acontece em 2027',
-                  before: '"Não preciso mais disputar — o sistema trabalha enquanto minha equipe decide."',
-                  after: 'Resultado: posição de mercado consolidada. Custo para alcançar: inalcançável.',
-                  tone: 'urgent',
-                },
-              ].map((c) => (
-                <motion.div key={c.label} variants={staggerItem} className="p-7 rounded-2xl"
-                  style={{
-                    background: c.tone === 'bright' ? 'rgba(136,0,255,0.09)' : c.tone === 'urgent' ? 'rgba(205,255,0,0.04)' : 'rgba(22,22,22,0.9)',
-                    border: c.tone === 'bright' ? '1px solid rgba(136,0,255,0.4)' : c.tone === 'urgent' ? '1px solid rgba(205,255,0,0.2)' : '1px solid rgba(255,255,255,0.06)',
-                  }}>
-                  <div className="text-xs font-bold tracking-widest uppercase mb-5"
-                    style={{ color: c.tone === 'bright' ? '#8800FF' : c.tone === 'urgent' ? '#CDFF00' : 'rgba(255,255,255,0.3)' }}>
-                    {c.label}
-                  </div>
-                  <blockquote className="text-sm font-bold text-white leading-relaxed mb-4 italic">{c.before}</blockquote>
-                  <p className="text-xs leading-relaxed"
-                    style={{ color: c.tone === 'dim' ? 'rgba(255,100,100,0.7)' : 'rgba(255,255,255,0.5)' }}>
-                    {c.after}
-                  </p>
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-        </section>
-
-        {/* ── Parallax: Escritório Pareto ────────────────────── */}
-        <OfficeParallaxStrip />
-
-        {/* ═══════════════════════════════════════════════════
-            03 · O VAZAMENTO — TRÊS CAMADAS DE PERDA REAL
-        ═══════════════════════════════════════════════════ */}
-        <section id="problema" className="py-28 relative overflow-hidden" style={{ background: 'rgba(20,20,20,0.95)' }}>
-          <div className="absolute inset-0 pointer-events-none"
-            style={{ background: 'radial-gradient(ellipse 70% 60% at 50% 100%, rgba(136,0,255,0.07) 0%, transparent 70%)' }} />
-          <div className="max-w-7xl mx-auto px-6 lg:px-8">
-            <RevealSection className="text-center mb-6">
-              <SectionLabel>O Custo do Statu Quo</SectionLabel>
-              <h2 className="text-xl md:text-2xl font-black text-white mb-4">
-                Três Camadas de Perda.<br />
-                <span style={{ color: '#CDFF00' }}>Você Provavelmente Tem as Três.</span>
-              </h2>
-            </RevealSection>
-            <RevealSection className="text-center mb-16">
-              <p className="text-sm max-w-2xl mx-auto leading-relaxed" style={{ fontWeight: 300, color: 'rgba(255,255,255,0.48)' }}>
-                Não é fraqueza do seu time. É uma questão de modelo. O modelo atual de marketing digital foi desenhado para um mercado de 2019. Aplicar esse modelo em 2026 é como usar internet discada para operar em fibra.
-              </p>
-            </RevealSection>
-
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-8%' }} variants={staggerContainer}
-              className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {[
-                {
-                  stage: '01', color: '#CDFF00', label: 'Hoje',
-                  title: 'Perda Operacional',
-                  headline: 'Dinheiro saindo pelo ralo agora — corrigível em 14 dias.',
-                  items: [
-                    'Leads não qualificados consomem 60% do tempo de vendas',
-                    'Sua equipe responde leads em horas. Com IA: 2 minutos. Você perde o cliente ainda quente.',
-                    '35–50% do orçamento em mídia paga não gera pipeline real',
-                    'Conteúdo manual: 4 peças por semana. IA treinada: 40 peças, na sua voz.',
-                  ],
-                },
-                {
-                  stage: '02', color: '#8800FF', label: 'Acumulando',
-                  title: 'Lacuna Estratégica',
-                  headline: 'Um gap invisível que compõe todo mês — enquanto seu concorrente aprende.',
-                  items: [
-                    'Cada mês, o sistema de IA do concorrente aprende mais sobre o mercado que você divide com ele.',
-                    'ROI médio de stack MarTech com IA: 285%. Sem IA: abaixo do custo de aquisição.',
-                    'Mês 1: 5% de diferença. Mês 6: 35%. Mês 12: 65% de gap — e crescendo.',
-                    'Esse gap não é recuperável com mais investimento depois. Dados de hoje só existem hoje.',
-                  ],
-                },
-                {
-                  stage: '03', color: '#ff5555', label: '2027–2030',
-                  title: 'Risco Existencial',
-                  headline: 'A bifurcação de mercado que vai dividir cada setor em vencedores e perdedores.',
-                  items: [
-                    'IA não será diferencial competitivo em 2027. Será infraestrutura básica — como ter CNPJ.',
-                    'O modelo de negócio de cada setor vai se reorganizar em torno de quem tem inteligência operacional.',
-                    'Empresa sem IA customizada em 2027 = empresa sem site em 2012.',
-                    'A janela para entrar como first-mover no seu setor não é infinita. E está fechando.',
-                  ],
-                },
-              ].map((s) => (
-                <motion.div key={s.stage} variants={staggerItem} className="rounded-2xl overflow-hidden"
-                  style={{ background: 'rgba(22,22,22,0.95)', border: `1px solid ${s.color}20` }}>
-                  <div className="px-7 pt-7 pb-4" style={{ borderBottom: `1px solid ${s.color}15` }}>
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="text-xs font-black tracking-widest uppercase px-3 py-1 rounded-full"
-                        style={{ background: `${s.color}15`, color: s.color }}>{s.label}</span>
-                      <span className="text-2xl font-black" style={{ color: `${s.color}30` }}>{s.stage}</span>
-                    </div>
-                    <h3 className="text-xl font-black text-white mb-2">{s.title}</h3>
-                    <p className="text-xs leading-relaxed italic" style={{ color: `${s.color}80` }}>{s.headline}</p>
-                  </div>
-                  <ul className="p-7 space-y-4">
-                    {s.items.map((item) => (
-                      <li key={item} className="flex gap-3 text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.58)' }}>
-                        <span className="mt-1.5 flex-shrink-0 w-1.5 h-1.5 rounded-full" style={{ background: s.color }} />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </motion.div>
-              ))}
-            </motion.div>
-
-            <RevealSection className="text-center mt-16">
-              <p className="text-sm mb-8 max-w-lg mx-auto" style={{ color: 'rgba(255,255,255,0.38)' }}>
-                Se ao ler isto você reconheceu pelo menos dois desses cenários na sua empresa, você está exatamente no momento certo para a próxima conversa.
-              </p>
-              <PrimaryButton href={CALENDLY_URL}>
-                <Calendar className="w-5 h-5" /> Quero Diagnosticar Minha Empresa Agora
-              </PrimaryButton>
-            </RevealSection>
-          </div>
-        </section>
-
-        {/* ── 4 Soluções ───────────────────────────────────────── */}
-        <SolucoesSection />
-
-        {/* ── Parallax: Brasil 2026 ─────────────────────────────── */}
-        <QuoteParallaxBreak
-          img="/images/brazil_network.jpg"
-          quote={<>O Brasil de 2030 já está sendo construído.<br /><span style={{ background: 'linear-gradient(90deg, #8800FF 0%, #CDFF00 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Por quem agiu em 2026.</span></>}
-          subline="300+ empresas já tomaram esta decisão com a Pareto."
-        />
-
-        {/* ═══════════════════════════════════════════════════
-            04 · A VIRADA — POR QUE PADRONIZAÇÃO MATOU O CRESCIMENTO
-        ═══════════════════════════════════════════════════ */}
-        <section className="py-28 relative overflow-hidden">
-          <div className="absolute right-0 top-0 w-1/2 h-full pointer-events-none opacity-20"
-            style={{ background: 'radial-gradient(ellipse 80% 80% at 100% 50%, rgba(136,0,255,0.3) 0%, transparent 70%)' }} />
-          <div className="max-w-7xl mx-auto px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-              <RevealSection>
-                <SectionLabel>A Ruptura de Modelo</SectionLabel>
-                <h2 className="text-xl md:text-2xl font-black text-white mb-8" style={{ lineHeight: 1.2 }}>
-                  A padronização foi boa enquanto durou.<br />
-                  <span style={{ color: '#8800FF' }}>Ela acabou em 2024.</span>
-                </h2>
-                <div className="space-y-6">
-                  {[
-                    {
-                      label: 'O velho modelo',
-                      text: 'Você contratava uma agência. Ela aplicava o mesmo playbook para outros 40 clientes. Você competia com todos usando as mesmas ferramentas, os mesmos criativos, a mesma lógica. O resultado era mediano — porque todos eram medianos juntos.',
-                      tone: 'dim',
-                    },
-                    {
-                      label: 'O novo modelo',
-                      text: 'IA treinada nos seus dados cria uma curva de aprendizado proprietária. Mês a mês, o sistema entende mais sobre quem compra de você, por que compra, quando está pronto. Essa inteligência não pode ser copiada — foi construída com os dados do seu negócio.',
-                      tone: 'bright',
-                    },
-                    {
-                      label: 'A vantagem que você constrói',
-                      text: 'Enquanto concorrentes pagam por leads genéricos, você qualifica automaticamente. Enquanto eles briefam criativos, você entrega 40 peças por semana. Enquanto eles revisam relatórios mensais, você age em tempo real. A diferença cresce todo mês.',
-                      tone: 'urgent',
-                    },
-                  ].map((item) => (
-                    <div key={item.label} className="p-6 rounded-2xl"
-                      style={{
-                        background: item.tone === 'bright' ? 'rgba(136,0,255,0.07)' : item.tone === 'urgent' ? 'rgba(205,255,0,0.04)' : 'rgba(255,255,255,0.03)',
-                        border: item.tone === 'bright' ? '1px solid rgba(136,0,255,0.25)' : item.tone === 'urgent' ? '1px solid rgba(205,255,0,0.15)' : '1px solid rgba(255,255,255,0.05)',
-                      }}>
-                      <div className="text-xs font-bold tracking-widest uppercase mb-3"
-                        style={{ color: item.tone === 'bright' ? '#8800FF' : item.tone === 'urgent' ? '#CDFF00' : 'rgba(255,255,255,0.3)' }}>
-                        {item.label}
-                      </div>
-                      <p className="text-sm leading-relaxed"
-                        style={{ color: item.tone === 'dim' ? 'rgba(255,100,100,0.65)' : 'rgba(255,255,255,0.62)' }}>
-                        {item.text}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </RevealSection>
-
-              {/* Comparison table */}
-              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={scaleIn}
-                className="rounded-2xl overflow-hidden" style={{ border: '1px solid rgba(136,0,255,0.2)' }}>
-                <div className="grid grid-cols-2">
-                  <div className="p-5 text-xs font-black tracking-widest uppercase text-center"
-                    style={{ background: 'rgba(255,100,100,0.08)', color: 'rgba(255,100,100,0.7)', borderRight: '1px solid rgba(255,255,255,0.06)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-                    Agência padrão
-                  </div>
-                  <div className="p-5 text-xs font-black tracking-widest uppercase text-center"
-                    style={{ background: 'rgba(136,0,255,0.1)', color: '#8800FF', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-                    Pareto Plus
-                  </div>
-                </div>
-                {[
-                  ['Template genérico do setor', 'Construída sobre seus dados reais'],
-                  ['Conteúdo manual, 2–4 peças/semana', 'IA treinada na sua marca, 10× volume'],
-                  ['Resposta a leads: 4–8 horas', 'Qualificação IA: 2 minutos, 24/7'],
-                  ['Otimização: revisão semanal', 'Ajuste em tempo real, hora a hora'],
-                  ['Relatório mensal de vaidade', 'BI ao vivo, alertas preditivos'],
-                  ['Reseta com cada novo gestor', 'Aprende e compõe — para sempre'],
-                  ['Serve 40 clientes com o mesmo playbook', 'Inteligência exclusiva do seu negócio'],
-                ].map(([before, after], i) => (
-                  <div key={before} className="grid grid-cols-2"
-                    style={{ background: i % 2 === 0 ? 'rgba(255,255,255,0.02)' : 'transparent', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                    <div className="p-4 text-xs leading-snug pr-3" style={{ color: 'rgba(255,100,100,0.6)', borderRight: '1px solid rgba(255,255,255,0.06)' }}>{before}</div>
-                    <div className="p-4 text-xs leading-snug pl-3" style={{ color: 'rgba(205,255,0,0.75)' }}>{after}</div>
+              {/* Trust badges */}
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.85 }}
+                style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                {['#6 G2 Best AI 2024', '16 Google Awards', '#1 Brasil Marketing IA', 'US$5M Seed 2025'].map((b) => (
+                  <div key={b} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '5px 12px', borderRadius: 99, background: 'rgba(108,99,255,0.08)', border: '1px solid rgba(108,99,255,0.2)' }}>
+                    <div style={{ width: 5, height: 5, borderRadius: '50%', background: C }} />
+                    <Mono color="rgba(255,255,255,0.55)" size={10}>{b}</Mono>
                   </div>
                 ))}
               </motion.div>
             </div>
+
+            {/* Stats row */}
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.1 }}
+              style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '24px 40px', marginTop: 72, paddingTop: 32, borderTop: '1px solid rgba(255,255,255,0.05)', maxWidth: 600 }}
+              className="sm:grid-cols-4">
+              {KEY_STATS.slice(0, 4).map((s) => (
+                <div key={s.label}>
+                  <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'clamp(1.4rem, 2.5vw, 1.8rem)', fontWeight: 600, color: C, letterSpacing: '-0.02em', marginBottom: 4 }}>
+                    <AnimatedNumber value={s.value} prefix={s.prefix} suffix={s.suffix} />
+                  </div>
+                  <Body muted style={{ fontSize: 12, lineHeight: 1.4 }}>{s.label}</Body>
+                </div>
+              ))}
+            </motion.div>
+          </motion.div>
+
+          {/* Scroll indicator */}
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5 }}
+            onClick={() => scrollToSection('argumento')}
+            style={{ position: 'absolute', bottom: 320, left: '50%', transform: 'translateX(-50%)', cursor: 'pointer', zIndex: 10, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
+            <motion.div animate={{ y: [0, 8, 0] }} transition={{ repeat: Infinity, duration: 1.8 }}>
+              <ChevronDown size={18} style={{ color: 'rgba(108,99,255,0.45)' }} />
+            </motion.div>
+          </motion.div>
+        </section>
+
+        {/* ─── Partner Badges Bar ──────────────────────────── */}
+        <BadgesBar />
+
+        {/* ══════════════════════════════════════════════════════
+            02 · O ARGUMENTO — A LÓGICA DOS NÚMEROS
+        ══════════════════════════════════════════════════════ */}
+        <SectionDivider />
+        <section id="argumento" style={{ padding: '96px 24px', position: 'relative', overflow: 'hidden' }}>
+          <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(ellipse 60% 50% at 20% 50%, rgba(108,99,255,0.07) 0%, transparent 70%)`, pointerEvents: 'none' }} />
+          <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+
+            <Reveal className="text-center" style={{ marginBottom: 64 }}>
+              <EyebrowLabel>A Lógica Fria dos Números</EyebrowLabel>
+              <div style={{ fontFamily: "'JetBrains Mono', monospace", fontWeight: 600, fontSize: 'clamp(4rem, 10vw, 8rem)', color: C, letterSpacing: '-0.04em', lineHeight: 1, marginBottom: 20 }}>
+                71<span style={{ fontSize: '0.42em', verticalAlign: 'super' }}>%</span>
+              </div>
+              <H2 style={{ marginBottom: 16, maxWidth: 600, marginLeft: 'auto', marginRight: 'auto' }}>
+                das empresas brasileiras não atingiram suas metas de marketing em 2024.
+              </H2>
+              <Body style={{ maxWidth: 520, margin: '0 auto', color: '#8892A4' }}>
+                Não foi falta de esforço. Não foi falta de verba. Foi o modelo errado — construído para um mercado que não existe mais.
+              </Body>
+            </Reveal>
+
+            {/* AI for Business cost cards */}
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-8%' }} variants={stagger}
+              style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 20, marginBottom: 64 }}>
+              {[
+                { stat: '3×',     label: 'Custo real por colaborador',         desc: 'Entre encargos, benefícios, rotatividade e gestão, o custo efetivo de um funcionário supera em 3× o salário bruto.', accent: V },
+                { stat: '~40%',   label: 'Produtividade efetiva do time',      desc: 'Em média, 60% do expediente é consumido por tarefas repetitivas que a IA executa em segundos — a custo marginal zero.', accent: C },
+                { stat: '6–12m',  label: 'Payback típico de automação com IA', desc: 'Implementações bem estruturadas atingem break-even em 6 a 12 meses, com resultados visíveis já nos primeiros sprints.', accent: A },
+              ].map((c) => (
+                <motion.div key={c.label} variants={staggerItem}>
+                  <GlassCard style={{ padding: 28 }}>
+                    <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'clamp(1.8rem, 4vw, 2.6rem)', fontWeight: 600, color: c.accent, letterSpacing: '-0.03em', marginBottom: 10 }}>
+                      {c.stat}
+                    </div>
+                    <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 500, fontSize: 14, color: '#fff', marginBottom: 10 }}>{c.label}</div>
+                    <Body muted style={{ fontSize: 13 }}>{c.desc}</Body>
+                  </GlassCard>
+                </motion.div>
+              ))}
+            </motion.div>
+
+            {/* Shift cards */}
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-8%' }} variants={stagger}
+              style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16 }}>
+              {[
+                {
+                  label: 'O modelo que virou commodity',
+                  quote: '"Contrato uma agência, ela executa um playbook padrão, reporta métricas de vaidade."',
+                  result: 'Resultado: o mesmo pacote vendido para 40 clientes do mesmo segmento. Diferencial zero.',
+                  tone: 'dim',
+                },
+                {
+                  label: 'O modelo que constrói vantagem',
+                  quote: '"Implemento IA treinada nos meus dados, que aprende o meu negócio e melhora todo mês."',
+                  result: 'Resultado: inteligência proprietária que nenhum concorrente pode replicar ou comprar pronta.',
+                  tone: 'bright',
+                },
+                {
+                  label: 'O que acontece a partir de 2027',
+                  quote: '"O sistema opera enquanto meu time toma decisões — não executa tarefas manuais."',
+                  result: 'Resultado: posição consolidada com vantagem composta. Gap intransponível para quem ficou parado.',
+                  tone: 'urgent',
+                },
+              ].map((c) => (
+                <motion.div key={c.label} variants={staggerItem}>
+                  <GlassCard style={{
+                    padding: 28, height: '100%',
+                    background: c.tone === 'bright' ? 'rgba(108,99,255,0.08)' : c.tone === 'urgent' ? 'rgba(255,107,53,0.05)' : 'rgba(18,21,31,0.8)',
+                    borderColor: c.tone === 'bright' ? 'rgba(108,99,255,0.35)' : c.tone === 'urgent' ? 'rgba(255,107,53,0.2)' : 'rgba(255,255,255,0.07)',
+                  }}>
+                    <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 10, fontWeight: 600, letterSpacing: '0.16em', textTransform: 'uppercase', color: c.tone === 'bright' ? V : c.tone === 'urgent' ? A : 'rgba(136,146,164,0.5)', marginBottom: 16 }}>
+                      {c.label}
+                    </div>
+                    <blockquote style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 14, fontWeight: 500, color: '#fff', lineHeight: 1.6, marginBottom: 14, fontStyle: 'italic' }}>
+                      {c.quote}
+                    </blockquote>
+                    <Body muted style={{ fontSize: 12, color: c.tone === 'dim' ? 'rgba(255,100,100,0.65)' : 'rgba(136,146,164,0.7)' }}>{c.result}</Body>
+                  </GlassCard>
+                </motion.div>
+              ))}
+            </motion.div>
           </div>
         </section>
 
-        {/* ═══════════════════════════════════════════════════
-            05 · A PARETO — 13 ANOS DE PROVA, NÃO PROMESSA
-        ═══════════════════════════════════════════════════ */}
-        <section id="pareto" className="py-28 relative" style={{ background: 'rgba(20,20,20,0.95)' }}>
-          <div className="max-w-7xl mx-auto px-6 lg:px-8">
-            <RevealSection className="text-center mb-20">
-              <SectionLabel>Quem vai implementar</SectionLabel>
-              <h2 className="text-xl md:text-2xl font-black text-white mb-6" style={{ lineHeight: 1.2 }}>
-                13 anos construindo IA<br />
-                <span style={{ color: '#8800FF' }}>para os negócios que lideram o Brasil.</span>
-              </h2>
-              <p className="text-sm max-w-2xl mx-auto leading-relaxed" style={{ fontWeight: 300, color: 'rgba(255,255,255,0.48)' }}>
-                Não somos uma startup que lançou produto em 2023. Somos a empresa que treinou os primeiros algoritmos de marketing com IA no Brasil, que criou a 6ª melhor plataforma de IA do mundo e que acumula 13 anos de inteligência do mercado brasileiro.
-              </p>
-            </RevealSection>
+        {/* ── Parallax: Escritório ──────────────────────────────── */}
+        <ParallaxStrip img="/images/pareto_office1.png" height={300}>
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+            <Mono color={V} size={10} >Pareto · São Paulo · Est. 2011</Mono>
+            <H2 style={{ marginTop: 12, marginBottom: 10 }}>
+              +160 especialistas.<br />
+              <span style={{ color: C }}>Um único KPI: resultado financeiro.</span>
+            </H2>
+            <Body muted>300+ empresas transformadas · R$3B+ em mídia gerenciada · 13 anos de operação</Body>
+          </motion.div>
+        </ParallaxStrip>
 
-            {/* Numbers wall */}
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-8%' }} variants={staggerContainer}
-              className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-20">
+        {/* ══════════════════════════════════════════════════════
+            03 · O PROBLEMA — TRÊS CAMADAS DE PERDA
+        ══════════════════════════════════════════════════════ */}
+        <SectionDivider />
+        <section id="problema" style={{ padding: '96px 24px', position: 'relative', background: `${S1}80` }}>
+          <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(ellipse 70% 50% at 50% 100%, rgba(0,212,255,0.05) 0%, transparent 70%)`, pointerEvents: 'none' }} />
+          <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+            <Reveal style={{ textAlign: 'center', marginBottom: 64 }}>
+              <EyebrowLabel>O Custo do Statu Quo</EyebrowLabel>
+              <H2 style={{ marginBottom: 14 }}>Três camadas de perda.<br /><span style={{ color: C }}>Operacional, estratégica e existencial.</span></H2>
+              <Body style={{ maxWidth: 540, margin: '0 auto' }}>
+                O modelo de marketing e operações construído pré-2020 não foi projetado para o ambiente competitivo de 2026. Usar essa estrutura hoje é equivalente a competir com os recursos de uma geração anterior.
+              </Body>
+            </Reveal>
+
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-8%' }} variants={stagger}
+              style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 20 }}>
+              {[
+                {
+                  num: '01', color: C, label: 'Agora',
+                  title: 'Perda Operacional',
+                  headline: 'Custos corrigíveis em 30 dias.',
+                  items: [
+                    'Leads não qualificados consomem mais de 60% do tempo da equipe de vendas',
+                    'Resposta a novos contatos em horas — concorrente com IA responde em 2 minutos',
+                    '35–50% da verba de mídia paga não gera pipeline comercial real',
+                    'Produção de conteúdo manual: 4 peças/semana vs. 40 peças/semana com IA',
+                  ],
+                },
+                {
+                  num: '02', color: V, label: 'Acumulando',
+                  title: 'Lacuna Estratégica',
+                  headline: 'Um gap que compõe silenciosamente todo mês.',
+                  items: [
+                    'Cada mês, o sistema de IA do concorrente aprende mais sobre o mercado que você compartilha',
+                    'ROI médio de stack com IA: 285%. ROI médio sem: abaixo do custo de aquisição',
+                    'Mês 1: diferença de 5%. Mês 12: 65% de gap estrutural — e crescendo',
+                    'Dados de comportamento de clientes gerados hoje não estarão disponíveis amanhã',
+                  ],
+                },
+                {
+                  num: '03', color: A, label: '2027–2030',
+                  title: 'Risco de Mercado',
+                  headline: 'A bifurcação que vai reorganizar cada setor.',
+                  items: [
+                    'IA não será diferencial em 2027 — será infraestrutura básica, como ter um site funcional',
+                    'Empresas com inteligência operacional consolidada vão ditar precificação e condições do setor',
+                    'A janela de first-mover no seu segmento já está parcialmente fechada — e fecha mais rápido a cada mês',
+                    'Não é sobre tecnologia: é sobre qual empresa vai operar com 40% mais eficiência estrutural',
+                  ],
+                },
+              ].map((s) => (
+                <motion.div key={s.num} variants={staggerItem}>
+                  <GlassCard style={{ overflow: 'hidden', height: '100%', display: 'flex', flexDirection: 'column' }} hover={false}>
+                    <div style={{ padding: '24px 28px 16px', borderBottom: `1px solid ${s.color}18` }}>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
+                        <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 10, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', padding: '4px 10px', borderRadius: 99, background: `${s.color}15`, color: s.color }}>{s.label}</span>
+                        <Mono color={`${s.color}25`} size={20}>{s.num}</Mono>
+                      </div>
+                      <H3 style={{ marginBottom: 8 }}>{s.title}</H3>
+                      <Body muted style={{ fontSize: 12, fontStyle: 'italic', color: `${s.color}80` }}>{s.headline}</Body>
+                    </div>
+                    <ul style={{ padding: '20px 28px', listStyle: 'none', margin: 0, display: 'flex', flexDirection: 'column', gap: 14, flex: 1 }}>
+                      {s.items.map((item) => (
+                        <li key={item} style={{ display: 'flex', gap: 10, fontFamily: "'Inter', sans-serif", fontSize: 13, lineHeight: 1.65, color: '#8892A4' }}>
+                          <span style={{ flexShrink: 0, marginTop: 6, width: 5, height: 5, borderRadius: '50%', background: s.color, display: 'inline-block' }} />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </GlassCard>
+                </motion.div>
+              ))}
+            </motion.div>
+
+            <Reveal style={{ textAlign: 'center', marginTop: 56 }}>
+              <Body style={{ marginBottom: 28, maxWidth: 480, margin: '0 auto 28px', color: 'rgba(136,146,164,0.6)' }}>
+                Se você identificou pelo menos dois desses padrões na sua operação, a próxima conversa importa.
+              </Body>
+              <PrimaryBtn href={CALENDLY_URL}><Calendar size={15} /> Diagnosticar Minha Operação</PrimaryBtn>
+            </Reveal>
+          </div>
+        </section>
+
+        {/* ══════════════════════════════════════════════════════
+            04 · 4 SOLUÇÕES
+        ══════════════════════════════════════════════════════ */}
+        <SectionDivider />
+        <section id="solucoes" style={{ padding: '96px 24px', position: 'relative', overflow: 'hidden' }}>
+          <div style={{ position: 'absolute', right: 0, top: 0, width: '40%', height: '100%', background: `radial-gradient(ellipse 80% 80% at 100% 40%, rgba(108,99,255,0.07) 0%, transparent 70%)`, pointerEvents: 'none' }} />
+          <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+            <Reveal style={{ textAlign: 'center', marginBottom: 64 }}>
+              <EyebrowLabel>O que entregamos</EyebrowLabel>
+              <H2 style={{ marginBottom: 14 }}>Quatro vetores de retorno sobre IA.<br /><span className="gradient-text">Todos com impacto mensurável.</span></H2>
+              <Body style={{ maxWidth: 500, margin: '0 auto' }}>
+                Cada solução é desenhada com um único critério de sucesso: gerar retorno financeiro comprovável — não impressionar em reuniões.
+              </Body>
+            </Reveal>
+
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-8%' }} variants={stagger}
+              style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 20, marginBottom: 56 }}>
+              {[
+                { icon: Settings,  tag: 'Automation',  title: 'Processos Automatizados',  result: '→ Headcount operacional reduzido',  desc: 'Mapeamos onde o trabalho humano é substituível por sistemas 24/7. RPA, integrações e workflows inteligentes que não tiram férias, não adoecem e não pedem aumento.' },
+                { icon: Users,     tag: 'AI Workers',   title: 'Colaboradores Digitais',    result: '→ Capacidade sem custo fixo',        desc: 'Agentes autônomos com funções, responsabilidades e reporte — equivalentes funcionais de um colaborador, disponíveis 24/7, sem vínculo CLT, sem turnover.' },
+                { icon: Brain,     tag: 'AI Agents',    title: 'Agentes Inteligentes',      result: '→ Operações que raciocinam',         desc: 'IA generativa integrada ao seu ERP, CRM e fontes de dados. Fluxos que analisam, decidem e agem — treinados com o conhecimento específico da sua operação.' },
+                { icon: Zap,       tag: 'AI Builders',  title: 'Equipe Alocada de IA',      result: '→ ROI rastreado por sprint',         desc: 'Especialistas sênior embarcados na sua empresa. Mapeamento por impacto financeiro, priorização sem achismo, implementação com entregáveis semanais.' },
+              ].map((s) => (
+                <motion.div key={s.tag} variants={staggerItem}>
+                  <GlassCard style={{ padding: 26, height: '100%', display: 'flex', flexDirection: 'column' }}>
+                    <IconBadge icon={s.icon} />
+                    <div style={{ marginTop: 18, marginBottom: 10 }}>
+                      <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9, fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase', padding: '3px 9px', borderRadius: 99, background: `${V}12`, color: V, border: `1px solid ${V}22` }}>
+                        {s.tag}
+                      </span>
+                    </div>
+                    <H3 style={{ fontSize: 15, marginBottom: 10 }}>{s.title}</H3>
+                    <Body muted style={{ fontSize: 13, flex: 1, marginBottom: 16 }}>{s.desc}</Body>
+                    <Mono color={C} size={11}>{s.result}</Mono>
+                  </GlassCard>
+                </motion.div>
+              ))}
+            </motion.div>
+
+            {/* How it works — 4 steps */}
+            <Reveal style={{ textAlign: 'center', marginBottom: 28 }}>
+              <EyebrowLabel>Do diagnóstico ao caixa</EyebrowLabel>
+              <H3 style={{ marginBottom: 6 }}>4 etapas. Sem overhead desnecessário.</H3>
+            </Reveal>
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger}
+              style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16 }}>
+              {[
+                { n: '01', t: 'Diagnóstico',   d: '1–2 semanas. Imersão operacional real. Mapeamos custos ocultos e onde a IA gera retorno mais rápido.' },
+                { n: '02', t: 'Priorização',   d: 'Selecionamos o que implementar primeiro com critério matemático: maior impacto, menor tempo.' },
+                { n: '03', t: 'Implementação', d: 'Sprints com entregáveis concretos. Você acompanha em tempo real e aprova cada etapa.' },
+                { n: '04', t: 'Escala',        d: 'Com resultados validados, expandimos para outras áreas sem aumentar o risco da operação.' },
+              ].map((s) => (
+                <motion.div key={s.n} variants={staggerItem}>
+                  <GlassCard style={{ padding: '20px 18px' }} hover={false}>
+                    <Mono color={V} size={11}>{s.n}</Mono>
+                    <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, fontSize: 14, color: '#fff', margin: '8px 0' }}>{s.t}</div>
+                    <Body muted style={{ fontSize: 12 }}>{s.d}</Body>
+                  </GlassCard>
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ── Parallax quote ────────────────────────────────────── */}
+        <ParallaxStrip img="/images/brazil_network.jpg" height={340} overlay="linear-gradient(to right, rgba(108,99,255,0.28) 0%, rgba(0,212,255,0.1) 100%)">
+          <motion.div initial={{ opacity: 0, y: 22 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} style={{ maxWidth: 680 }}>
+            <Mono color={V} size={10}>Decisão</Mono>
+            <H2 style={{ marginTop: 14, lineHeight: 1.18 }}>
+              O Brasil de 2030 está sendo construído agora.<br />
+              <span className="gradient-text">Por quem decidiu em 2026.</span>
+            </H2>
+          </motion.div>
+        </ParallaxStrip>
+
+        {/* ══════════════════════════════════════════════════════
+            05 · A PARETO — PROVA, NÃO PROMESSA
+        ══════════════════════════════════════════════════════ */}
+        <SectionDivider />
+        <section id="pareto" style={{ padding: '96px 24px', position: 'relative', background: `${S1}60` }}>
+          <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+            <Reveal style={{ textAlign: 'center', marginBottom: 64 }}>
+              <EyebrowLabel>Quem implementa</EyebrowLabel>
+              <H2 style={{ marginBottom: 14 }}>13 anos construindo IA<br /><span style={{ color: V }}>para quem lidera o mercado brasileiro.</span></H2>
+              <Body style={{ maxWidth: 580, margin: '0 auto' }}>
+                Não somos uma startup de IA que surgiu após o ChatGPT. Desenvolvemos os primeiros algoritmos de marketing com aprendizado de máquina no Brasil em 2013. Criamos a plataforma que virou a 6ª melhor IA do mundo. E acumulamos 13 anos de inteligência do mercado brasileiro — algo que não se replica com prompt engineering.
+              </Body>
+            </Reveal>
+
+            {/* Numbers */}
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-8%' }} variants={stagger}
+              style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 16, marginBottom: 56 }} className="sm:grid-cols-4">
               {KEY_STATS.map((s) => (
-                <motion.div key={s.label} variants={staggerItem} className="p-6 rounded-2xl text-center transition-all duration-300"
-                  style={{ background: 'rgba(26,26,26,0.9)', border: '1px solid rgba(136,0,255,0.1)' }}
-                  onMouseEnter={(e) => { (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(136,0,255,0.4)'; }}
-                  onMouseLeave={(e) => { (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(136,0,255,0.1)'; }}>
-                  <div className="text-2xl md:text-3xl font-black mb-2"
-                    style={{ background: 'linear-gradient(90deg,#8800FF,#CDFF00)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
-                    <AnimatedNumber value={s.value} prefix={s.prefix} suffix={s.suffix} />
-                  </div>
-                  <div className="text-xs leading-tight" style={{ fontWeight: 300, color: 'rgba(255,255,255,0.42)' }}>{s.label}</div>
+                <motion.div key={s.label} variants={staggerItem}>
+                  <GlassCard style={{ padding: '24px 20px', textAlign: 'center' }}>
+                    <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 600, letterSpacing: '-0.02em', marginBottom: 6 }}
+                      className="gradient-text">
+                      <AnimatedNumber value={s.value} prefix={s.prefix} suffix={s.suffix} />
+                    </div>
+                    <Body muted style={{ fontSize: 11, lineHeight: 1.45 }}>{s.label}</Body>
+                  </GlassCard>
                 </motion.div>
               ))}
             </motion.div>
 
             {/* Awards */}
-            <RevealSection className="mb-20">
-              <h3 className="text-sm font-bold tracking-widest uppercase text-center mb-8" style={{ color: 'rgba(255,255,255,0.3)' }}>
-                Reconhecimento global que valida cada conversa
-              </h3>
-              <div className="flex flex-wrap gap-3 justify-center">
+            <Reveal style={{ marginBottom: 64 }}>
+              <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 10, fontWeight: 600, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'rgba(136,146,164,0.4)', textAlign: 'center', marginBottom: 20 }}>
+                Reconhecimento que valida cada conversa
+              </div>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, justifyContent: 'center' }}>
                 {AWARDS.filter((a) => a.highlight).map((a) => (
-                  <div key={a.title} className="flex items-center gap-2 px-4 py-2 rounded-full"
-                    style={{ background: 'rgba(136,0,255,0.08)', border: '1px solid rgba(136,0,255,0.25)' }}>
-                    <Award className="w-3.5 h-3.5 flex-shrink-0" style={{ color: '#CDFF00' }} />
-                    <span className="text-xs font-semibold" style={{ color: 'rgba(255,255,255,0.65)' }}>{a.title}</span>
-                    <span className="text-xs font-bold" style={{ color: '#8800FF' }}>— {a.org} {a.year}</span>
+                  <div key={a.title} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '7px 14px', borderRadius: 99, background: 'rgba(108,99,255,0.07)', border: '1px solid rgba(108,99,255,0.2)' }}>
+                    <Award size={13} style={{ color: C, flexShrink: 0 }} />
+                    <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 12, color: 'rgba(255,255,255,0.65)' }}>{a.title}</span>
+                    <Mono color={V} size={11}>— {a.org} {a.year}</Mono>
                   </div>
                 ))}
               </div>
-            </RevealSection>
+            </Reveal>
 
-            {/* Tess AI — imagem B&W com toque violeta */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            {/* Tess AI */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 64, alignItems: 'center' }} className="grid-cols-1 lg:grid-cols-2">
               <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={scaleIn}>
-                <div style={{ position: 'relative', borderRadius: 20, overflow: 'hidden', border: '1px solid rgba(136,0,255,0.25)' }}>
-                  <img src="/images/tess_ai_illustration.png" alt="Tess AI" className="w-full block"
-                    style={{ filter: 'grayscale(0.6) contrast(1.08)' }} loading="lazy" />
-                  {/* Pareto violet tint overlay */}
-                  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(136,0,255,0.25) 0%, rgba(205,255,0,0.06) 100%)', pointerEvents: 'none' }} />
-                  <div style={{ position: 'absolute', inset: 0, boxShadow: 'inset 0 0 60px rgba(136,0,255,0.28)', pointerEvents: 'none' }} />
+                <div style={{ position: 'relative', borderRadius: 16, overflow: 'hidden', border: '1px solid rgba(108,99,255,0.2)' }}>
+                  <img src="/images/tess_ai_illustration.png" alt="Tess AI" style={{ width: '100%', display: 'block', filter: 'grayscale(0.55) contrast(1.08)' }} loading="lazy" />
+                  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(108,99,255,0.22) 0%, rgba(0,212,255,0.08) 100%)', pointerEvents: 'none' }} />
+                  <div style={{ position: 'absolute', inset: 0, boxShadow: 'inset 0 0 50px rgba(108,99,255,0.22)', pointerEvents: 'none' }} />
                 </div>
               </motion.div>
-              <RevealSection>
-                <SectionLabel>Nossa Plataforma Proprietária</SectionLabel>
-                <h3 className="text-lg md:text-xl font-black text-white mb-6" style={{ lineHeight: 1.3 }}>
-                  Tess AI: a plataforma que<br />
-                  <span style={{ color: '#8800FF' }}>supera o ChatGPT no ranking.</span>
-                </h3>
-                <p className="text-white/58 leading-relaxed mb-6">
-                  Quando a Pareto implementa IA na sua empresa, não usa ferramentas de terceiros. Usa sua plataforma proprietária — a Tess AI, eleita em 2024 como o 6º melhor produto de IA do mundo pela G2. O ChatGPT ficou em 10º. O Google Gemini em 22º.
-                </p>
-                <p className="text-white/58 leading-relaxed mb-8">
-                  Isso significa que você tem acesso a +200 modelos de IA líderes globais — GPT-4o, Claude 3.5, Gemini, Midjourney, Runway e outros — em uma única plataforma com segurança enterprise, Brand Voice treinada para a sua empresa e automação de workflows personalizada.
-                </p>
-                <div className="grid grid-cols-3 gap-3 mb-8">
-                  {[['#6', 'Global G2 2024'], ['+200', 'Modelos IA'], ['+2M', 'Usuários']].map(([v, l]) => (
-                    <div key={l} className="p-4 rounded-xl text-center"
-                      style={{ background: 'rgba(136,0,255,0.08)', border: '1px solid rgba(136,0,255,0.18)' }}>
-                      <div className="text-2xl font-black text-white">{v}</div>
-                      <div className="text-xs mt-1" style={{ color: 'rgba(255,255,255,0.42)' }}>{l}</div>
-                    </div>
+              <Reveal>
+                <EyebrowLabel>Plataforma Proprietária</EyebrowLabel>
+                <H2 style={{ marginBottom: 18 }}>Tess AI: acima do ChatGPT<br /><span style={{ color: V }}>no ranking global.</span></H2>
+                <Body style={{ marginBottom: 14 }}>
+                  A Pareto não usa ferramentas de terceiros como core. A Tess AI, nossa plataforma proprietária, foi eleita pelo G2 Awards 2024 como o <span style={{ color: '#fff' }}>6º melhor produto de IA do mundo</span> — à frente do ChatGPT (10º), Google Gemini (22º) e IBM Watson (28º).
+                </Body>
+                <Body style={{ marginBottom: 28 }}>
+                  Isso significa acesso unificado a +200 modelos líderes — GPT-4o, Claude 3.5, Gemini, Midjourney, Runway — com segurança enterprise, Brand Voice exclusiva e automação de workflows personalizada para o seu negócio.
+                </Body>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
+                  {[['#6', 'Global G2 2024'], ['+200', 'Modelos de IA'], ['+2M', 'Usuários Ativos']].map(([v, l]) => (
+                    <GlassCard key={l} style={{ padding: '16px 12px', textAlign: 'center' }}>
+                      <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '1.4rem', fontWeight: 600, color: C, marginBottom: 4 }}>{v}</div>
+                      <Body muted style={{ fontSize: 11 }}>{l}</Body>
+                    </GlassCard>
                   ))}
                 </div>
-              </RevealSection>
+              </Reveal>
             </div>
           </div>
         </section>
 
-        {/* ─── Client Marquee ──────────────────────────────────── */}
-        <section className="py-16" style={{ background: 'rgba(17,17,17,0.98)' }}>
-          <RevealSection className="max-w-3xl mx-auto px-6 text-center mb-10">
-            <p className="text-xs font-bold tracking-widest uppercase mb-3" style={{ color: 'rgba(136,0,255,0.6)' }}>Portfólio de Clientes</p>
-            <p className="text-sm" style={{ color: 'rgba(255,255,255,0.3)' }}>As melhores marcas do mundo crescem com a Pareto. Sua empresa pode ser a próxima.</p>
-          </RevealSection>
-          <div className="space-y-3">
-            <Marquee items={clients.slice(0, half)} />
-            <Marquee items={clients.slice(half)} reverse />
+        {/* ─── Client Marquee ───────────────────────────────────── */}
+        <SectionDivider />
+        <section style={{ padding: '56px 0', background: `${BG}` }}>
+          <Reveal style={{ textAlign: 'center', marginBottom: 32, padding: '0 24px' }}>
+            <Mono color="rgba(108,99,255,0.55)" size={10}>Portfólio</Mono>
+            <Body muted style={{ marginTop: 6 }}>As marcas mais exigentes do mundo escolheram a Pareto.</Body>
+          </Reveal>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            <MarqueeRow items={clients.slice(0, half)} />
+            <MarqueeRow items={clients.slice(half)} reverse />
           </div>
         </section>
 
-        {/* ═══════════════════════════════════════════════════
+        {/* ══════════════════════════════════════════════════════
             06 · RESULTADOS REAIS
-        ═══════════════════════════════════════════════════ */}
-        <section id="resultados" className="py-28 relative overflow-hidden">
-          <div className="absolute inset-0 pointer-events-none"
-            style={{ background: 'radial-gradient(ellipse 80% 50% at 50% 50%, rgba(205,255,0,0.04) 0%, transparent 70%)' }} />
-          <div className="max-w-7xl mx-auto px-6 lg:px-8">
-            <RevealSection className="text-center mb-6">
-              <SectionLabel>Casos Reais</SectionLabel>
-              <h2 className="text-xl md:text-2xl font-black text-white mb-4">
-                Não são promessas.<br />
-                <span style={{ color: '#CDFF00' }}>São contratos encerrados com prova.</span>
-              </h2>
-            </RevealSection>
-            <RevealSection className="text-center mb-16">
-              <p className="text-sm max-w-xl mx-auto leading-relaxed" style={{ fontWeight: 300, color: 'rgba(255,255,255,0.45)' }}>
-                Esses resultados não vieram de ferramentas genéricas. Vieram de IA construída especificamente para cada negócio, em cada setor, com os dados reais de cada cliente.
-              </p>
-            </RevealSection>
+        ══════════════════════════════════════════════════════ */}
+        <SectionDivider />
+        <section id="resultados" style={{ padding: '96px 24px', position: 'relative', overflow: 'hidden' }}>
+          <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(ellipse 80% 50% at 50% 50%, rgba(0,212,255,0.04) 0%, transparent 70%)`, pointerEvents: 'none' }} />
+          <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+            <Reveal style={{ textAlign: 'center', marginBottom: 14 }}>
+              <EyebrowLabel>Casos Reais</EyebrowLabel>
+              <H2 style={{ marginBottom: 14 }}>Não são apresentações.<br /><span style={{ color: C }}>São contratos encerrados com prova.</span></H2>
+            </Reveal>
+            <Reveal style={{ textAlign: 'center', marginBottom: 56 }}>
+              <Body style={{ maxWidth: 520, margin: '0 auto' }}>
+                Cada número abaixo veio de IA construída para aquele negócio específico, naquele setor, com aqueles dados. Não existem atalhos genéricos que repliquem isso.
+              </Body>
+            </Reveal>
 
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-8%' }} variants={staggerContainer}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-8%' }} variants={stagger}
+              style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 20, marginBottom: 56 }}>
               {CASES.map((c) => (
-                <motion.div key={c.client} variants={staggerItem} className="rounded-2xl overflow-hidden"
-                  style={{ background: 'rgba(22,22,22,0.95)', border: '1px solid rgba(205,255,0,0.1)' }}>
-                  <div className="p-8 border-b" style={{ borderColor: 'rgba(205,255,0,0.07)' }}>
-                    <div className="text-5xl font-black mb-1" style={{ color: '#CDFF00' }}>
-                      {c.sign}<AnimatedNumber value={parseInt(c.value)} suffix={parseInt(c.value) > 9 ? '%' : ''} />
+                <motion.div key={c.client} variants={staggerItem}>
+                  <GlassCard style={{ overflow: 'hidden' }}>
+                    <div style={{ padding: '28px 28px 20px', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                      <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'clamp(2.4rem, 5vw, 3.2rem)', fontWeight: 600, color: C, letterSpacing: '-0.03em', lineHeight: 1, marginBottom: 6 }}>
+                        {c.sign}<AnimatedNumber value={parseInt(c.value)} suffix={parseInt(c.value) > 9 ? '%' : ''} />
+                      </div>
+                      <Mono color="rgba(136,146,164,0.55)" size={10}>{c.sector}</Mono>
                     </div>
-                    <div className="text-xs font-bold uppercase tracking-wider" style={{ color: 'rgba(255,255,255,0.38)' }}>{c.sector}</div>
-                  </div>
-                  <div className="p-6">
-                    <p className="text-sm font-semibold text-white mb-2 leading-snug">{c.metric}</p>
-                    <p className="text-xs leading-relaxed mb-5" style={{ color: 'rgba(255,255,255,0.45)' }}>{c.description}</p>
-                    <div className="flex flex-wrap gap-1.5">
-                      {c.tags.map((t) => (
-                        <span key={t} className="px-2.5 py-1 rounded-full text-xs"
-                          style={{ background: 'rgba(136,0,255,0.1)', color: 'rgba(136,0,255,0.75)', border: '1px solid rgba(136,0,255,0.2)' }}>
-                          {t}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
-
-            <NarrativeBridge>
-              Esses números representam negócios reais que decidiram que IA customizada não era um experimento — era a próxima vantagem competitiva. A pergunta é: quando o seu setor vai ver os seus resultados?
-            </NarrativeBridge>
-          </div>
-        </section>
-
-        {/* ── Parallax: Prédio Consolação ───────────────────────── */}
-        <BuildingParallaxStrip />
-
-        {/* ═══════════════════════════════════════════════════
-            07 · O QUE É A PARCERIA
-        ═══════════════════════════════════════════════════ */}
-        <section id="parceria" className="py-28 relative" style={{ background: 'rgba(20,20,20,0.98)' }}>
-          <div className="absolute inset-0 pointer-events-none"
-            style={{ background: 'radial-gradient(ellipse 60% 50% at 20% 50%, rgba(136,0,255,0.07) 0%, transparent 70%)' }} />
-          <div className="max-w-7xl mx-auto px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-              <RevealSection>
-                <SectionLabel>O que você está contratando</SectionLabel>
-                <h2 className="text-lg md:text-xl font-black text-white mb-8" style={{ lineHeight: 1.3 }}>
-                  Não uma agência.<br />
-                  <span style={{ color: '#8800FF' }}>Um parceiro que transfere conhecimento</span>
-                  <br />e prepara você para a nova ordem.
-                </h2>
-                <p className="text-base leading-relaxed mb-8" style={{ color: 'rgba(255,255,255,0.55)' }}>
-                  A Pareto não executa e vai embora. Ela entra na operação, entende o seu negócio em profundidade, constrói sistemas de IA que aprendem com os seus dados e treina sua equipe para operar nessa nova lógica.
-                </p>
-                <div className="space-y-4 mb-10">
-                  {[
-                    { title: 'Diagnóstico real, não de prateleira', text: 'Começamos mapeando os processos que geram mais custo oculto ou mais receita não capturada no seu negócio.' },
-                    { title: 'Construção customizada, não genérica', text: 'Cada sistema de IA é construído para a sua empresa, seu setor, sua linguagem de marca e seus dados históricos.' },
-                    { title: 'Execução com accountability de resultado', text: 'Medimos impacto em receita, custo operacional e velocidade de decisão. Não em impressões ou alcance.' },
-                    { title: 'Transferência de conhecimento real', text: 'Sua equipe aprende a operar com IA. Você sai mais forte e mais independente do que entrou.' },
-                  ].map((item) => (
-                    <div key={item.title} className="flex gap-4 p-5 rounded-xl"
-                      style={{ background: 'rgba(136,0,255,0.06)', border: '1px solid rgba(136,0,255,0.15)' }}>
-                      <div className="w-2 h-2 rounded-full flex-shrink-0 mt-1.5" style={{ background: '#CDFF00' }} />
-                      <div>
-                        <div className="text-sm font-bold text-white mb-1">{item.title}</div>
-                        <div className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.5)' }}>{item.text}</div>
+                    <div style={{ padding: '20px 28px' }}>
+                      <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 500, fontSize: 14, color: '#fff', marginBottom: 8, lineHeight: 1.4 }}>{c.metric}</div>
+                      <Body muted style={{ fontSize: 12, marginBottom: 16 }}>{c.description}</Body>
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                        {c.tags.map((t) => (
+                          <span key={t} style={{ padding: '3px 10px', borderRadius: 99, fontFamily: "'Inter', sans-serif", fontSize: 11, background: `${V}10`, color: `${V}CC`, border: `1px solid ${V}20` }}>{t}</span>
+                        ))}
                       </div>
                     </div>
+                  </GlassCard>
+                </motion.div>
+              ))}
+            </motion.div>
+
+            <Reveal style={{ textAlign: 'center' }}>
+              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, color: 'rgba(136,146,164,0.55)', maxWidth: 520, margin: '0 auto 8px', lineHeight: 1.7, fontStyle: 'italic' }}>
+                "Esses resultados não são exceção. São o que acontece quando IA é implementada com metodologia correta, dados reais e equipe sênior dedicada."
+              </p>
+            </Reveal>
+          </div>
+        </section>
+
+        {/* ── Parallax: Prédio ──────────────────────────────────── */}
+        <ParallaxStrip img="/images/predio.png" height={260}>
+          <motion.div initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+            <Body style={{ fontSize: 15, color: 'rgba(255,255,255,0.65)' }}>Consolação, São Paulo · Hub de Inovação em IA</Body>
+            <Mono color={`${C}80`} size={10}>Pareto HQ · Brasil & Silicon Valley</Mono>
+          </motion.div>
+        </ParallaxStrip>
+
+        {/* ══════════════════════════════════════════════════════
+            07 · A PARCERIA
+        ══════════════════════════════════════════════════════ */}
+        <SectionDivider />
+        <section id="parceria" style={{ padding: '96px 24px', position: 'relative', background: `${S1}60` }}>
+          <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(ellipse 55% 45% at 15% 50%, rgba(108,99,255,0.07) 0%, transparent 70%)`, pointerEvents: 'none' }} />
+          <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'center' }} className="grid-cols-1 lg:grid-cols-2">
+
+              <Reveal>
+                <EyebrowLabel>O que você está contratando</EyebrowLabel>
+                <H2 style={{ marginBottom: 24 }}>
+                  Não uma agência.<br />
+                  <span style={{ color: V }}>Uma transformação operacional.</span>
+                </H2>
+                <Body style={{ marginBottom: 28 }}>
+                  A Pareto não entrega relatórios e vai embora. Entra na operação, entende o seu negócio em profundidade, constrói sistemas de IA que aprendem com os seus dados e treina sua equipe para operar nessa nova estrutura. O objetivo: você fica mais eficiente, mais independente e mais difícil de ser copiado.
+                </Body>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+                  {[
+                    { title: 'Diagnóstico real, não de prateleira', text: 'Começamos mapeando onde há maior custo oculto ou maior receita não capturada na sua operação específica.' },
+                    { title: 'Construção exclusiva, não replicável', text: 'Cada sistema é treinado com os seus dados, no seu setor, na sua linguagem de marca. Não existe template para isso.' },
+                    { title: 'Resultado em receita ou custo', text: 'Medimos impacto em R$ — não em impressões, alcance ou engajamento. KPIs que aparecem no balanço.' },
+                    { title: 'Transferência real de conhecimento', text: 'Sua equipe opera com IA ao final do projeto. Você não fica refém de um fornecedor externo.' },
+                  ].map((item) => (
+                    <GlassCard key={item.title} style={{ padding: '16px 20px', display: 'flex', gap: 14 }} hover={false}>
+                      <div style={{ width: 6, height: 6, borderRadius: '50%', background: C, flexShrink: 0, marginTop: 6 }} />
+                      <div>
+                        <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, fontSize: 13, color: '#fff', marginBottom: 4 }}>{item.title}</div>
+                        <Body muted style={{ fontSize: 12 }}>{item.text}</Body>
+                      </div>
+                    </GlassCard>
                   ))}
                 </div>
-              </RevealSection>
+              </Reveal>
 
-              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={scaleIn} className="space-y-5">
-                {/* Quote card */}
-                <div className="p-8 rounded-2xl"
-                  style={{ background: 'rgba(136,0,255,0.07)', border: '1px solid rgba(136,0,255,0.25)', boxShadow: '0 0 60px rgba(136,0,255,0.1)' }}>
-                  <Quote className="w-8 h-8 mb-4" style={{ color: 'rgba(136,0,255,0.5)' }} />
-                  <p className="text-lg font-bold text-white leading-relaxed mb-5 italic">
-                    "Contratar a Pareto em 2026 não é uma decisão de marketing. É um investimento estratégico na posição competitiva que sua empresa vai ocupar em 2028."
+              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={scaleIn} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+                <GlassCard style={{ padding: 32 }}>
+                  <Quote size={28} style={{ color: `${V}60`, marginBottom: 18 }} />
+                  <p style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 500, fontSize: 16, color: '#fff', lineHeight: 1.65, marginBottom: 20, fontStyle: 'italic' }}>
+                    "Contratar a Pareto em 2026 não é uma decisão de marketing. É um investimento estratégico na posição que sua empresa vai ocupar no mercado em 2029."
                   </p>
-                  <div className="flex items-center gap-3" style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '16px' }}>
-                    <div className="w-8 h-8 rounded-full flex items-center justify-center font-black text-xs"
-                      style={{ background: 'linear-gradient(135deg,#8800FF,#CDFF00)', color: '#000' }}>P</div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12, paddingTop: 16, borderTop: '1px solid rgba(255,255,255,0.07)' }}>
+                    <div style={{ width: 36, height: 36, borderRadius: '50%', background: `linear-gradient(135deg, ${V}, ${C})`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: 13, color: '#000' }}>P</div>
                     <div>
-                      <div className="text-sm font-bold text-white">Pareto Plus</div>
-                      <div className="text-xs" style={{ color: 'rgba(255,255,255,0.38)' }}>Estratégia de Parceria</div>
+                      <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, fontSize: 13, color: '#fff' }}>Pareto Plus</div>
+                      <Body muted style={{ fontSize: 11 }}>Estratégia de Parceria</Body>
                     </div>
                   </div>
-                </div>
+                </GlassCard>
 
-                {/* AI agents image — B&W + verde Pareto touch */}
-                <div style={{ position: 'relative', borderRadius: 20, overflow: 'hidden', border: '1px solid rgba(205,255,0,0.18)' }}>
-                  <img src="/images/ai_agents_illustration.png" alt="AI Agents" className="w-full block"
-                    style={{ filter: 'grayscale(0.55) contrast(1.06)' }} loading="lazy" />
-                  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(136,0,255,0.18) 0%, rgba(205,255,0,0.15) 100%)', mixBlendMode: 'color', pointerEvents: 'none' }} />
-                  <div style={{ position: 'absolute', inset: 0, boxShadow: 'inset 0 0 50px rgba(205,255,0,0.12)', pointerEvents: 'none' }} />
+                {/* AI agents image */}
+                <div style={{ position: 'relative', borderRadius: 16, overflow: 'hidden', border: '1px solid rgba(0,212,255,0.18)' }}>
+                  <img src="/images/ai_agents_illustration.png" alt="AI Agents" style={{ width: '100%', display: 'block', filter: 'grayscale(0.55) contrast(1.06)' }} loading="lazy" />
+                  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(108,99,255,0.2) 0%, rgba(0,212,255,0.14) 100%)', mixBlendMode: 'color', pointerEvents: 'none' }} />
+                  <div style={{ position: 'absolute', inset: 0, boxShadow: 'inset 0 0 40px rgba(0,212,255,0.12)', pointerEvents: 'none' }} />
                 </div>
               </motion.div>
             </div>
           </div>
         </section>
 
-        {/* ═══════════════════════════════════════════════════
-            08 · QUALIFICAÇÃO — NÃO É PARA TODOS
-        ═══════════════════════════════════════════════════ */}
-        <section className="py-28 relative overflow-hidden">
-          <div className="absolute inset-0 pointer-events-none"
-            style={{ background: 'linear-gradient(135deg, rgba(136,0,255,0.08) 0%, transparent 50%, rgba(205,255,0,0.04) 100%)' }} />
-          <div className="max-w-4xl mx-auto px-6 text-center">
-            <RevealSection>
-              <SectionLabel>Quem é esta parceria</SectionLabel>
-              <h2 className="text-xl md:text-2xl font-black text-white mb-6" style={{ lineHeight: 1.2 }}>
-                Esta não é uma oferta para quem ainda está<br />
-                <span style={{ color: '#CDFF00' }}>em dúvida.</span>
-              </h2>
-              <p className="text-sm max-w-2xl mx-auto leading-relaxed mb-14" style={{ fontWeight: 300, color: 'rgba(255,255,255,0.52)' }}>
-                A Pareto Plus existe para empresas cujos líderes já entenderam que o período 2026–2030 é o mais crítico para o seu setor em décadas — e que precisam de um parceiro que já fez isso antes, que tem a tecnologia proprietária para isso e que vai colocar equipe sênior no seu negócio para garantir a entrega.
-              </p>
-            </RevealSection>
+        {/* ══════════════════════════════════════════════════════
+            08 · QUALIFICAÇÃO
+        ══════════════════════════════════════════════════════ */}
+        <SectionDivider />
+        <section style={{ padding: '96px 24px', position: 'relative', overflow: 'hidden' }}>
+          <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(135deg, rgba(108,99,255,0.07) 0%, transparent 50%, rgba(255,107,53,0.04) 100%)`, pointerEvents: 'none' }} />
+          <div style={{ maxWidth: 880, margin: '0 auto', textAlign: 'center' }}>
+            <Reveal>
+              <EyebrowLabel>Quem é esta parceria</EyebrowLabel>
+              <H2 style={{ marginBottom: 20 }}>
+                Esta não é uma oferta para qualquer empresa.<br />
+                <span style={{ color: A }}>E isso não é modéstia — é precisão.</span>
+              </H2>
+              <Body style={{ maxWidth: 600, margin: '0 auto 48px', fontSize: 16 }}>
+                A Pareto Plus existe para empresas cujos líderes já entenderam que o período 2026–2030 é decisivo para o seu setor — e que precisam de um parceiro com histórico real, tecnologia proprietária e equipe sênior para garantir a entrega.
+              </Body>
+            </Reveal>
 
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer}
-              className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-14 text-left">
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger}
+              style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 14, marginBottom: 48, textAlign: 'left' }}>
               {[
-                { check: true,  text: 'Faturamento acima de R$1M/ano' },
-                { check: true,  text: 'Decisão de crescimento no radar para os próximos 12 meses' },
-                { check: true,  text: 'Time gerencial que entende que IA não é experimento — é infraestrutura' },
-                { check: true,  text: 'Disposição para construir, não apenas comprar' },
-                { check: false, text: 'Se você ainda está pesquisando se IA funciona' },
-                { check: false, text: 'Se você quer resultados sem processo, sem mudança, sem compromisso' },
+                { ok: true,  text: 'Faturamento relevante com múltiplos processos operacionais' },
+                { ok: true,  text: 'Decisão de eficiência ou crescimento no horizonte de 12 meses' },
+                { ok: true,  text: 'Liderança que entende que IA é infraestrutura, não experimento' },
+                { ok: true,  text: 'Disposição para construir inteligência proprietária, não comprar templates' },
+                { ok: false, text: 'Se você ainda está avaliando se IA "realmente funciona"' },
+                { ok: false, text: 'Se você busca resultados sem processo, sem dados e sem comprometimento' },
               ].map((item) => (
-                <motion.div key={item.text} variants={staggerItem}
-                  className="flex gap-3 p-4 rounded-xl"
-                  style={{ background: item.check ? 'rgba(205,255,0,0.04)' : 'rgba(255,100,100,0.04)', border: `1px solid ${item.check ? 'rgba(205,255,0,0.15)' : 'rgba(255,100,100,0.15)'}` }}>
-                  <span className="text-base flex-shrink-0 mt-0.5">{item.check ? '✓' : '✕'}</span>
-                  <p className="text-sm leading-relaxed" style={{ color: item.check ? 'rgba(255,255,255,0.72)' : 'rgba(255,100,100,0.65)' }}>
-                    {item.text}
-                  </p>
+                <motion.div key={item.text} variants={staggerItem}>
+                  <GlassCard style={{ display: 'flex', gap: 14, padding: '14px 18px', background: item.ok ? 'rgba(0,212,255,0.04)' : 'rgba(255,100,100,0.04)', borderColor: item.ok ? 'rgba(0,212,255,0.15)' : 'rgba(255,100,100,0.15)' }} hover={false}>
+                    <span style={{ fontSize: 15, flexShrink: 0 }}>{item.ok ? '✓' : '✕'}</span>
+                    <Body style={{ fontSize: 13, color: item.ok ? 'rgba(255,255,255,0.72)' : 'rgba(255,100,100,0.62)' }}>{item.text}</Body>
+                  </GlassCard>
                 </motion.div>
               ))}
             </motion.div>
 
-            <RevealSection>
-              <PrimaryButton href={CALENDLY_URL}>
-                <Calendar className="w-5 h-5" /> Quero Meu Diagnóstico Gratuito
-              </PrimaryButton>
-              <p className="mt-4 text-xs" style={{ color: 'rgba(255,255,255,0.28)' }}>
-                30 minutos · Sem compromisso · Apenas para empresas R$1M+
-              </p>
-            </RevealSection>
+            <Reveal>
+              <PrimaryBtn href={CALENDLY_URL}><Calendar size={15} /> Quero Meu Diagnóstico Gratuito</PrimaryBtn>
+              <Body muted style={{ marginTop: 14, fontSize: 12 }}>30 minutos · Sem compromisso · LGPD Compliant</Body>
+            </Reveal>
           </div>
         </section>
 
-        {/* ── Parallax imagem tech ─────────────────────────── */}
-        <QuoteParallaxBreak
-          img="/images/ai_business1.jpg"
-          quote={<>Cada processo manual na sua empresa é<br /><span style={{ color: '#CDFF00' }}>dinheiro que você está desperdiçando.</span></>}
-          subline="Diagnóstico gratuito em 30 minutos. Sem apresentação de prateleira."
-        />
+        {/* ── Parallax: AI Business ─────────────────────────────── */}
+        <ParallaxStrip img="/images/ai_business1.jpg" height={300} overlay="linear-gradient(to right, rgba(255,107,53,0.2) 0%, rgba(108,99,255,0.15) 100%)">
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} style={{ maxWidth: 600 }}>
+            <H2 style={{ marginBottom: 12 }}>
+              Cada processo manual na sua operação<br />
+              <span style={{ color: A }}>é custo que você escolhe manter.</span>
+            </H2>
+            <Body muted>Diagnóstico gratuito em 30 minutos. Mapa de impacto real — sem pitch genérico.</Body>
+          </motion.div>
+        </ParallaxStrip>
 
-        {/* ═══════════════════════════════════════════════════
+        {/* ══════════════════════════════════════════════════════
             09 · MODELOS DE PARCERIA
-        ═══════════════════════════════════════════════════ */}
-        <section id="modelos" className="py-28 relative" style={{ background: 'rgba(18,18,18,0.98)' }}>
-          <div className="absolute inset-0 pointer-events-none"
-            style={{ background: 'radial-gradient(ellipse 70% 50% at 50% 0%, rgba(136,0,255,0.08) 0%, transparent 65%)' }} />
-          <div className="max-w-7xl mx-auto px-6 lg:px-8">
-            <RevealSection className="text-center mb-16">
-              <SectionLabel>Modelos de Parceria</SectionLabel>
-              <h2 className="text-xl md:text-2xl font-black text-white mb-6">
-                Três portas de entrada.<br />
-                <span style={{ color: '#8800FF' }}>Uma transformação.</span>
-              </h2>
-            </RevealSection>
+        ══════════════════════════════════════════════════════ */}
+        <SectionDivider />
+        <section id="modelos" style={{ padding: '96px 24px', position: 'relative', background: `${S1}50` }}>
+          <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(ellipse 65% 50% at 50% 0%, rgba(108,99,255,0.08) 0%, transparent 65%)`, pointerEvents: 'none' }} />
+          <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+            <Reveal style={{ textAlign: 'center', marginBottom: 56 }}>
+              <EyebrowLabel>Modelos de Parceria</EyebrowLabel>
+              <H2 style={{ marginBottom: 14 }}>Três portas de entrada.<br /><span className="gradient-text">Uma transformação.</span></H2>
+              <Body style={{ maxWidth: 480, margin: '0 auto' }}>
+                Cada modelo foi desenhado para um estágio diferente de maturidade em IA — do primeiro diagnóstico à parceria estratégica de longo prazo.
+              </Body>
+            </Reveal>
 
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-8%' }} variants={staggerContainer}
-              className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-8%' }} variants={stagger}
+              style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 20 }}>
               {[
                 {
                   badge: 'PORTA DE ENTRADA',
                   name: 'Sprint de Aceleração IA',
                   price: 'R$ 4.500', period: 'pagamento único',
-                  desc: 'Em 21 dias, identificamos onde você está perdendo receita e implementamos as 3 primeiras vitórias de IA.',
-                  features: ['Diagnóstico de Vazamento', 'Auditoria completa de IA', '3 quick wins implementados', 'Roadmap completo', '55%+ converte para parceria em 30 dias'],
+                  desc: 'Em 21 dias, mapeamos onde há vazamento de receita e implementamos as 3 primeiras vitórias de IA no seu negócio.',
+                  features: ['Diagnóstico de Vazamento de Receita', 'Auditoria completa da operação', '3 quick wins implementados', 'Roadmap priorizado por ROI', '55%+ dos clientes avança para parceria'],
                   highlight: false, cta: 'Começar o Sprint',
                 },
                 {
                   badge: 'MAIS ESCOLHIDO',
                   name: 'Parceria Estratégica de Marketing IA',
                   price: 'R$ 3.900 – R$ 6.500', period: '/mês · mínimo 6 meses',
-                  desc: 'Stack completo de marketing com IA — customizado, em constante aprendizado, focado em receita.',
-                  features: ['Stack completo customizado', 'Tess AI incluída (+200 modelos)', 'Motor de conteúdo 10× volume', 'Qualificação de leads 2 min', 'Gestão Meta + Google + TikTok', 'Review estratégica mensal'],
+                  desc: 'Stack completo de marketing com IA — construído nos seus dados, em constante aprendizado, com foco em receita mensurável.',
+                  features: ['Stack de marketing IA customizado', 'Tess AI incluída (+200 modelos)', 'Motor de conteúdo 10× volume', 'Qualificação de leads em 2 minutos', 'Gestão Meta + Google + TikTok', 'Review estratégica mensal'],
                   highlight: true, cta: 'Quero essa Parceria',
                 },
                 {
                   badge: 'PREMIUM',
                   name: 'Transformação IA + Consultoria',
                   price: 'R$ 8.500 – R$ 18.000', period: '/mês · 12 meses',
-                  desc: 'Para líderes que constroem a vantagem de 2028 agora. Tudo do anterior + consultoria C-suite e BI próprio.',
-                  features: ['Tudo do modelo anterior', 'Consultoria C-suite', 'BI customizado', 'Monitoramento de concorrentes', 'Briefing Trimestral Nova Era', 'Acesso direto ao time sênior'],
+                  desc: 'Para líderes que estão construindo vantagem competitiva estrutural. Operacional + estratégico + inteligência de mercado.',
+                  features: ['Tudo do modelo anterior', 'Consultoria estratégica C-suite', 'BI customizado ao vivo', 'Monitoramento de concorrentes por IA', 'Briefing Trimestral Nova Era', 'Acesso direto ao time sênior Pareto'],
                   highlight: false, cta: 'Falar com Especialista',
                 },
               ].map((m) => (
-                <motion.div key={m.name} variants={staggerItem}
-                  className="rounded-2xl overflow-hidden flex flex-col"
-                  style={{ background: m.highlight ? 'rgba(136,0,255,0.08)' : 'rgba(22,22,22,0.95)', border: m.highlight ? '1px solid rgba(136,0,255,0.45)' : '1px solid rgba(255,255,255,0.08)', boxShadow: m.highlight ? '0 0 60px rgba(136,0,255,0.15)' : 'none' }}>
-                  <div className="p-8 flex-1">
-                    <div className="text-xs font-black tracking-widest uppercase mb-4"
-                      style={{ color: m.highlight ? '#CDFF00' : 'rgba(255,255,255,0.35)' }}>
-                      {m.badge}
+                <motion.div key={m.name} variants={staggerItem}>
+                  <GlassCard style={{ display: 'flex', flexDirection: 'column', height: '100%', background: m.highlight ? 'rgba(108,99,255,0.08)' : 'rgba(18,21,31,0.8)', borderColor: m.highlight ? 'rgba(108,99,255,0.45)' : 'rgba(255,255,255,0.07)', boxShadow: m.highlight ? `0 0 60px rgba(108,99,255,0.14), 0 8px 32px rgba(0,0,0,0.30)` : '0 8px 32px rgba(0,0,0,0.30)' }} hover={false}>
+                    <div style={{ padding: '28px 28px 0', flex: 1 }}>
+                      <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9, fontWeight: 600, letterSpacing: '0.2em', color: m.highlight ? C : 'rgba(136,146,164,0.45)', marginBottom: 16 }}>
+                        {m.badge}
+                      </div>
+                      <H3 style={{ fontSize: 16, marginBottom: 10 }}>{m.name}</H3>
+                      <div style={{ marginBottom: 16 }}>
+                        <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '1.3rem', fontWeight: 600, color: '#fff' }}>{m.price}</span>
+                        <Body muted style={{ fontSize: 11, display: 'inline', marginLeft: 8 }}>{m.period}</Body>
+                      </div>
+                      <Body muted style={{ fontSize: 13, marginBottom: 20 }}>{m.desc}</Body>
+                      <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 24px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+                        {m.features.map((f) => (
+                          <li key={f} style={{ display: 'flex', gap: 8, fontFamily: "'Inter', sans-serif", fontSize: 13, color: '#8892A4' }}>
+                            <span style={{ color: C, flexShrink: 0 }}>✓</span>{f}
+                          </li>
+                        ))}
+                      </ul>
                     </div>
-                    <h3 className="text-base font-black text-white mb-2">{m.name}</h3>
-                    <div className="mb-6">
-                      <span className="text-2xl font-black text-white">{m.price}</span>
-                      <span className="text-xs ml-2" style={{ color: 'rgba(255,255,255,0.4)' }}>{m.period}</span>
+                    <div style={{ padding: '0 28px 28px' }}>
+                      <PrimaryBtn href={CALENDLY_URL}>{m.cta} <ArrowRight size={14} /></PrimaryBtn>
                     </div>
-                    <p className="text-sm leading-relaxed mb-6" style={{ color: 'rgba(255,255,255,0.55)' }}>{m.desc}</p>
-                    <ul className="space-y-2.5">
-                      {m.features.map((f) => (
-                        <li key={f} className="flex gap-2.5 text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>
-                          <span className="flex-shrink-0 mt-0.5" style={{ color: '#CDFF00' }}>✓</span>
-                          {f}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div className="p-6 pt-0">
-                    <PrimaryButton href={CALENDLY_URL}>{m.cta}</PrimaryButton>
-                  </div>
+                  </GlassCard>
                 </motion.div>
               ))}
             </motion.div>
           </div>
         </section>
 
-        {/* ═══════════════════════════════════════════════════
+        {/* ══════════════════════════════════════════════════════
             10 · CTA FINAL
-        ═══════════════════════════════════════════════════ */}
-        <section className="py-32 relative overflow-hidden" style={{ background: 'rgba(15,15,15,0.99)' }}>
-          <div className="absolute inset-0 pointer-events-none"
-            style={{ background: 'radial-gradient(ellipse 70% 60% at 50% 50%, rgba(136,0,255,0.12) 0%, transparent 70%)' }} />
-          <div className="relative max-w-3xl mx-auto px-6 text-center">
-            <RevealSection>
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-8"
-                style={{ background: 'rgba(205,255,0,0.08)', border: '1px solid rgba(205,255,0,0.22)' }}>
-                <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: '#CDFF00' }} />
-                <span className="text-xs font-bold tracking-widest uppercase" style={{ color: '#CDFF00' }}>#timeback</span>
+        ══════════════════════════════════════════════════════ */}
+        <SectionDivider />
+        <section style={{ padding: '120px 24px', position: 'relative', overflow: 'hidden', background: `${BG}` }}>
+          <div className="starfield" />
+          <div className="data-grid" />
+          <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 70% 60% at 50% 50%, rgba(108,99,255,0.12) 0%, transparent 70%)', pointerEvents: 'none' }} />
+          <div style={{ position: 'relative', zIndex: 2, maxWidth: 760, margin: '0 auto', textAlign: 'center' }}>
+            <Reveal>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '6px 16px', borderRadius: 99, background: 'rgba(0,212,255,0.08)', border: '1px solid rgba(0,212,255,0.2)', marginBottom: 28 }}>
+                <span style={{ width: 6, height: 6, borderRadius: '50%', background: C, display: 'inline-block' }} className="pulse-glow" />
+                <Mono color={C} size={10}>#timeback</Mono>
               </div>
-              <h2 className="font-black text-white mb-6"
-                style={{ fontSize: 'clamp(1.6rem, 4vw, 2.8rem)', lineHeight: 1.12, letterSpacing: '-0.03em' }}>
-                Quanto custa, por mês,<br />não ter IA na sua operação?
-              </h2>
-              <p className="text-sm max-w-xl mx-auto leading-relaxed mb-10" style={{ color: 'rgba(255,255,255,0.5)', fontWeight: 300 }}>
-                Em 30 minutos de diagnóstico gratuito, nossos especialistas mapeiam onde a IA gera retorno imediato no seu negócio. Sem compromisso. Sem apresentação genérica. Com clareza real.
-              </p>
-              <div className="flex flex-wrap gap-4 justify-center">
-                <PrimaryButton href={CALENDLY_URL}>
-                  <Calendar className="w-5 h-5" /> Quero meu diagnóstico gratuito
-                </PrimaryButton>
-                <SecondaryButton href={WHATSAPP_URL}>
-                  <MessageCircle className="w-4 h-4" /> Falar pelo WhatsApp
-                </SecondaryButton>
+              <H1 style={{ fontSize: 'clamp(1.8rem, 4vw, 3rem)', marginBottom: 20, lineHeight: 1.12 }}>
+                Quanto custa, por mês,<br />
+                <span className="shimmer-text">não ter IA na sua operação?</span>
+              </H1>
+              <Body style={{ fontSize: 16, maxWidth: 520, margin: '0 auto 40px', color: '#8892A4' }}>
+                Em 30 minutos de diagnóstico, nossos especialistas identificam onde a IA gera retorno imediato no seu negócio. Sem pitch genérico. Sem compromisso. Com clareza real sobre o seu cenário específico.
+              </Body>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, justifyContent: 'center' }}>
+                <PrimaryBtn href={CALENDLY_URL}><Calendar size={16} /> Quero meu diagnóstico gratuito</PrimaryBtn>
+                <GhostBtn href={WHATSAPP_URL}>WhatsApp <ArrowRight size={14} /></GhostBtn>
               </div>
-              <p className="mt-6 text-xs" style={{ color: 'rgba(255,255,255,0.22)' }}>
-                Apenas para empresas com faturamento R$1M+/ano · LGPD Compliant
-              </p>
-            </RevealSection>
+              <Body muted style={{ marginTop: 20, fontSize: 12 }}>LGPD Compliant · Privacidade garantida</Body>
+            </Reveal>
           </div>
         </section>
 
         {/* ─── Footer badge strip ──────────────────────────────── */}
-        <PartnerBadgesBar />
+        <BadgesBar />
 
       </main>
     </>
