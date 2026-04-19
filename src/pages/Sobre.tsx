@@ -53,7 +53,7 @@ export default function Sobre() {
             <motion.div variants={staggerItem}>
               <SectionLabel>Perfil Institucional 2026</SectionLabel>
             </motion.div>
-            <motion.h1 variants={staggerItem} className="font-black text-white mb-6" style={{ fontSize: 'clamp(2.7rem,5.25vw,4.5rem)', letterSpacing: '-0.035em', lineHeight: 1.1 }}>
+            <motion.h1 variants={staggerItem} className="font-black text-white mb-6" style={{ fontSize: 'clamp(1.8rem,3.5vw,3rem)', letterSpacing: '-0.035em', lineHeight: 1.1 }}>
               13 Anos Construindo<br />
               <span style={{ background: 'linear-gradient(90deg, #8800FF, #CDFF00)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
                 o Futuro do Brasil.
@@ -82,7 +82,7 @@ export default function Sobre() {
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <RevealSection className="text-center mb-12">
             <SectionLabel>Reconhecimento Global</SectionLabel>
-            <h2 className="text-5xl md:text-6xl font-black text-white mb-4">
+            <h2 className="text-xl md:text-2xl font-black text-white mb-4">
               Prêmios que Falam por Si.
             </h2>
           </RevealSection>
@@ -125,7 +125,7 @@ export default function Sobre() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-20">
             <RevealSection>
               <SectionLabel>Tess AI — Nossa Plataforma</SectionLabel>
-              <h2 className="text-5xl md:text-6xl font-black text-white mb-6">
+              <h2 className="text-xl md:text-2xl font-black text-white mb-6">
                 A Maior Rede de IA<br />
                 <span style={{ color: '#8800FF' }}>do Mundo.</span><br />
                 Num Único Lugar.
@@ -244,7 +244,7 @@ export default function Sobre() {
         <div className="max-w-4xl mx-auto px-6 lg:px-8">
           <RevealSection className="text-center mb-16">
             <SectionLabel>Nossa História</SectionLabel>
-            <h2 className="text-5xl md:text-6xl font-black text-white mb-4">
+            <h2 className="text-xl md:text-2xl font-black text-white mb-4">
               De 2011 a Hoje:<br />
               <span style={{ color: '#8800FF' }}>13 Anos de Liderança.</span>
             </h2>
@@ -285,7 +285,7 @@ export default function Sobre() {
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <RevealSection className="text-center mb-12">
             <SectionLabel>Clientes</SectionLabel>
-            <h2 className="text-3xl md:text-5xl font-black text-white mb-4">
+            <h2 className="text-lg md:text-xl font-black text-white mb-4">
               As Melhores Marcas do Mundo<br />
               <span style={{ color: '#CDFF00' }}>Crescem com a Pareto.</span>
             </h2>
@@ -314,7 +314,7 @@ export default function Sobre() {
       <section className="py-24 text-center" style={{ background: 'rgba(13,13,13,1)' }}>
         <div className="max-w-3xl mx-auto px-6">
           <RevealSection>
-            <h2 className="text-5xl md:text-6xl font-black text-white mb-6">
+            <h2 className="text-xl md:text-2xl font-black text-white mb-6">
               Pronto para ser o próximo<br />
               <span style={{ color: '#CDFF00' }}>caso de sucesso?</span>
             </h2>

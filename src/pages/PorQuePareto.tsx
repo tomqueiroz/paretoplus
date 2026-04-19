@@ -1,7 +1,16 @@
 import { useRef } from 'react';
 import { motion, useInView, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight, Calendar, Shield, Zap, Globe, Lock, TrendingUp, Users, Award, Star, CheckCircle, Clock } from 'lucide-react';
-import { CALENDLY_URL, WHATSAPP_URL, TIMELINE, AWARDS, COMPETITORS, PILLARS, scrollToSection } from '@/lib/index';
+import { CALENDLY_URL, WHATSAPP_URL, TIMELINE, AWARDS, COMPETITORS, scrollToSection } from '@/lib/index';
+
+const PILLARS = [
+  { icon: '🎯', title: 'Estratégia Baseada em Dados', body: 'Cada decisão é validada com inteligência real do seu mercado — não por feeling ou benchmark genérico.' },
+  { icon: '🤖', title: 'IA Proprietária (Tess AI)', body: '#6 melhor produto de IA do mundo. +200 modelos integrados. Segurança enterprise. Brand Voice exclusiva.' },
+  { icon: '⚙️', title: 'Execução em Sprints', body: 'Entregamos resultados em ciclos curtos com accountability real — você vê impacto antes de cada aprovação.' },
+  { icon: '📊', title: 'ROI Mensurável', body: 'Medimos impacto em receita, custo operacional e velocidade de decisão. Nunca em métricas de vaidade.' },
+  { icon: '🧠', title: 'Inteligência que Aprende', body: 'Nossos sistemas ficam mais inteligentes mês a mês com os seus dados. O valor compõe — e não pode ser copiado.' },
+  { icon: '🤝', title: 'Transferência de Conhecimento', body: 'Sua equipe sai mais forte. Treinamos, documentamos e preparamos você para operar com independência.' },
+];
 import { staggerContainer, staggerItem, scaleIn, fadeInUp } from '@/lib/motion';
 
 // ─── Primitives ──────────────────────────────────────────────────────────────
@@ -263,7 +272,7 @@ export default function PorQuePareto() {
           </Reveal>
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-8%' }} variants={staggerContainer}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {PILLARS.map(p => (
+            {PILLARS.map((p: { icon: string; title: string; body: string }) => (
               <motion.div key={p.title} variants={staggerItem} className="p-7 rounded-2xl"
                 style={{ background: 'rgba(14,14,14,0.98)', border: '1px solid rgba(136,0,255,0.1)' }}>
                 <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl mb-5"
