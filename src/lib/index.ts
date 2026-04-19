@@ -1,25 +1,11 @@
-// ─── Route Paths ────────────────────────────────────────────────────────────
+// ─── Route Paths ─────────────────────────────────────────────────────────────
 export const ROUTE_PATHS = {
   HOME: '/',
   SOBRE: '/sobre',
   PRIVACIDADE: '/privacidade',
 } as const;
 
-// ─── Types ───────────────────────────────────────────────────────────────────
-export interface ServiceModel {
-  id: string;
-  name: string;
-  badge: string;
-  price: string;
-  period: string;
-  target: string;
-  commitment: string;
-  description: string;
-  features: string[];
-  cta: string;
-  highlight: boolean;
-}
-
+// ─── Types ────────────────────────────────────────────────────────────────────
 export interface CaseResult {
   sector: string;
   client: string;
@@ -29,253 +15,216 @@ export interface CaseResult {
   sign: '+' | '-';
   tags: string[];
 }
-
 export interface Award {
   title: string;
   org: string;
   year: string;
   highlight?: boolean;
 }
-
 export interface TimelineItem {
   year: string;
   title: string;
   description: string;
 }
-
 export interface PartnerBadge {
   name: string;
   icon: string;
   color: string;
+  img?: string;
 }
-
 export interface ClientLogo {
   name: string;
   type: 'text' | 'image';
+  src?: string;
+}
+export interface AIModel {
+  name: string;
+  category: string;
+}
+export interface Pillar {
+  icon: string;
+  title: string;
+  body: string;
+}
+export interface VerticalCard {
+  id: string;
+  label: string;
+  name: string;
+  tagline: string;
+  description: string;
+  url: string;
+  color: string;
+  stats: { value: string; label: string }[];
 }
 
-// ─── Contact ─────────────────────────────────────────────────────────────────
-export const WHATSAPP_NUMBER = '5521998514094';
-export const WHATSAPP_MESSAGE = encodeURIComponent('Olá! Vi o site da Pareto Plus e quero falar com um especialista sobre implementação de IA na minha empresa. Faturamento acima de R$1M/ano.');
-export const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MESSAGE}`;
-export const CALENDLY_URL = 'https://calendly.com/pareto-ai/diagnostico-30min';
+// ─── Contact ──────────────────────────────────────────────────────────────────
+export const WHATSAPP_NUMBER  = '5511915513210';
+export const WHATSAPP_MESSAGE = encodeURIComponent('Olá! Vi o site pareto.business e quero falar com um especialista sobre implementação de IA na minha empresa. Faturamento acima de R$1M/ano.');
+export const WHATSAPP_URL     = `https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MESSAGE}`;
+export const CALENDLY_URL     = 'https://calendly.com/pareto-ai/diagnostico-30min';
+export const CONTACT_EMAIL    = 'tom.queiroz@pareto.plus';
+export const CONTACT_PHONE    = '+55 (11) 91551-3210';
+export const CONTACT_ADDRESS  = 'Av. Paulista, 2202 — Consolação, São Paulo / SP';
+export const SITE_DOMAIN      = 'pareto.business';
 
-// ─── Key Stats (verified from pitch decks) ───────────────────────────────────
+// ─── Key Stats ────────────────────────────────────────────────────────────────
 export const KEY_STATS = [
-  { value: 13, suffix: '+', label: 'Anos no mercado brasileiro', prefix: '' },
-  { value: 16, suffix: '', label: 'Prêmios globais Google Awards NY', prefix: '' },
-  { value: 300, suffix: '+', label: 'Empresas atendidas', prefix: '' },
-  { value: 500, suffix: '+', label: 'Projetos de IA entregues', prefix: '' },
-  { value: 3, suffix: 'B+', label: 'Em mídia paga gerenciada', prefix: 'R$' },
-  { value: 2, suffix: 'M+', label: 'Usuários Tess AI', prefix: '' },
-  { value: 160, suffix: '+', label: 'Especialistas em IA', prefix: '' },
-  { value: 6, suffix: 'º', label: 'Melhor IA do mundo G2 2024', prefix: '#' },
+  { value: 13,  suffix: '+', prefix: '',   label: 'Anos com IA & ML aplicados a negócios' },
+  { value: 16,  suffix: '',  prefix: '',   label: 'Prêmios globais Google Awards NY' },
+  { value: 300, suffix: '+', prefix: '',   label: 'Empresas transformadas no Brasil' },
+  { value: 250, suffix: '+', prefix: '',   label: 'Modelos de IA na plataforma Tess AI' },
+  { value: 5,   suffix: '',  prefix: 'US$', label: 'Milhões captados — rodada seed 2026' },
+  { value: 2,   suffix: 'M+',prefix: '',   label: 'Usuários Tess AI globalmente' },
+  { value: 160, suffix: '+', prefix: '',   label: 'Especialistas de IA no time' },
+  { value: 6,   suffix: 'º', prefix: '#',  label: 'Melhor produto de IA do mundo — G2 2024' },
 ];
 
-// ─── Partner Badges ──────────────────────────────────────────────────────────
+// ─── Two Verticals (Holding) ──────────────────────────────────────────────────
+export const VERTICALS: VerticalCard[] = [
+  {
+    id: 'pareto-plus',
+    label: 'Consultoria & Implementação',
+    name: 'Pareto Plus',
+    tagline: 'AI First para o seu negócio.',
+    description: 'A vertical de consultoria estratégica da holding. Customizamos, implementamos e transferimos inteligência artificial para cada processo do seu negócio — com accountabiliy de resultado e transferência real de conhecimento.',
+    url: 'https://pareto.business',
+    color: '#8800FF',
+    stats: [
+      { value: '13+', label: 'Anos ativos' },
+      { value: '300+', label: 'Empresas' },
+      { value: 'SP · Palo Alto', label: 'Escritórios' },
+    ],
+  },
+  {
+    id: 'tess-ai',
+    label: 'Plataforma Proprietária de IA',
+    name: 'Tess AI',
+    tagline: '#6 Melhor IA do mundo. Feita no Brasil.',
+    description: 'Nossa plataforma proprietária com +250 modelos de IA em um único ambiente enterprise. Agentic orchestration, Brand Voice, Model Council e execução autônoma. Captou US$5M com Hi Ventures & DYDX Capital.',
+    url: 'https://tess.im',
+    color: '#CDFF00',
+    stats: [
+      { value: '#6', label: 'G2 Global 2024' },
+      { value: '250+', label: 'Modelos de IA' },
+      { value: 'US$5M', label: 'Seed round' },
+    ],
+  },
+];
+
+// ─── Partner Badges ───────────────────────────────────────────────────────────
 export const PARTNER_BADGES: PartnerBadge[] = [
-  { name: 'Google Premier Partner 2025', icon: 'G', color: '#4285F4' },
-  { name: 'Meta Business Partner', icon: 'M', color: '#0866FF' },
-  { name: 'TikTok Ads Business Partner', icon: 'T', color: '#ff0050' },
-  { name: 'LinkedIn Marketing Partner', icon: 'in', color: '#0A66C2' },
-  { name: 'Google AI for Startups', icon: 'G✦', color: '#34A853' },
+  { name: 'Google Premier Partner 2026', icon: 'G',  color: '#4285F4', img: '/images/badge_google.png' },
+  { name: 'Meta Business Partner',        icon: 'M',  color: '#0866FF', img: '/images/badge_meta.png' },
+  { name: 'TikTok Marketing Partner',     icon: 'T',  color: '#ff0050', img: '/images/badge_tiktok.png' },
+  { name: 'LinkedIn Marketing Partner',   icon: 'in', color: '#0A66C2', img: '/images/badge_linkedin.png' },
+  { name: 'Kwai Business Partner',        icon: 'K',  color: '#FF7B00', img: '/images/badge_kwai.png' },
+  { name: 'Pinterest Marketing Partners', icon: 'P',  color: '#E60023', img: '/images/badge_pinterest.png' },
 ];
 
-// ─── Awards ──────────────────────────────────────────────────────────────────
+// ─── Awards ───────────────────────────────────────────────────────────────────
 export const AWARDS: Award[] = [
-  { title: 'International Growth Award', org: 'Google Awards NY', year: '2022', highlight: true },
-  { title: 'App Growth Award', org: 'Google Awards NY', year: '2022', highlight: true },
-  { title: 'Empresa Mais Premiada do Mundo', org: 'Google Awards 2022', year: '2022', highlight: true },
-  { title: '#6 Melhor Produto de IA Global', org: 'G2 Best Software Awards', year: '2024', highlight: true },
-  { title: '#1 Global AI Image Product', org: 'G2 Rankings', year: '2024' },
-  { title: 'Global AI Product Leader', org: 'G2', year: '2024' },
-  { title: 'High Performer — Winter 2024', org: 'G2', year: '2024' },
-  { title: 'Leader — Winter 2024', org: 'G2', year: '2024' },
-  { title: 'Leader Small Business — Winter 2024', org: 'G2', year: '2024' },
-  { title: 'Top 50 Best Software Awards', org: 'G2', year: '2024' },
-  { title: 'Invested by Google AI for Startups', org: 'Google', year: '2024' },
+  { title: 'International Growth Award',     org: 'Google Awards NY',        year: '2022', highlight: true },
+  { title: 'App Growth Award',               org: 'Google Awards NY',        year: '2022', highlight: true },
+  { title: 'Empresa Mais Premiada do Mundo', org: 'Google Awards',           year: '2022', highlight: true },
+  { title: '#6 Melhor IA Global',            org: 'G2 Best Software Awards', year: '2024', highlight: true },
+  { title: '#1 AI Image Product Global',     org: 'G2',                      year: '2024', highlight: true },
+  { title: 'G2 Leader — Winter',             org: 'G2',                      year: '2024', highlight: true },
+  { title: 'Invested by Google AI for Startups', org: 'Google',             year: '2024', highlight: true },
+  { title: 'US$5M Seed Round',               org: 'Hi Ventures · DYDX',     year: '2026', highlight: true },
+  { title: 'Gartner 4.7/5',                 org: 'Gartner',                 year: '2024' },
+  { title: 'G2 4.8/5',                      org: 'G2',                      year: '2024' },
 ];
 
-// ─── Client Logos ────────────────────────────────────────────────────────────
+// ─── Client Logos ─────────────────────────────────────────────────────────────
 export const CLIENT_LOGOS: ClientLogo[] = [
-  { name: 'Netflix', type: 'text' },
-  { name: 'PepsiCo', type: 'text' },
-  { name: 'Samsung', type: 'text' },
-  { name: 'Shopify', type: 'text' },
-  { name: 'Nvidia', type: 'text' },
-  { name: 'Amazon', type: 'text' },
-  { name: 'Puma', type: 'text' },
-  { name: 'Spotify', type: 'text' },
-  { name: 'Coinbase', type: 'text' },
-  { name: 'Stone', type: 'text' },
-  { name: 'Porto Seguro', type: 'text' },
-  { name: 'Multiplan', type: 'text' },
-  { name: 'RE/MAX', type: 'text' },
-  { name: 'Hering', type: 'text' },
-  { name: 'Universal Music', type: 'text' },
-  { name: 'Greenpeace', type: 'text' },
-  { name: 'WMcCann', type: 'text' },
-  { name: 'Grupo Salta', type: 'text' },
+  { name: 'Netflix',         type: 'image', src: '/images/logos/logo_netflix.svg' },
+  { name: 'PepsiCo',         type: 'image', src: '/images/logos/logo_pepsico.png' },
+  { name: 'Samsung',         type: 'image', src: '/images/logos/logo_samsung.svg' },
+  { name: 'Shopify',         type: 'image', src: '/images/logos/logo_shopify.svg' },
+  { name: 'Nvidia',          type: 'image', src: '/images/logos/logo_nvidia.svg' },
+  { name: 'Amazon',          type: 'image', src: '/images/logos/logo_amazon.png' },
+  { name: 'Puma',            type: 'image', src: '/images/logos/logo_puma.svg' },
+  { name: 'Spotify',         type: 'image', src: '/images/logos/logo_spotify.svg' },
+  { name: 'Coinbase',        type: 'image', src: '/images/logos/logo_coinbase.svg' },
+  { name: 'Stone',           type: 'image', src: '/images/logos/logo_stone.png' },
+  { name: 'Porto Seguro',    type: 'image', src: '/images/logos/logo_portoseguro.png' },
+  { name: 'RE/MAX',          type: 'image', src: '/images/logos/logo_remax.png' },
+  { name: 'Hering',          type: 'image', src: '/images/logos/logo_hering.png' },
+  { name: 'Universal Music', type: 'image', src: '/images/logos/logo_universalmusic.png' },
+  { name: 'Greenpeace',      type: 'image', src: '/images/logos/logo_greenpeace.png' },
+  { name: 'WMcCann',         type: 'text' },
+  { name: 'Multiplan',       type: 'text' },
+  { name: 'Grupo Salta',     type: 'text' },
 ];
 
-// ─── Real Cases ──────────────────────────────────────────────────────────────
+// ─── Real Cases ───────────────────────────────────────────────────────────────
 export const CASES: CaseResult[] = [
-  {
-    sector: 'Moda & Fashion',
-    client: 'Cliente Fashion',
-    metric: 'redução nos custos de fotografia por coleção',
-    value: '49',
-    sign: '-',
-    description: 'IA generativa substituiu sessões de estúdio com imagens de alta qualidade geradas em minutos.',
-    tags: ['AI Design', 'Geração de Imagem'],
-  },
-  {
-    sector: 'E-commerce',
-    client: 'Plataforma E-com',
-    metric: 'aumento no ticket médio',
-    value: '70',
-    sign: '+',
-    description: 'Agentes de IA personalizam jornada do cliente e reduzem abandono de carrinho em -30%.',
-    tags: ['AI Workers', 'Personalização'],
-  },
-  {
-    sector: 'Varejo',
-    client: 'Rede Varejo',
-    metric: 'redução nos custos de catálogo digital',
-    value: '90',
-    sign: '-',
-    description: 'Automação completa da produção de catálogo com IA generativa — de semanas para horas.',
-    tags: ['Automação', 'AI Ads'],
-  },
-  {
-    sector: 'Imobiliário',
-    client: 'RE/MAX',
-    metric: 'aumento no uso do app',
-    value: '31',
-    sign: '+',
-    description: 'Redução de 10% no custo por install com IA preditiva em campanhas de performance.',
-    tags: ['AI Ads', 'Performance'],
-  },
-  {
-    sector: 'Farmacêutico',
-    client: 'Grupo Prafarma',
-    metric: 'especialistas Pareto alocados otimizando custos',
-    value: '5',
-    sign: '+',
-    description: 'Agentes de IA, automações e RPAs que reduziram custo operacional em larga escala.',
-    tags: ['AI Workers', 'RPA', 'Alocação'],
-  },
-  {
-    sector: 'Entretenimento',
-    client: 'Universal Music',
-    metric: 'processos internos automatizados',
-    value: '100',
-    sign: '+',
-    description: 'Agentes inteligentes integrados para automatizar fluxos operacionais e reduzir trabalho manual.',
-    tags: ['Agentes de IA', 'Automação'],
-  },
+  { sector: 'Moda & Fashion',    client: 'Cliente Fashion',    metric: 'Redução nos custos de fotografia por coleção',   value: '49', sign: '-', description: 'IA generativa substituiu sessões de estúdio — imagens de alta qualidade geradas em minutos, no padrão de cada coleção.', tags: ['AI Generativa', 'Produção Visual'] },
+  { sector: 'E-commerce',        client: 'Plataforma E-com',   metric: 'Aumento no ticket médio',                       value: '70', sign: '+', description: 'Agentes de IA personalizam a jornada do cliente em tempo real, reduzindo abandono de carrinho em 30%.', tags: ['Agentes AI', 'Personalização'] },
+  { sector: 'Varejo',            client: 'Rede de Varejo',     metric: 'Redução nos custos de catálogo digital',        value: '90', sign: '-', description: 'Automação completa da produção de catálogo: de semanas para horas. Zero intervenção manual nos SKUs recorrentes.', tags: ['Automação', 'AI Ads'] },
+  { sector: 'Imobiliário',       client: 'RE/MAX Brasil',      metric: 'Aumento no uso do app',                         value: '31', sign: '+', description: 'IA preditiva em campanhas de performance reduziu custo por install em 10% e aumentou engajamento qualificado.', tags: ['AI Ads', 'Performance'] },
+  { sector: 'Farmacêutico',      client: 'Grupo Prafarma',     metric: 'Especialistas Pareto alocados',                 value: '5',  sign: '+', description: 'Time dedicado de IA, RPAs e agentes autônomos reduziram custo operacional em escala — sem demissões.', tags: ['AI Workers', 'RPA'] },
+  { sector: 'Entretenimento',    client: 'Universal Music',    metric: 'Processos internos automatizados',              value: '100',sign: '+', description: 'Agentes inteligentes integrados para automatizar fluxos operacionais — de aprovação de contratos a relatórios.', tags: ['Agentes IA', 'Automação'] },
 ];
 
-// ─── Tess AI Models ──────────────────────────────────────────────────────────
+// ─── AI Models in Tess ────────────────────────────────────────────────────────
 export const TESS_MODELS = [
-  'GPT-4o', 'Claude 3.5 Sonnet', 'Gemini 1.5 Pro', 'Gemini 1.5 Flash',
-  'Claude 3 Opus', 'Llama 3', 'Midjourney', 'DALL-E 3', 'Runway',
-  'ElevenLabs', 'Deepgram', 'Stability AI', 'Cohere', 'Ideogram',
+  'GPT-4o', 'GPT-5', 'Claude 4 Sonnet', 'Claude 3.5 Opus', 'Gemini 2.5 Pro',
+  'Gemini 1.5 Flash', 'Llama 4', 'Mistral Large', 'Midjourney', 'DALL-E 3',
+  'Runway Gen-3', 'ElevenLabs', 'Kling AI', 'Luma Labs', 'Leonardo AI',
+  'HeyGen', 'Ideogram', 'Stability AI', 'Deepgram', 'Cohere',
 ];
 
-// ─── Timeline ────────────────────────────────────────────────────────────────
+// ─── Integration Platforms ────────────────────────────────────────────────────
+export const INTEGRATIONS = [
+  { name: 'OpenAI',     src: '/images/logos/badge_openai.svg' },
+  { name: 'Anthropic',  src: '/images/logos/badge_anthropic.svg' },
+  { name: 'Google',     src: '/images/logos/social_google.svg' },
+  { name: 'Zapier',     src: '/images/logos/badge_zapier.svg' },
+  { name: 'n8n',        src: '/images/logos/badge_n8n.svg' },
+  { name: 'Make',       src: '/images/logos/badge_make.svg' },
+  { name: 'Salesforce', src: '/images/logos/badge_salesforce.svg' },
+  { name: 'LinkedIn',   src: '/images/logos/social_linkedin.svg' },
+  { name: 'Meta',       src: '/images/logos/social_facebook.svg' },
+  { name: 'TikTok',     src: '/images/logos/social_tiktok.svg' },
+];
+
+// ─── Pillars of the Partnership ───────────────────────────────────────────────
+export const PILLARS: Pillar[] = [
+  { icon: '🧬', title: 'IA Customizada por Processo', body: 'Nenhum template genérico. Cada agente, automação e modelo é construído sobre os dados e a lógica real do seu negócio.' },
+  { icon: '🔐', title: 'Segurança & Governança Enterprise', body: 'Arquitetura de dados com isolamento por cliente, SSO, audit trail, LGPD/GDPR — IA segura não é opcional, é fundamento.' },
+  { icon: '🔗', title: 'Integração Total na sua Stack', body: 'Conectamos com seu ERP, CRM, dados proprietários e qualquer API. Zero fricção operacional — sem trocar o que já funciona.' },
+  { icon: '🧠', title: 'Transferência de Know-how Real', body: 'Até 2028 seu time opera, orquestra e coordena agentes de IA. Não criamos dependência — criamos independência.' },
+  { icon: '🇧🇷', title: 'Expertise no Ambiente Brasileiro', body: 'Soluções padronizadas para economias estáveis não funcionam aqui. Temos 13 anos de inteligência do mercado brasileiro — fiscal, regulatório, cultural.' },
+  { icon: '📊', title: 'Accountability de Resultado', body: 'Medimos impacto em receita, custo operacional e velocidade de decisão. Nunca em métricas de vaidade.' },
+];
+
+// ─── Timeline ─────────────────────────────────────────────────────────────────
 export const TIMELINE: TimelineItem[] = [
-  { year: '2011', title: 'Fundação da Pareto', description: 'Nascemos em São Paulo com foco em performance marketing inteligente.' },
-  { year: '2013', title: 'Expansão Nacional', description: 'Primeiras parcerias com grandes marcas brasileiras. Metodologia proprietária de marketing.' },
-  { year: '2018', title: 'Google Premier Partner', description: 'Reconhecimento como parceiro de primeira linha do Google no Brasil.' },
-  { year: '2020', title: 'Lançamento Tess AI v1', description: 'Criação da primeira versão da plataforma de IA proprietária da Pareto.' },
-  { year: '2022', title: '16 Prêmios Google Awards NY', description: 'Empresa Mais Premiada do Mundo no Google Awards. International Growth + App Growth Awards.' },
-  { year: '2023', title: 'Tess AI atinge 1M usuários', description: '+200 modelos de IA, AI Steps, Brand Voice e AI Studio lançados.' },
-  { year: '2024', title: '#6 Melhor IA do Mundo — G2', description: 'G2 Best Software Awards: Tess AI supera ChatGPT (#10), Google Gemini (#22), IBM Watson (#28).' },
-  { year: '2025', title: '$5M Seed Round · Google AI for Startups', description: 'Hi Ventures lidera rodada. Investimento do Google AI for Startups. Pareto Plus lançado para PMEs R$1M+.' },
-  { year: '2026', title: '300+ empresas · 160+ especialistas', description: 'Expansão para PMEs com faturamento R$1M+. Parceria estratégica de IA para o mercado brasileiro.' },
+  { year: '2013', title: 'Fundação — AI-first desde o início', description: 'Nascemos com machine learning e IA aplicados a marketing e negócios. Quando o mercado ainda debatia "big data".' },
+  { year: '2018', title: 'Google Premier Partner', description: 'Reconhecimento como top partner no Brasil. Metodologia proprietária de performance com IA.' },
+  { year: '2020', title: 'Lançamento da Tess AI v1', description: 'Nossa plataforma proprietária de IA começa a tomar forma — o início da segunda vertical da holding.' },
+  { year: '2022', title: '16 Prêmios em Nova York', description: 'Empresa Mais Premiada do Mundo no Google Awards NY. International Growth + App Growth Awards.' },
+  { year: '2023', title: 'Tess AI atinge 1M de usuários', description: '+200 modelos, AI Steps, Brand Voice e AI Studio lançados. Crescimento orgânico global.' },
+  { year: '2024', title: '#6 Melhor IA do Mundo — G2', description: 'G2 Best Software Awards: Tess AI supera ChatGPT (#10), Google Gemini (#22), IBM Watson (#28). Invested by Google AI for Startups.' },
+  { year: '2025', title: 'US$5M Seed · Hi Ventures · DYDX Capital', description: 'Rodada liderada por Hi Ventures e DYDX Capital, com participação de Honeystone Ventures. Expansão global acelerada.' },
+  { year: '2026', title: 'Holding: Pareto Plus + Tess AI · Nova sede Palo Alto', description: 'A holding estrutura duas verticais. Tess AI funda entidade em Palo Alto para concentrar expansão enterprise global. Pareto Plus foca transformação AI First no Brasil.' },
 ];
 
-// ─── Service Models ──────────────────────────────────────────────────────────
-export const SERVICE_MODELS: ServiceModel[] = [
-  {
-    id: 'model-c',
-    name: 'Sprint de Aceleração IA',
-    badge: 'PORTA DE ENTRADA',
-    price: 'R$ 4.500',
-    period: 'pagamento único',
-    target: 'Empresas R$1M–R$20M',
-    commitment: 'Entrega em 21 dias',
-    description: 'Em 21 dias, identificamos onde você está perdendo receita e implementamos as 3 primeiras vitórias de IA. Clareza total, sem enrolação.',
-    features: [
-      'Diagnóstico de Vazamento de Receita',
-      'Auditoria completa de IA',
-      '3 quick wins implementados',
-      'Roadmap completo para o Modelo A',
-      '55%+ converte para parceria em 30 dias',
-    ],
-    cta: 'Começar o Sprint',
-    highlight: false,
-  },
-  {
-    id: 'model-a',
-    name: 'Parceria Estratégica de Marketing IA',
-    badge: 'MAIS ESCOLHIDO',
-    price: 'R$ 3.900 – R$ 6.500',
-    period: '/mês · mínimo 6 meses',
-    target: 'Empresas R$1M–R$10M',
-    commitment: 'Stack completo customizado',
-    description: 'A milky cow. Construímos e gerenciamos seu stack completo de marketing com IA — customizado, em constante aprendizado, focado em receita.',
-    features: [
-      'Stack completo de marketing IA customizado',
-      'Licença Tess AI incluída (+200 modelos)',
-      'Motor de conteúdo com IA (10× volume)',
-      'Qualificação de leads por IA (2 min response)',
-      'Gestão de performance Meta + Google + TikTok',
-      'Relatório executivo semanal',
-      'Review estratégica mensal com especialista',
-    ],
-    cta: 'Quero essa Parceria',
-    highlight: true,
-  },
-  {
-    id: 'model-b',
-    name: 'Transformação IA + Consultoria',
-    badge: 'PREMIUM',
-    price: 'R$ 8.500 – R$ 18.000',
-    period: '/mês · parceria de 12 meses',
-    target: 'Empresas R$5M–R$20M',
-    commitment: '+ R$12.000–R$35.000 setup estratégico',
-    description: 'Para líderes que constroem a vantagem de 2028 agora. Tudo do Modelo A mais consultoria C-suite e BI proprietário.',
-    features: [
-      'Tudo do Modelo A',
-      'Consultoria estratégica C-suite',
-      'Dashboard de Business Intelligence customizado',
-      'Monitoramento de concorrentes por IA',
-      'Redesign completo da arquitetura MarTech',
-      'Briefing Trimestral Nova Era (inteligência setorial)',
-      'Acesso direto ao time sênior Pareto',
-    ],
-    cta: 'Falar com Especialista',
-    highlight: false,
-  },
-];
-
-// ─── Competitors ─────────────────────────────────────────────────────────────
+// ─── Competitors ──────────────────────────────────────────────────────────────
 export const COMPETITORS = [
-  { competitor: 'Agências Digitais', offer: 'Campanhas padronizadas, execução manual', advantage: 'IA customizada, 10× mais output, inteligência que compõe mês a mês' },
-  { competitor: 'Consultorias Tradicionais', offer: 'Decks de estratégia, sem execução', advantage: 'Estratégia + construção de IA + execução contínua, tudo integrado' },
-  { competitor: 'Freelancers de IA', offer: 'Sem plataforma proprietária, sem escala', advantage: 'Tess AI (#6 global G2 2024) + entrega estruturada em sprints' },
-  { competitor: 'Ferramentas DIY (ChatGPT etc.)', offer: 'Genérico, sem integração, sem gestão', advantage: 'Configuração específica + gestão especializada + 160+ especialistas' },
-  { competitor: 'Agências Internacionais', offer: 'Sem profundidade no mercado local', advantage: '13 anos de inteligência de mercado brasileiro + 300+ empresas atendidas' },
+  { competitor: 'Agências Digitais',           offer: 'Campanhas padronizadas, sem IA real',       advantage: 'IA customizada por processo, output 10× e inteligência que compõe mês a mês' },
+  { competitor: 'Consultorias Tradicionais',   offer: 'Decks de estratégia, zero execução',         advantage: 'Estratégia + construção de IA + execução + transferência de conhecimento integrados' },
+  { competitor: 'Ferramentas DIY / ChatGPT',   offer: 'Genérico, sem customização, sem gestão',    advantage: 'Tess AI (#6 global) + agentes customizados + 160 especialistas de execução' },
+  { competitor: 'Startups de IA (pós-2022)',   offer: 'Sem histórico, sem prova, sem localização', advantage: '13 anos de track record brasileiro + $5M investidos + expertise no mercado nacional' },
+  { competitor: 'Soluções Internacionais',     offer: 'Desconhecem o ambiente de negócios BR',     advantage: '13 anos de inteligência regulatória, fiscal e cultural do mercado brasileiro' },
 ];
 
-// ─── Utils ───────────────────────────────────────────────────────────────────
+// ─── Utils ─────────────────────────────────────────────────────────────────────
 export function scrollToSection(id: string): void {
   const el = document.getElementById(id);
   if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
-
 export function cn(...classes: (string | undefined | null | false)[]): string {
   return classes.filter(Boolean).join(' ');
 }
