@@ -16,7 +16,7 @@ const staggerItem = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0
 
 const WA_LINK = 'https://api.whatsapp.com/send/?phone=5511915513210&text&type=phone_number&app_absent=0';
 // Mesma ordem da Home — premium brands first, logos circulares de plataformas ao final
-const CLIENT_LOGO_ORDER = [1,19,25,12,20,9,24,5,11,15,21,22,18,6,10,23,4,8,17,14,3,2,7,13,16];
+const CLIENT_LOGO_ORDER = [1,19,25,12,20,9,24,5,11,15,21,22,18,6,10,23,4,8,17,14,3,16];
 const CLIENT_LOGO_IMGS = CLIENT_LOGO_ORDER.map((n) => `/images/clients/logo_${n}.png`);
 
 function Reveal({ children, style = {} }: { children: React.ReactNode; style?: React.CSSProperties }) {

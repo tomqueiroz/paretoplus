@@ -180,9 +180,8 @@ function IconBadge({ icon: Icon, color = V }: { icon: React.ElementType; color?:
 }
 
 // 25 client logo paths
-// Logos ordenados por prestígio — sem logos circulares de plataformas nas primeiras posições
-// Ordem: premium brands first, tech/platform logos ao final
-const CLIENT_LOGO_ORDER = [1,19,25,12,20,9,24,5,11,15,21,22,18,6,10,23,4,8,17,14,3,2,7,13,16];
+// 22 logos de clientes reais — excluindo plataformas (Spotify=2, Shopify=7, Coinbase=13)
+const CLIENT_LOGO_ORDER = [1,19,25,12,20,9,24,5,11,15,21,22,18,6,10,23,4,8,17,14,3,16];
 const CLIENT_LOGO_IMGS = CLIENT_LOGO_ORDER.map((n) => `/images/clients/logo_${n}.png`);
 
 function LogoMarqueeRow({ logos, reverse = false, speed = 55 }: { logos: string[]; reverse?: boolean; speed?: number }) {
@@ -245,39 +244,35 @@ function ClientNamesBg() {
   );
 }
 
-// Todos os 25 logos dos clientes flutuando sobre a rede neural
-// 50px largura · opacity 0.5 · sem caixas · sem mix-blend
+// Todos os 22 logos de clientes flutuando sobre a rede neural
+// 50px largura · opacity 0.5 · fundo transparente · sem mix-blend
 function FloatingLogoBg() {
-  // 25 posições cobrindo toda a hero:
-  // - lado direito (x > 54%): qualquer y
-  // - lado esquerdo (x ≤ 54%): apenas abaixo do texto (y > 73%)
+  // 22 posições cobrindo toda a hero:
+  // lado direito (x > 54%) qualquer y · lado esquerdo só abaixo do texto (y > 73%)
   const nodes = [
     { x: '60%', y: '9%',  dur: 20, delay: 0.0, dy: 11 },
     { x: '74%', y: '6%',  dur: 23, delay: 1.3, dy: 8  },
     { x: '87%', y: '13%', dur: 18, delay: 0.6, dy: 13 },
-    { x: '95%', y: '7%',  dur: 21, delay: 2.0, dy: 9  },
+    { x: '95%', y: '8%',  dur: 21, delay: 2.0, dy: 9  },
     { x: '67%', y: '21%', dur: 17, delay: 0.4, dy: 14 },
     { x: '81%', y: '27%', dur: 25, delay: 1.8, dy: 10 },
     { x: '92%', y: '22%', dur: 19, delay: 3.1, dy: 12 },
     { x: '57%', y: '36%', dur: 22, delay: 0.9, dy: 15 },
     { x: '71%', y: '40%', dur: 20, delay: 2.5, dy: 8  },
     { x: '84%', y: '35%', dur: 24, delay: 0.2, dy: 11 },
-    { x: '96%', y: '42%', dur: 18, delay: 1.6, dy: 13 },
-    { x: '63%', y: '52%', dur: 21, delay: 3.4, dy: 9  },
-    { x: '77%', y: '57%', dur: 19, delay: 0.7, dy: 14 },
-    { x: '90%', y: '50%', dur: 26, delay: 2.2, dy: 10 },
-    { x: '56%', y: '64%', dur: 17, delay: 1.1, dy: 12 },
-    { x: '70%', y: '68%', dur: 22, delay: 0.3, dy: 8  },
-    { x: '83%', y: '63%', dur: 20, delay: 2.9, dy: 15 },
-    { x: '94%', y: '72%', dur: 23, delay: 1.5, dy: 11 },
-    { x: '65%', y: '79%', dur: 18, delay: 3.7, dy: 13 },
-    { x: '79%', y: '84%', dur: 25, delay: 0.8, dy: 9  },
+    { x: '96%', y: '44%', dur: 18, delay: 1.6, dy: 13 },
+    { x: '63%', y: '53%', dur: 21, delay: 3.4, dy: 9  },
+    { x: '77%', y: '58%', dur: 19, delay: 0.7, dy: 14 },
+    { x: '90%', y: '51%', dur: 26, delay: 2.2, dy: 10 },
+    { x: '56%', y: '65%', dur: 17, delay: 1.1, dy: 12 },
+    { x: '70%', y: '69%', dur: 22, delay: 0.3, dy: 8  },
+    { x: '83%', y: '75%', dur: 20, delay: 2.9, dy: 15 },
     // Lado esquerdo — abaixo do texto (y > 73%)
-    { x: '7%',  y: '76%', dur: 21, delay: 2.3, dy: 12 },
-    { x: '21%', y: '81%', dur: 19, delay: 1.0, dy: 10 },
-    { x: '35%', y: '86%', dur: 24, delay: 3.2, dy: 14 },
-    { x: '47%', y: '91%', dur: 20, delay: 0.5, dy: 8  },
+    { x: '8%',  y: '76%', dur: 21, delay: 2.3, dy: 12 },
+    { x: '22%', y: '81%', dur: 19, delay: 1.0, dy: 10 },
+    { x: '36%', y: '86%', dur: 24, delay: 3.2, dy: 14 },
     { x: '14%', y: '91%', dur: 22, delay: 2.7, dy: 11 },
+    { x: '48%', y: '89%', dur: 20, delay: 0.5, dy: 8  },
   ];
   return (
     <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden', zIndex: 4 }}>
@@ -291,16 +286,9 @@ function FloatingLogoBg() {
           }}
           style={{ position: 'absolute', left: n.x, top: n.y, transform: 'translate(-50%,-50%)', pointerEvents: 'none' }}>
           <img
-            src={CLIENT_LOGO_IMGS[i]}
+            src={CLIENT_LOGO_IMGS[i % CLIENT_LOGO_IMGS.length]}
             alt=""
-            style={{
-              width: 50,
-              height: 'auto',
-              maxHeight: 30,
-              objectFit: 'contain',
-              filter: 'grayscale(1) brightness(4)',
-              display: 'block',
-            }}
+            style={{ width: 50, height: 'auto', maxHeight: 30, objectFit: 'contain', filter: 'grayscale(1) brightness(4)', display: 'block' }}
           />
         </motion.div>
       ))}
