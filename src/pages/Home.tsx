@@ -208,18 +208,18 @@ function LogoMarqueeRow({ logos, reverse = false, speed = 55 }: { logos: string[
 // No boxes — logos only, grayscale, low opacity, 250% bigger than before
 function FloatingLogoBg() {
   const positions = [
-    { x: '6%',   y: '15%', w: 130, delay: 0,   dur: 18 },
-    { x: '20%',  y: '70%', w: 110, delay: 2.5, dur: 22 },
-    { x: '36%',  y: '10%', w: 120, delay: 1,   dur: 20 },
-    { x: '53%',  y: '62%', w: 100, delay: 3,   dur: 25 },
-    { x: '66%',  y: '18%', w: 140, delay: 0.8, dur: 19 },
-    { x: '78%',  y: '52%', w: 110, delay: 1.8, dur: 21 },
-    { x: '88%',  y: '28%', w: 120, delay: 4,   dur: 23 },
-    { x: '12%',  y: '43%', w: 100, delay: 2,   dur: 20 },
-    { x: '46%',  y: '78%', w: 110, delay: 3.5, dur: 24 },
-    { x: '70%',  y: '76%', w: 100, delay: 1.2, dur: 18 },
-    { x: '30%',  y: '38%', w: 90,  delay: 2.8, dur: 22 },
-    { x: '86%',  y: '8%',  w: 105, delay: 0.5, dur: 26 },
+    { x: '52%',  y: '8%',  w: 110, delay: 0,   dur: 18 },
+    { x: '68%',  y: '14%', w: 120, delay: 2.5, dur: 22 },
+    { x: '84%',  y: '10%', w: 100, delay: 1,   dur: 20 },
+    { x: '56%',  y: '38%', w: 105, delay: 3,   dur: 25 },
+    { x: '72%',  y: '32%', w: 130, delay: 0.8, dur: 19 },
+    { x: '88%',  y: '30%', w: 110, delay: 1.8, dur: 21 },
+    { x: '60%',  y: '60%', w: 115, delay: 4,   dur: 23 },
+    { x: '78%',  y: '56%', w: 100, delay: 2,   dur: 20 },
+    { x: '50%',  y: '72%', w: 120, delay: 3.5, dur: 24 },
+    { x: '82%',  y: '70%', w: 105, delay: 1.2, dur: 18 },
+    { x: '64%',  y: '80%', w: 95,  delay: 2.8, dur: 22 },
+    { x: '90%',  y: '62%', w: 110, delay: 0.5, dur: 26 },
   ];
   const picks = [0,2,5,7,9,11,14,16,18,20,22,24];
   return (
