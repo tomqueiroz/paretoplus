@@ -245,50 +245,70 @@ function ClientNamesBg() {
   );
 }
 
-// Floating logos for hero background — premium social proof texture
-// No boxes — logos only, grayscale, low opacity, 250% bigger than before
-// Floating logos woven into the neural-network lines
+// Logos flutuando sobre a rede neural — 50px largura, 50% opacidade, sem caixas
+// Distribuídos por toda a hero, não só no lado direito
 function FloatingLogoBg() {
+  // 25 logos espalhados pela hero inteira — evitando a área de texto (x < 55% para y < 70%)
   const nodes = [
-    { x: '55%', y: '15%', logoIdx: 1,  dur: 18, delay: 0   },
-    { x: '70%', y: '25%', logoIdx: 4,  dur: 22, delay: 1.5 },
-    { x: '82%', y: '12%', logoIdx: 8,  dur: 19, delay: 0.7 },
-    { x: '60%', y: '48%', logoIdx: 10, dur: 24, delay: 2.8 },
-    { x: '76%', y: '40%', logoIdx: 14, dur: 21, delay: 1.1 },
-    { x: '88%', y: '55%', logoIdx: 17, dur: 26, delay: 3.2 },
-    { x: '65%', y: '68%', logoIdx: 20, dur: 20, delay: 0.4 },
-    { x: '50%', y: '78%', logoIdx: 22, dur: 23, delay: 2.0 },
-    { x: '80%', y: '72%', logoIdx: 24, dur: 25, delay: 1.7 },
-    { x: '92%', y: '35%', logoIdx: 6,  dur: 17, delay: 3.6 },
+    // Lado direito — toda a altura
+    { x: '58%', y: '12%', i: 0,  dur: 19, delay: 0.0, dy: 12 },
+    { x: '72%', y: '8%',  i: 1,  dur: 22, delay: 1.2, dy: 8  },
+    { x: '86%', y: '15%', i: 2,  dur: 17, delay: 0.5, dy: 14 },
+    { x: '94%', y: '28%', i: 3,  dur: 24, delay: 2.1, dy: 10 },
+    { x: '63%', y: '32%', i: 4,  dur: 20, delay: 3.0, dy: 16 },
+    { x: '78%', y: '38%', i: 5,  dur: 18, delay: 0.8, dy: 11 },
+    { x: '90%', y: '44%', i: 6,  dur: 25, delay: 1.7, dy: 9  },
+    { x: '56%', y: '52%', i: 7,  dur: 21, delay: 2.6, dy: 13 },
+    { x: '70%', y: '56%', i: 8,  dur: 23, delay: 0.3, dy: 15 },
+    { x: '83%', y: '60%', i: 9,  dur: 19, delay: 1.9, dy: 10 },
+    { x: '95%', y: '68%', i: 10, dur: 22, delay: 3.4, dy: 12 },
+    { x: '61%', y: '72%', i: 11, dur: 18, delay: 0.6, dy: 8  },
+    { x: '75%', y: '78%', i: 12, dur: 26, delay: 2.3, dy: 14 },
+    { x: '89%', y: '82%', i: 13, dur: 20, delay: 1.0, dy: 11 },
+    // Lado esquerdo — apenas abaixo da área de texto (y > 68%)
+    { x: '8%',  y: '70%', i: 14, dur: 21, delay: 1.4, dy: 13 },
+    { x: '22%', y: '75%', i: 15, dur: 17, delay: 2.8, dy: 9  },
+    { x: '36%', y: '80%', i: 16, dur: 23, delay: 0.2, dy: 15 },
+    { x: '14%', y: '85%', i: 17, dur: 19, delay: 3.1, dy: 10 },
+    { x: '48%', y: '88%', i: 18, dur: 25, delay: 1.6, dy: 12 },
+    // Extrema direita / cantos
+    { x: '97%', y: '10%', i: 19, dur: 20, delay: 0.9, dy: 8  },
+    { x: '97%', y: '50%', i: 20, dur: 18, delay: 2.5, dy: 14 },
+    { x: '97%', y: '88%', i: 21, dur: 22, delay: 1.1, dy: 11 },
+    { x: '53%', y: '90%', i: 22, dur: 24, delay: 3.8, dy: 10 },
+    { x: '66%', y: '20%', i: 23, dur: 16, delay: 0.4, dy: 13 },
+    { x: '80%', y: '25%', i: 24, dur: 21, delay: 2.0, dy: 9  },
   ];
   return (
-    <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden', zIndex: 1 }}>
-      {/* Connecting lines */}
-      <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.08 }} viewBox="0 0 100 100" preserveAspectRatio="none">
-        <defs>
-          <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#6C63FF" />
-            <stop offset="100%" stopColor="#00D4FF" />
-          </linearGradient>
-        </defs>
-        <line x1="55" y1="15" x2="70" y2="25" stroke="url(#lineGrad)" strokeWidth="0.18" />
-        <line x1="70" y1="25" x2="82" y2="12" stroke="url(#lineGrad)" strokeWidth="0.18" />
-        <line x1="70" y1="25" x2="76" y2="40" stroke="url(#lineGrad)" strokeWidth="0.18" />
-        <line x1="76" y1="40" x2="88" y2="55" stroke="url(#lineGrad)" strokeWidth="0.18" />
-        <line x1="76" y1="40" x2="60" y2="48" stroke="url(#lineGrad)" strokeWidth="0.18" />
-        <line x1="88" y1="55" x2="80" y2="72" stroke="url(#lineGrad)" strokeWidth="0.18" />
-        <line x1="60" y1="48" x2="65" y2="68" stroke="url(#lineGrad)" strokeWidth="0.18" />
-        <line x1="65" y1="68" x2="50" y2="78" stroke="url(#lineGrad)" strokeWidth="0.18" />
-        <line x1="88" y1="55" x2="92" y2="35" stroke="url(#lineGrad)" strokeWidth="0.18" />
-      </svg>
-      {/* Node logos */}
-      {nodes.map((n, i) => (
-        <motion.div key={i}
-          initial={{ opacity: 0, scale: 0.7 }}
-          animate={{ opacity: 1, scale: 1, y: [0, -10, 0] }}
-          transition={{ opacity: { delay: n.delay + 1.0, duration: 0.9 }, scale: { delay: n.delay + 1.0, duration: 0.9 }, y: { duration: n.dur, repeat: Infinity, ease: 'easeInOut', delay: n.delay } }}
-          style={{ position: 'absolute', left: n.x, top: n.y, transform: 'translate(-50%, -50%)', width: 48, height: 48, borderRadius: 10, background: 'rgba(255,255,255,0.022)', border: '1px solid rgba(255,255,255,0.055)', backdropFilter: 'blur(6px)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <img src={CLIENT_LOGO_IMGS[n.logoIdx]} alt="" style={{ maxWidth: 32, maxHeight: 20, objectFit: 'contain', filter: 'grayscale(1) brightness(3)', opacity: 0.22, mixBlendMode: 'screen' }} />
+    <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden', zIndex: 4 }}>
+      {nodes.map((n) => (
+        <motion.div key={n.i}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.5, y: [0, -n.dy, 0] }}
+          transition={{
+            opacity: { delay: n.delay + 0.8, duration: 1.1 },
+            y: { duration: n.dur, repeat: Infinity, ease: 'easeInOut', delay: n.delay },
+          }}
+          style={{
+            position: 'absolute',
+            left: n.x,
+            top: n.y,
+            transform: 'translate(-50%, -50%)',
+            width: 50,
+            pointerEvents: 'none',
+          }}>
+          <img
+            src={CLIENT_LOGO_IMGS[n.i % CLIENT_LOGO_IMGS.length]}
+            alt=""
+            style={{
+              width: 50,
+              height: 'auto',
+              objectFit: 'contain',
+              filter: 'grayscale(1) brightness(4)',
+              mixBlendMode: 'screen',
+              display: 'block',
+            }}
+          />
         </motion.div>
       ))}
     </div>
@@ -575,8 +595,8 @@ export default function Home() {
           {/* Layer 0: hero gradient */}
           <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, #0B0D14 0%, #1A1040 50%, #0D1929 100%)' }} />
 
-          {/* Layer 1: floating client name tags — right side social proof texture (not rendered) */}
-          {/* <ClientNamesBg /> */}
+          {/* Layer 1: logos flutuando sobre a rede neural */}
+          <FloatingLogoBg />
 
           {/* Layer 3: neural network lines */}
           <div style={{ position: 'absolute', inset: 0 }}><ParticleCanvas /></div>
