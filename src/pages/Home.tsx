@@ -244,9 +244,10 @@ function ClientNamesBg() {
   );
 }
 
-// Exatamente os 25 arquivos enviados pelo usuário — 100px · opacity 0.5
-// Lado direito (x > 54%) qualquer y · lado esquerdo só abaixo do texto (y > 73%)
-const HERO_LOGO_SRCS = Array.from({ length: 25 }, (_, i) => `/images/hero-logos/${i + 1}.png`);
+// Arquivos enviados pelo usuário — excluindo os circulares: 6, 9, 16, 20, 24
+const HERO_LOGO_SRCS = [1,2,3,4,5,7,8,10,11,12,13,14,15,17,18,19,21,22,23,25].map(
+  (n) => `/images/hero-logos/${n}.png`
+);
 
 function FloatingLogoBg() {
   const nodes = [
@@ -267,16 +268,11 @@ function FloatingLogoBg() {
     { x: '90%', y: '50%', dur: 26, delay: 2.2, dy: 10 },
     { x: '56%', y: '64%', dur: 17, delay: 1.1, dy: 11 },
     { x: '70%', y: '68%', dur: 22, delay: 0.3, dy: 8  },
-    { x: '83%', y: '74%', dur: 20, delay: 2.9, dy: 14 },
-    { x: '94%', y: '80%', dur: 23, delay: 1.5, dy: 10 },
-    { x: '65%', y: '84%', dur: 18, delay: 3.7, dy: 12 },
-    { x: '79%', y: '88%', dur: 25, delay: 0.8, dy: 9  },
     // Lado esquerdo — apenas abaixo do texto (y > 73%)
     { x: '7%',  y: '76%', dur: 21, delay: 2.3, dy: 11 },
     { x: '21%', y: '81%', dur: 19, delay: 1.0, dy: 10 },
     { x: '35%', y: '86%', dur: 24, delay: 3.2, dy: 13 },
     { x: '13%', y: '90%', dur: 22, delay: 2.7, dy: 10 },
-    { x: '47%', y: '91%', dur: 20, delay: 0.5, dy: 8  },
   ];
   return (
     <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden', zIndex: 4 }}>
