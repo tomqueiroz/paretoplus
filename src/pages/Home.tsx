@@ -571,8 +571,7 @@ export default function Home() {
           {/* Layer 0: hero gradient */}
           <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, #0B0D14 0%, #1A1040 50%, #0D1929 100%)' }} />
 
-          {/* Layer 1: logos flutuando sobre a rede neural */}
-          <FloatingLogoBg />
+          {/* Layer 1: logos removidos */}
 
           {/* Layer 3: neural network lines */}
           <div style={{ position: 'absolute', inset: 0 }}><ParticleCanvas /></div>
