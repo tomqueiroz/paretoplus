@@ -194,9 +194,9 @@ function LogoMarqueeRow({ logos, reverse = false, speed = 55 }: { logos: string[
           <div key={i} style={{ flexShrink: 0, width: 140, height: 68, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 20px', margin: '0 4px', borderRadius: 10, background: 'rgba(18,21,31,0.55)', border: '1px solid rgba(255,255,255,0.05)', transition: 'all 0.25s ease', cursor: 'default' }}
             onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = 'rgba(108,99,255,0.08)'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(108,99,255,0.22)'; }}
             onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = 'rgba(18,21,31,0.55)'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.05)'; }}>
-            <img src={src} alt="" style={{ maxWidth: 90, maxHeight: 36, width: 'auto', height: 'auto', objectFit: 'contain', filter: 'brightness(0) invert(1)', opacity: 0.42, transition: 'opacity 0.25s ease' }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLImageElement).style.opacity = '0.85'; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLImageElement).style.opacity = '0.42'; }} />
+            <img src={src} alt="" style={{ maxWidth: 90, maxHeight: 36, width: 'auto', height: 'auto', objectFit: 'contain', filter: 'grayscale(1) brightness(1.8)', opacity: 0.5, mixBlendMode: 'screen', transition: 'opacity 0.25s ease' }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLImageElement).style.opacity = '1'; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLImageElement).style.opacity = '0.5'; }} />
           </div>
         ))}
       </motion.div>
@@ -233,7 +233,7 @@ function FloatingLogoBg() {
           <img
             src={CLIENT_LOGO_IMGS[picks[i]]}
             alt=""
-            style={{ width: p.w, height: 'auto', objectFit: 'contain', filter: 'brightness(0) invert(1) grayscale(1)', opacity: 0.14 }}
+            style={{ width: p.w, height: 'auto', objectFit: 'contain', filter: 'grayscale(1) brightness(2)', opacity: 0.12, mixBlendMode: 'screen' }}
           />
         </motion.div>
       ))}
