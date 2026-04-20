@@ -299,7 +299,7 @@ function FloatingLogoBg() {
           <img
             src={CLIENT_LOGO_IMGS[safeIdxs[n.si]]}
             alt=""
-            style={{ width: 50, height: 'auto', maxHeight: 30, objectFit: 'contain', filter: 'grayscale(1) brightness(8)', mixBlendMode: 'screen', display: 'block' }}
+            style={{ width: 50, height: 'auto', maxHeight: 30, objectFit: 'contain', filter: 'grayscale(1) brightness(15) contrast(1.2)', mixBlendMode: 'screen', display: 'block' }}
           />
         </motion.div>
       ))}
