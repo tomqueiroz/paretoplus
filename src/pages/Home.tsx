@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
+import { insertLead, insertExitLead } from '@/lib/supabase';
 import { motion, AnimatePresence, useInView, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight, Calendar, ChevronDown, X, Award, Quote, Zap, Brain, Settings, Users } from 'lucide-react';
 import { ParticleCanvas } from '@/components/ParticleCanvas';
@@ -37,7 +38,7 @@ function EyebrowLabel({ children }: { children: React.ReactNode }) {
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
       <div style={{ width: 20, height: 1, background: V, opacity: 0.7 }} />
-      <Mono color={C} size={11}>{children}</Mono>
+      <Mono color={C} size={22}>{children}</Mono>
     </div>
   );
 }
@@ -380,9 +381,10 @@ function ExitPopup({ onClose }: { onClose: () => void }) {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [done, setDone] = useState(false);
-  const submit = (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
+    await insertExitLead({ email, telefone: phone });
     setDone(true);
     setTimeout(onClose, 2800);
   };
@@ -451,23 +453,12 @@ function ContactForm() {
     e.preventDefault();
     setStatus('loading');
     try {
-      const SUPA_URL = (import.meta as any).env?.VITE_SUPABASE_URL || 'https://ggylcohswfxbwkabqnay.supabase.co';
-      const SUPA_KEY = (import.meta as any).env?.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdneWxjb2hzd2Z4YndrYWJxbmF5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDUxOTE1MzcsImV4cCI6MjA2MDc2NzUzN30.W8ZMlVHkuQ13IcMCbT3k5pjUg1g1k-IwJPbgUYi2YaU';
-      const res = await fetch(`${SUPA_URL}/rest/v1/leads`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'apikey': SUPA_KEY,
-          'Authorization': `Bearer ${SUPA_KEY}`,
-          'Prefer': 'return=minimal',
-        },
-        body: JSON.stringify({
-          nome: form.name, empresa: form.company, email: form.email,
-          telefone: form.phone, desafio: form.challenge,
-          origem: 'pareto-plus-lp', criado_em: new Date().toISOString(),
-        }),
+      const { error } = await insertLead({
+        nome: form.name, empresa: form.company, email: form.email,
+        telefone: form.phone, desafio: form.challenge,
+        origem: 'pareto-plus-contact-form',
       });
-      if (res.ok || res.status === 201) { setStatus('success'); setForm({ name: '', company: '', email: '', phone: '', challenge: '' }); }
+      if (!error) { setStatus('success'); setForm({ name: '', company: '', email: '', phone: '', challenge: '' }); }
       else { setStatus('error'); }
     } catch { setStatus('error'); }
   };

@@ -8,6 +8,7 @@ const navLinks = [
   { label: 'O Problema',  action: 'scroll', id: 'problema' },
   { label: 'Soluções',    action: 'scroll', id: 'solucoes' },
   { label: 'Resultados',  action: 'scroll', id: 'resultados' },
+  { label: 'Cases',       action: 'cases' },
   { label: 'Por que a Pareto?', action: 'link', href: ROUTE_PATHS.SOBRE },
 ];
 const WA_LINK = 'https://api.whatsapp.com/send/?phone=5511915513210&text&type=phone_number&app_absent=0';
@@ -15,6 +16,7 @@ const WA_LINK = 'https://api.whatsapp.com/send/?phone=5511915513210&text&type=ph
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [casesOpen, setCasesOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const isHome = location.pathname === '/';
@@ -29,73 +31,84 @@ export function Header() {
   useEffect(() => {
     if (isHome && location.hash) {
       const id = location.hash.replace('#', '');
-      // Give the page a tick to mount before scrolling
       setTimeout(() => scrollToSection(id), 80);
     }
   }, [isHome, location.hash]);
 
+  const handleLogoClick = () => {
+    setMenuOpen(false);
+    if (isHome) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      navigate('/');
+      setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 80);
+    }
+  };
+
   const handleNav = (link: typeof navLinks[number]) => {
     setMenuOpen(false);
-    if (link.action === 'scroll') {
+    if (link.action === 'cases') {
+      setCasesOpen(true);
+    } else if (link.action === 'scroll') {
       if (isHome) {
         scrollToSection(link.id!);
       } else {
-        // Navigate to home and let the hash effect above scroll to section
         navigate(`/#${link.id}`);
       }
     }
   };
 
+  const navLinkStyle: React.CSSProperties = {
+    fontFamily: "'Inter', sans-serif", fontWeight: 500, fontSize: 13,
+    letterSpacing: '0.08em', textTransform: 'uppercase', color: 'rgba(136,146,164,1)',
+    textDecoration: 'none', transition: 'color 0.25s ease',
+  };
+  const hoverOn = (e: React.MouseEvent) => { (e.currentTarget as HTMLElement).style.color = '#6C63FF'; };
+  const hoverOff = (e: React.MouseEvent) => { (e.currentTarget as HTMLElement).style.color = 'rgba(136,146,164,1)'; };
+
   return (
-    <header
-      className={`glass-nav ${scrolled ? 'scrolled' : ''}`}
-      style={{ display: 'flex', alignItems: 'center' }}>
-      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+    <>
+      <header
+        className={`glass-nav ${scrolled ? 'scrolled' : ''}`}
+        style={{ display: 'flex', alignItems: 'center' }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
 
-        {/* Logo */}
-        <Link to={ROUTE_PATHS.HOME} style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
-          <img src="/images/logo_white.png" alt="Pareto" style={{ height: 30, width: 'auto', objectFit: 'contain' }} />
-          <span style={{
-            fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: 13,
-            letterSpacing: '0.22em', textTransform: 'uppercase', color: '#6C63FF',
-          }}>Plus</span>
-        </Link>
+          {/* Logo — anchors to top of current or home page */}
+          <button onClick={handleLogoClick} style={{ display: 'flex', alignItems: 'center', gap: 10, background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
+            <img src="/images/logo_white.png" alt="Pareto" style={{ height: 30, width: 'auto', objectFit: 'contain' }} />
+            <span style={{
+              fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: 13,
+              letterSpacing: '0.22em', textTransform: 'uppercase', color: '#6C63FF',
+            }}>Plus</span>
+          </button>
 
-        {/* Desktop nav */}
-        <nav style={{ display: 'flex', alignItems: 'center', gap: 32 }} className="desktop-nav">
-          {navLinks.map((link) => (
-            link.action === 'link' ? (
-              <Link key={link.label} to={link.href!} style={{
-                fontFamily: "'Inter', sans-serif", fontWeight: 500, fontSize: 13,
-                letterSpacing: '0.08em', textTransform: 'uppercase', color: 'rgba(136,146,164,1)',
-                textDecoration: 'none', transition: 'color 0.25s ease',
-              }}
-                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#6C63FF'; }}
-                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = 'rgba(136,146,164,1)'; }}>
-                {link.label}
-              </Link>
-            ) : (
-              <button key={link.label} onClick={() => handleNav(link)} style={{
-                fontFamily: "'Inter', sans-serif", fontWeight: 500, fontSize: 13,
-                letterSpacing: '0.08em', textTransform: 'uppercase', color: 'rgba(136,146,164,1)',
-                background: 'none', border: 'none', cursor: 'pointer', transition: 'color 0.25s ease',
-              }}
-                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#6C63FF'; }}
-                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = 'rgba(136,146,164,1)'; }}>
-                {link.label}
-              </button>
-            )
-          ))}
-        </nav>
+          {/* Desktop nav */}
+          <nav style={{ display: 'flex', alignItems: 'center', gap: 32 }} className="desktop-nav">
+            {navLinks.map((link) => (
+              link.action === 'link' ? (
+                <Link key={link.label} to={link.href!} onClick={() => { setMenuOpen(false); window.scrollTo({ top: 0 }); }}
+                  style={navLinkStyle} onMouseEnter={hoverOn} onMouseLeave={hoverOff}>
+                  {link.label}
+                </Link>
+              ) : (
+                <button key={link.label} onClick={() => handleNav(link)}
+                  style={{ ...navLinkStyle, background: 'none', border: 'none', cursor: 'pointer',
+                    ...(link.action === 'cases' ? { color: '#C8F135' } : {}) }}
+                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = link.action === 'cases' ? '#d6f74a' : '#6C63FF'; }}
+                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = link.action === 'cases' ? '#C8F135' : 'rgba(136,146,164,1)'; }}>
+                  {link.label}
+                </button>
+              )
+            ))}
+          </nav>
 
-          {/* Desktop CTA — WhatsApp */}
+          {/* Desktop CTA */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }} className="desktop-nav">
             <a href={WA_LINK} target="_blank" rel="noopener noreferrer"
               style={{
                 fontFamily: "'Inter', sans-serif", fontWeight: 700, fontSize: 13,
                 color: '#0B0D14', padding: '9px 22px', borderRadius: 6,
-                background: '#C8F135',
-                textDecoration: 'none',
+                background: '#C8F135', textDecoration: 'none',
                 boxShadow: '0 0 0 rgba(200,241,53,0)', transition: 'all 0.22s ease',
                 display: 'flex', alignItems: 'center', gap: 7, letterSpacing: '0.01em',
               }}
@@ -106,46 +119,74 @@ export function Header() {
             </a>
           </div>
 
-        {/* Mobile hamburger */}
-        <button className="mobile-hamburger" onClick={() => setMenuOpen(!menuOpen)}
-          style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.7)', cursor: 'pointer', padding: 6 }}>
-          {menuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
-      </div>
+          {/* Mobile hamburger */}
+          <button className="mobile-hamburger" onClick={() => setMenuOpen(!menuOpen)}
+            style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.7)', cursor: 'pointer', padding: 6 }}>
+            {menuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
 
-      {/* Mobile menu */}
+        {/* Mobile menu */}
+        <AnimatePresence>
+          {menuOpen && (
+            <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}
+              style={{
+                position: 'absolute', top: 64, left: 0, right: 0, zIndex: 999,
+                background: 'rgba(11,13,20,0.97)', borderBottom: '1px solid rgba(255,255,255,0.06)',
+                backdropFilter: 'blur(24px)', padding: '20px 24px 28px',
+              }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                {navLinks.map((link) => (
+                  link.action === 'link' ? (
+                    <Link key={link.label} to={link.href!}
+                      onClick={() => { setMenuOpen(false); window.scrollTo({ top: 0 }); }}
+                      style={{ padding: '12px 0', fontFamily: "'Inter', sans-serif", fontWeight: 500, fontSize: 16, color: 'rgba(255,255,255,0.7)', textDecoration: 'none', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                      {link.label}
+                    </Link>
+                  ) : (
+                    <button key={link.label} onClick={() => handleNav(link)}
+                      style={{ padding: '12px 0', fontFamily: "'Inter', sans-serif", fontWeight: 500, fontSize: 16, color: link.action === 'cases' ? '#C8F135' : 'rgba(255,255,255,0.7)', background: 'none', border: 'none', borderBottom: '1px solid rgba(255,255,255,0.05)', cursor: 'pointer', textAlign: 'left' }}>
+                      {link.label}
+                    </button>
+                  )
+                ))}
+                <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer"
+                  style={{ marginTop: 16, padding: '13px 24px', borderRadius: 6, background: '#6C63FF', color: '#fff', fontFamily: "'Inter', sans-serif", fontWeight: 600, fontSize: 14, textDecoration: 'none', textAlign: 'center', boxShadow: '0 0 20px rgba(108,99,255,0.3)' }}>
+                  Diagnóstico Gratuito
+                </a>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </header>
+
+      {/* Cases popup — iframe de cases.pareto.io */}
       <AnimatePresence>
-        {menuOpen && (
-          <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}
-            style={{
-              position: 'absolute', top: 64, left: 0, right: 0, zIndex: 999,
-              background: 'rgba(11,13,20,0.97)', borderBottom: '1px solid rgba(255,255,255,0.06)',
-              backdropFilter: 'blur(24px)',
-              padding: '20px 24px 28px',
-            }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-              {navLinks.map((link) => (
-                link.action === 'link' ? (
-                  <Link key={link.label} to={link.href!} onClick={() => setMenuOpen(false)}
-                    style={{ padding: '12px 0', fontFamily: "'Inter', sans-serif", fontWeight: 500, fontSize: 16, color: 'rgba(255,255,255,0.7)', textDecoration: 'none', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                    {link.label}
-                  </Link>
-                ) : (
-                  <button key={link.label} onClick={() => handleNav(link)}
-                    style={{ padding: '12px 0', fontFamily: "'Inter', sans-serif", fontWeight: 500, fontSize: 16, color: 'rgba(255,255,255,0.7)', background: 'none', border: 'none', borderBottom: '1px solid rgba(255,255,255,0.05)', cursor: 'pointer', textAlign: 'left' }}>
-                    {link.label}
-                  </button>
-                )
-              ))}
-              <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer"
-                style={{ marginTop: 16, padding: '13px 24px', borderRadius: 6, background: '#6C63FF', color: '#fff', fontFamily: "'Inter', sans-serif", fontWeight: 600, fontSize: 14, textDecoration: 'none', textAlign: 'center', boxShadow: '0 0 20px rgba(108,99,255,0.3)' }}>
-                Diagnóstico Gratuito
-              </a>
-            </div>
+        {casesOpen && (
+          <motion.div
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            style={{ position: 'fixed', inset: 0, zIndex: 10000, background: 'rgba(0,0,0,0.88)', backdropFilter: 'blur(12px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16 }}
+            onClick={() => setCasesOpen(false)}>
+            <motion.div
+              initial={{ scale: 0.92, opacity: 0, y: 24 }} animate={{ scale: 1, opacity: 1, y: 0 }} exit={{ scale: 0.92, opacity: 0 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+              onClick={(e) => e.stopPropagation()}
+              style={{ position: 'relative', width: '100%', maxWidth: 1100, height: '85vh', borderRadius: 16, overflow: 'hidden', border: '1px solid rgba(108,99,255,0.3)', boxShadow: '0 0 80px rgba(108,99,255,0.2)' }}>
+              <button onClick={() => setCasesOpen(false)}
+                style={{ position: 'absolute', top: 14, right: 14, zIndex: 10, background: 'rgba(0,0,0,0.7)', border: '1px solid rgba(255,255,255,0.15)', borderRadius: 8, color: '#fff', cursor: 'pointer', padding: '6px 12px', fontFamily: "'Inter', sans-serif", fontSize: 13, display: 'flex', alignItems: 'center', gap: 6 }}>
+                <X size={16} /> Fechar
+              </button>
+              <iframe
+                src="https://cases.pareto.io/"
+                title="Pareto AI Cases"
+                style={{ width: '100%', height: '100%', border: 'none', background: '#fff' }}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope"
+              />
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
-    </header>
+    </>
   );
 }
 

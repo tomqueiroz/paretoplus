@@ -61,7 +61,7 @@ function EyebrowLabel({ children }: { children: React.ReactNode }) {
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
       <div style={{ width: 20, height: 1, background: V, opacity: 0.7 }} />
-      <Mono color={C} size={11}>{children}</Mono>
+      <Mono color={C} size={22}>{children}</Mono>
     </div>
   );
 }
@@ -170,7 +170,7 @@ export default function Sobre() {
             <motion.div variants={staggerItem}><EyebrowLabel>Perfil Institucional · Pareto Plus 2026</EyebrowLabel></motion.div>
             <motion.div variants={staggerItem}>
               <H1 style={{ marginBottom: 20 }}>
-                13 Anos Criando Soluções<br />
+                <span style={{ fontSize: 'clamp(1.2rem, 2.7vw, 2.28rem)' }}>13 Anos Criando Soluções</span><br />
                 <span className="hero-shimmer-text">com IA Aplicada aos Negócios.</span>
               </H1>
             </motion.div>

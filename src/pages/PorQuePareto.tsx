@@ -18,7 +18,7 @@ function Tag({ children, color = '#8800FF' }: { children: React.ReactNode; color
   return (
     <div className="inline-flex items-center gap-2 mb-5">
       <div className="w-5 h-px" style={{ background: color }} />
-      <span className="text-[11px] font-black tracking-[0.3em] uppercase" style={{ color }}>{children}</span>
+      <span className="text-[22px] font-black tracking-[0.3em] uppercase" style={{ color }}>{children}</span>
     </div>
   );
 }
