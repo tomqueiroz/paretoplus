@@ -26,7 +26,14 @@ export function Header() {
 
   const handleNav = (link: typeof navLinks[number]) => {
     setMenuOpen(false);
-    if (link.action === 'scroll' && isHome) scrollToSection(link.id!);
+    if (link.action === 'scroll') {
+      if (isHome) {
+        scrollToSection(link.id!);
+      } else {
+        // Navigate to home with hash anchor
+        window.location.href = `/#${link.id}`;
+      }
+    }
   };
 
   return (
@@ -218,23 +225,26 @@ export function Footer() {
               Contato
             </h4>
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 10 }}>
-              {['Rio de Janeiro · São Paulo', 'Est. 2011 · Global'].map((t) => (
-                <li key={t} style={{ fontFamily: "'Inter', sans-serif", fontSize: 13, color: 'rgba(136,146,164,0.55)' }}>{t}</li>
-              ))}
+  <li style={{ fontFamily: "'Inter', sans-serif", fontSize: 13, color: 'rgba(136,146,164,0.55)' }}>
+                Av. Paulista, 2.022 - 2º andar
+              </li>
+              <li style={{ fontFamily: "'Inter', sans-serif", fontSize: 13, color: 'rgba(136,146,164,0.55)' }}>
+                Consolação - São Paulo/SP
+              </li>
               <li>
-                <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer"
-                  style={{ fontFamily: "'Inter', sans-serif", fontSize: 13, color: 'rgba(136,146,164,0.7)', textDecoration: 'none', transition: 'color 0.2s ease' }}
-                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#00D4FF'; }}
+                <a href="https://wa.me/5511915513210?text=Ol%C3%A1%21+Vim+pelo+site+Pareto+Plus+e+gostaria+de+falar+com+um+especialista." target="_blank" rel="noopener noreferrer"
+                  style={{ fontFamily: "'Inter', sans-serif", fontSize: 13, color: 'rgba(136,146,164,0.7)', textDecoration: 'none', transition: 'color 0.2s ease', display: 'flex', alignItems: 'center', gap: 6 }}
+                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#C8F135'; }}
                   onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = 'rgba(136,146,164,0.7)'; }}>
-                  +55 21 99851-4094
+                  <span style={{ fontSize: 15 }}>💬</span> +55 11 91551-3210
                 </a>
               </li>
               <li>
-                <a href="mailto:privacidade@pareto.io"
+                <a href="mailto:tom.queiroz@pareto.plus"
                   style={{ fontFamily: "'Inter', sans-serif", fontSize: 13, color: 'rgba(136,146,164,0.7)', textDecoration: 'none', transition: 'color 0.2s ease' }}
                   onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#6C63FF'; }}
                   onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = 'rgba(136,146,164,0.7)'; }}>
-                  privacidade@pareto.io
+                  tom.queiroz@pareto.plus
                 </a>
               </li>
             </ul>

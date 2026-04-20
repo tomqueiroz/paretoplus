@@ -44,7 +44,7 @@ function EyebrowLabel({ children }: { children: React.ReactNode }) {
 
 function H1({ children, style = {} }: { children: React.ReactNode; style?: React.CSSProperties }) {
   return (
-    <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: 'clamp(2rem, 4.5vw, 3.8rem)', letterSpacing: '-0.025em', lineHeight: 1.06, margin: 0, ...style }}>
+    <h1 style={{ fontFamily: "'Montserrat', 'Space Grotesk', sans-serif", fontWeight: 800, fontSize: 'clamp(2rem, 4.5vw, 3.8rem)', letterSpacing: '-0.025em', lineHeight: 1.06, margin: 0, ...style }}>
       {children}
     </h1>
   );
@@ -52,7 +52,7 @@ function H1({ children, style = {} }: { children: React.ReactNode; style?: React
 
 function H2({ children, style = {} }: { children: React.ReactNode; style?: React.CSSProperties }) {
   return (
-    <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, fontSize: 'clamp(1.6rem, 3vw, 2.8rem)', letterSpacing: '-0.02em', lineHeight: 1.1, margin: 0, color: '#fff', ...style }}>
+    <h2 style={{ fontFamily: "'Montserrat', 'Space Grotesk', sans-serif", fontWeight: 700, fontSize: 'clamp(1.6rem, 3vw, 2.8rem)', letterSpacing: '-0.02em', lineHeight: 1.1, margin: 0, color: '#fff', ...style }}>
       {children}
     </h2>
   );
@@ -383,6 +383,120 @@ function ExitPopup({ onClose }: { onClose: () => void }) {
   );
 }
 
+// ─── CONTACT FORM → Supabase ──────────────────────────────────────────────────
+function ContactForm() {
+  const [form, setForm] = useState({ name: '', company: '', email: '', phone: '', challenge: '' });
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const inputStyle: React.CSSProperties = {
+    width: '100%', padding: '12px 16px', borderRadius: 8, boxSizing: 'border-box',
+    background: 'rgba(18,21,31,0.8)', border: '1px solid rgba(255,255,255,0.1)',
+    color: '#fff', fontFamily: "'Inter', sans-serif", fontSize: 14, outline: 'none',
+    transition: 'border-color 0.2s ease',
+  };
+  const labelStyle: React.CSSProperties = {
+    display: 'block', fontFamily: "'Inter', sans-serif", fontSize: 12, fontWeight: 600,
+    letterSpacing: '0.08em', textTransform: 'uppercase', color: 'rgba(136,146,164,0.7)',
+    marginBottom: 6,
+  };
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus('loading');
+    try {
+      const SUPA_URL = (import.meta as any).env?.VITE_SUPABASE_URL || 'https://ggylcohswfxbwkabqnay.supabase.co';
+      const SUPA_KEY = (import.meta as any).env?.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdneWxjb2hzd2Z4YndrYWJxbmF5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDUxOTE1MzcsImV4cCI6MjA2MDc2NzUzN30.W8ZMlVHkuQ13IcMCbT3k5pjUg1g1k-IwJPbgUYi2YaU';
+      const res = await fetch(`${SUPA_URL}/rest/v1/leads`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': SUPA_KEY,
+          'Authorization': `Bearer ${SUPA_KEY}`,
+          'Prefer': 'return=minimal',
+        },
+        body: JSON.stringify({
+          nome: form.name, empresa: form.company, email: form.email,
+          telefone: form.phone, desafio: form.challenge,
+          origem: 'pareto-plus-lp', criado_em: new Date().toISOString(),
+        }),
+      });
+      if (res.ok || res.status === 201) { setStatus('success'); setForm({ name: '', company: '', email: '', phone: '', challenge: '' }); }
+      else { setStatus('error'); }
+    } catch { setStatus('error'); }
+  };
+  if (status === 'success') {
+    return (
+      <GlassCard style={{ padding: '48px 40px', textAlign: 'center', maxWidth: 560, margin: '0 auto' }}>
+        <div style={{ fontSize: 40, marginBottom: 16 }}>✅</div>
+        <H3 style={{ marginBottom: 12 }}>Mensagem recebida!</H3>
+        <Body muted>Nossa equipe vai entrar em contato em até 24h para agendar o diagnóstico. Fique atento ao seu e-mail ou WhatsApp.</Body>
+        <div style={{ marginTop: 24 }}>
+          <GhostBtn href={`https://wa.me/5511915513210?text=${encodeURIComponent('Olá! Acabei de preencher o formulário no site Pareto Plus.')}`}>Confirmar pelo WhatsApp <ArrowRight size={14} /></GhostBtn>
+        </div>
+      </GlassCard>
+    );
+  }
+  return (
+    <GlassCard style={{ padding: '44px 40px', maxWidth: 760, margin: '0 auto' }}>
+      <div style={{ textAlign: 'center', marginBottom: 32 }}>
+        <EyebrowLabel>Diagnóstico Gratuito</EyebrowLabel>
+        <H3 style={{ marginBottom: 10, fontSize: 20 }}>Conte-nos sobre o seu negócio</H3>
+        <Body muted>Em 24h um especialista entra em contato para entender seus desafios e mostrar como a IA pode transformar sua operação.</Body>
+      </div>
+      <form onSubmit={handleSubmit}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, marginBottom: 20 }} className="grid-cols-1 sm:grid-cols-2">
+          <div>
+            <label style={labelStyle}>Nome *</label>
+            <input required name="name" value={form.name} onChange={handleChange} placeholder="Seu nome" style={inputStyle}
+              onFocus={(e) => { e.currentTarget.style.borderColor = 'rgba(108,99,255,0.5)'; }}
+              onBlur={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'; }} />
+          </div>
+          <div>
+            <label style={labelStyle}>Empresa *</label>
+            <input required name="company" value={form.company} onChange={handleChange} placeholder="Nome da empresa" style={inputStyle}
+              onFocus={(e) => { e.currentTarget.style.borderColor = 'rgba(108,99,255,0.5)'; }}
+              onBlur={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'; }} />
+          </div>
+          <div>
+            <label style={labelStyle}>E-mail *</label>
+            <input required type="email" name="email" value={form.email} onChange={handleChange} placeholder="seu@email.com" style={inputStyle}
+              onFocus={(e) => { e.currentTarget.style.borderColor = 'rgba(108,99,255,0.5)'; }}
+              onBlur={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'; }} />
+          </div>
+          <div>
+            <label style={labelStyle}>WhatsApp</label>
+            <input name="phone" value={form.phone} onChange={handleChange} placeholder="+55 11 9 0000-0000" style={inputStyle}
+              onFocus={(e) => { e.currentTarget.style.borderColor = 'rgba(108,99,255,0.5)'; }}
+              onBlur={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'; }} />
+          </div>
+        </div>
+        <div style={{ marginBottom: 28 }}>
+          <label style={labelStyle}>Seu maior desafio hoje</label>
+          <textarea name="challenge" value={form.challenge} onChange={handleChange} rows={4}
+            placeholder="Descreva brevemente: qual processo operacional mais consome tempo/custo na sua empresa?"
+            style={{ ...inputStyle, resize: 'vertical', lineHeight: 1.6 }}
+            onFocus={(e) => { e.currentTarget.style.borderColor = 'rgba(108,99,255,0.5)'; }}
+            onBlur={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'; }} />
+        </div>
+        <div style={{ display: 'flex', gap: 16, alignItems: 'center', flexWrap: 'wrap' }}>
+          <button type="submit" disabled={status === 'loading'} style={{
+            display: 'inline-flex', alignItems: 'center', gap: 8,
+            padding: '12px 28px', borderRadius: 6, fontFamily: "'Inter', sans-serif",
+            fontWeight: 700, fontSize: 14, color: '#0B0D14', cursor: status === 'loading' ? 'not-allowed' : 'pointer',
+            background: status === 'loading' ? 'rgba(200,241,53,0.5)' : '#C8F135', border: 'none',
+            transition: 'all 0.2s ease', opacity: status === 'loading' ? 0.7 : 1,
+          }}>
+            <Calendar size={15} /> {status === 'loading' ? 'Enviando…' : 'Solicitar Diagnóstico Gratuito'}
+          </button>
+          <Body muted style={{ fontSize: 12 }}>LGPD Compliant · 100% confidencial</Body>
+        </div>
+        {status === 'error' && <Body style={{ color: '#ff6b6b', marginTop: 12, fontSize: 13 }}>Erro ao enviar. Tente pelo WhatsApp: +55 11 91551-3210</Body>}
+      </form>
+    </GlassCard>
+  );
+}
+
 // ─── HOME ─────────────────────────────────────────────────────────────────────
 export default function Home() {
   const { scrollY } = useScroll();
@@ -438,7 +552,7 @@ export default function Home() {
 
               {/* Eyebrow */}
               <motion.div initial={{ opacity: 0, y: -12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15, duration: 0.6, ease }}>
-                <EyebrowLabel>IA Aplicada a Negócios</EyebrowLabel>
+                <EyebrowLabel>IA Customizada para cada Negócio</EyebrowLabel>
               </motion.div>
 
               {/* H1 */}
@@ -508,7 +622,21 @@ export default function Home() {
         </section>
 
         {/* ══════════════════════════════════════════════════════
-            01B · SOBRE A PARETO — Segunda dobra
+            01B · DECISÃO — Parallax logo após hero
+        ══════════════════════════════════════════════════════ */}
+        <ParallaxStrip img="/images/brazil_network.jpg" height={400} overlay="linear-gradient(to right, rgba(11,13,20,0.72) 0%, rgba(108,99,255,0.22) 50%, rgba(0,212,255,0.08) 100%)">
+          <motion.div initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} style={{ maxWidth: 760 }}>
+            <EyebrowLabel>Decisão</EyebrowLabel>
+            <H1 style={{ fontSize: 'clamp(1.9rem, 4vw, 3.4rem)', lineHeight: 1.1, marginBottom: 0 }}>
+              O Brasil de 2030 está sendo
+              <br />construído agora.
+              <br /><span className="hero-shimmer-text">Por quem decidiu em 2026.</span>
+            </H1>
+          </motion.div>
+        </ParallaxStrip>
+
+        {/* ══════════════════════════════════════════════════════
+            02 · SOBRE A PARETO — Terceira dobra
         ══════════════════════════════════════════════════════ */}
         <section id="sobre-pareto" style={{ padding: '80px 24px 72px', position: 'relative', overflow: 'hidden', background: 'rgba(18,21,31,0.55)' }}>
           <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 65% 55% at 80% 50%, rgba(108,99,255,0.09) 0%, transparent 70%)', pointerEvents: 'none' }} />
@@ -836,16 +964,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── Parallax quote ────────────────────────────────────── */}
-        <ParallaxStrip img="/images/brazil_network.jpg" height={340} overlay="linear-gradient(to right, rgba(108,99,255,0.28) 0%, rgba(0,212,255,0.1) 100%)">
-          <motion.div initial={{ opacity: 0, y: 22 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} style={{ maxWidth: 680 }}>
-            <Mono color={V} size={10}>Decisão</Mono>
-            <H2 style={{ marginTop: 14, lineHeight: 1.18 }}>
-              O Brasil de 2030 está sendo construído agora.<br />
-              <span className="gradient-text">Por quem decidiu em 2026.</span>
-            </H2>
-          </motion.div>
-        </ParallaxStrip>
+        {/* ── Parallax quote — REMOVIDA daqui, movida para logo após hero ── */}
 
         {/* ══════════════════════════════════════════════════════
             05 · A PARETO — PROVA, NÃO PROMESSA
@@ -946,7 +1065,7 @@ export default function Home() {
           <div style={{ maxWidth: 1200, margin: '0 auto' }}>
             <Reveal style={{ textAlign: 'center', marginBottom: 14 }}>
               <EyebrowLabel>Casos Reais</EyebrowLabel>
-              <H2 style={{ marginBottom: 14 }}>Não são apresentações.<br /><span style={{ color: C }}>São contratos encerrados com prova.</span></H2>
+              <H2 style={{ marginBottom: 14 }}>Não são projeções.<br /><span style={{ color: C }}>São resultados reais entregues, customizados para cada cliente.</span></H2>
             </Reveal>
             <Reveal style={{ textAlign: 'center', marginBottom: 56 }}>
               <Body style={{ maxWidth: 520, margin: '0 auto' }}>
@@ -1113,75 +1232,42 @@ export default function Home() {
         </ParallaxStrip>
 
         {/* ══════════════════════════════════════════════════════
-            09 · MODELOS DE PARCERIA
+            09 · PARCERIA SOB CONSULTA + FORM
         ══════════════════════════════════════════════════════ */}
         <SectionDivider />
         <section id="modelos" style={{ padding: '96px 24px', position: 'relative', background: `${S1}50` }}>
           <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(ellipse 65% 50% at 50% 0%, rgba(108,99,255,0.08) 0%, transparent 65%)`, pointerEvents: 'none' }} />
-          <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+          <div style={{ maxWidth: 1100, margin: '0 auto' }}>
             <Reveal style={{ textAlign: 'center', marginBottom: 56 }}>
-              <EyebrowLabel>Modelos de Parceria</EyebrowLabel>
-              <H2 style={{ marginBottom: 14 }}>Três portas de entrada.<br /><span className="gradient-text">Uma transformação.</span></H2>
-              <Body style={{ maxWidth: 480, margin: '0 auto' }}>
-                Cada modelo foi desenhado para um estágio diferente de maturidade em IA — do primeiro diagnóstico à parceria estratégica de longo prazo.
+              <EyebrowLabel>Como trabalhamos</EyebrowLabel>
+              <H2 style={{ marginBottom: 20 }}>Tudo sob consulta.<br /><span className="gradient-text">Especialmente feito para cada empresa.</span></H2>
+              <Body style={{ maxWidth: 620, margin: '0 auto', fontSize: 16, lineHeight: 1.8 }}>
+                Não existem pacotes de prateleira na Pareto. Nossa missão é capacitar cada empresa a remodelar seu modelo de negócio para a nova era da IA como diferencial competitivo — e isso exige entender profundamente seus desafios e recursos antes de qualquer proposta.
               </Body>
             </Reveal>
 
+            {/* 3 pilares */}
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-8%' }} variants={stagger}
-              style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 20 }}>
+              style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 20, marginBottom: 72 }}>
               {[
-                {
-                  badge: 'PORTA DE ENTRADA',
-                  name: 'Sprint de Aceleração IA',
-                  price: 'R$ 4.500', period: 'pagamento único',
-                  desc: 'Em 21 dias, mapeamos onde há vazamento de receita e implementamos as 3 primeiras vitórias de IA no seu negócio.',
-                  features: ['Diagnóstico de Vazamento de Receita', 'Auditoria completa da operação', '3 quick wins implementados', 'Roadmap priorizado por ROI', '55%+ dos clientes avança para parceria'],
-                  highlight: false, cta: 'Começar o Sprint',
-                },
-                {
-                  badge: 'MAIS ESCOLHIDO',
-                  name: 'Parceria Estratégica de Marketing IA',
-                  price: 'R$ 3.900 – R$ 6.500', period: '/mês · mínimo 6 meses',
-                  desc: 'Stack completo de marketing com IA — construído nos seus dados, em constante aprendizado, com foco em receita mensurável.',
-                  features: ['Stack de marketing IA customizado', 'Tess AI incluída (+200 modelos)', 'Motor de conteúdo 10× volume', 'Qualificação de leads em 2 minutos', 'Gestão Meta + Google + TikTok', 'Review estratégica mensal'],
-                  highlight: true, cta: 'Quero essa Parceria',
-                },
-                {
-                  badge: 'PREMIUM',
-                  name: 'Transformação IA + Consultoria',
-                  price: 'R$ 8.500 – R$ 18.000', period: '/mês · 12 meses',
-                  desc: 'Para líderes que estão construindo vantagem competitiva estrutural. Operacional + estratégico + inteligência de mercado.',
-                  features: ['Tudo do modelo anterior', 'Consultoria estratégica C-suite', 'BI customizado ao vivo', 'Monitoramento de concorrentes por IA', 'Briefing Trimestral Nova Era', 'Acesso direto ao time sênior Pareto'],
-                  highlight: false, cta: 'Falar com Especialista',
-                },
-              ].map((m) => (
-                <motion.div key={m.name} variants={staggerItem}>
-                  <GlassCard style={{ display: 'flex', flexDirection: 'column', height: '100%', background: m.highlight ? 'rgba(108,99,255,0.08)' : 'rgba(18,21,31,0.8)', borderColor: m.highlight ? 'rgba(108,99,255,0.45)' : 'rgba(255,255,255,0.07)', boxShadow: m.highlight ? `0 0 60px rgba(108,99,255,0.14), 0 8px 32px rgba(0,0,0,0.30)` : '0 8px 32px rgba(0,0,0,0.30)' }} hover={false}>
-                    <div style={{ padding: '28px 28px 0', flex: 1 }}>
-                      <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9, fontWeight: 600, letterSpacing: '0.2em', color: m.highlight ? C : 'rgba(136,146,164,0.45)', marginBottom: 16 }}>
-                        {m.badge}
-                      </div>
-                      <H3 style={{ fontSize: 16, marginBottom: 10 }}>{m.name}</H3>
-                      <div style={{ marginBottom: 16 }}>
-                        <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '1.3rem', fontWeight: 600, color: '#fff' }}>{m.price}</span>
-                        <Body muted style={{ fontSize: 11, display: 'inline', marginLeft: 8 }}>{m.period}</Body>
-                      </div>
-                      <Body muted style={{ fontSize: 13, marginBottom: 20 }}>{m.desc}</Body>
-                      <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 24px', display: 'flex', flexDirection: 'column', gap: 10 }}>
-                        {m.features.map((f) => (
-                          <li key={f} style={{ display: 'flex', gap: 8, fontFamily: "'Inter', sans-serif", fontSize: 13, color: '#8892A4' }}>
-                            <span style={{ color: C, flexShrink: 0 }}>✓</span>{f}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                    <div style={{ padding: '0 28px 28px' }}>
-                      <PrimaryBtn href={CALENDLY_URL}>{m.cta} <ArrowRight size={14} /></PrimaryBtn>
-                    </div>
+                { n: '01', title: 'Diagnóstico real', desc: 'Imersão na sua operação. Mapeamos custos ocultos, gargalos e onde a IA gera o maior retorno mais rápido — antes de qualquer proposta.' },
+                { n: '02', title: 'Solução exclusiva', desc: 'Cada sistema é construído com seus dados, no seu setor, na sua linguagem. Não existe template para o que fazemos.' },
+                { n: '03', title: 'Resultado em receita', desc: 'Medimos impacto em R$ — não em impressões ou engajamento. KPIs que aparecem no balanço da sua empresa.' },
+              ].map((s) => (
+                <motion.div key={s.n} variants={staggerItem}>
+                  <GlassCard style={{ padding: '28px 24px', height: '100%' }}>
+                    <Mono color={V} size={11}>{s.n}</Mono>
+                    <div style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 700, fontSize: 15, color: '#fff', margin: '12px 0 10px' }}>{s.title}</div>
+                    <Body muted style={{ fontSize: 13 }}>{s.desc}</Body>
                   </GlassCard>
                 </motion.div>
               ))}
             </motion.div>
+
+            {/* Form de contato → Supabase */}
+            <Reveal>
+              <ContactForm />
+            </Reveal>
           </div>
         </section>
 
@@ -1190,7 +1276,6 @@ export default function Home() {
         ══════════════════════════════════════════════════════ */}
         <SectionDivider />
         <section style={{ padding: '120px 24px', position: 'relative', overflow: 'hidden', background: `${BG}` }}>
-          <div className="starfield" />
           <div className="data-grid" />
           <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 70% 60% at 50% 50%, rgba(108,99,255,0.12) 0%, transparent 70%)', pointerEvents: 'none' }} />
           <div style={{ position: 'relative', zIndex: 2, maxWidth: 760, margin: '0 auto', textAlign: 'center' }}>
