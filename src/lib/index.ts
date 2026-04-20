@@ -59,7 +59,7 @@ export interface ClientLogo {
 export const WHATSAPP_NUMBER = '5511915513210';
 export const WHATSAPP_MESSAGE = encodeURIComponent('Olá! Vi o site da Pareto Plus e quero falar com um especialista sobre implementação de IA na minha empresa.');
 export const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MESSAGE}`;
-export const CALENDLY_URL = 'https://calendly.com/pareto-ai/diagnostico-30min';
+export const CALENDLY_URL = 'https://calendly.com/tom-queiroz-pareto/30min';
 
 // ─── Key Stats (verified from pitch decks) ───────────────────────────────────
 export const KEY_STATS = [
