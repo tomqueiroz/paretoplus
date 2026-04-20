@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import { useCalendly } from '@/components/CalendlyModal';
 import { motion, useInView, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight, Calendar, Shield, Zap, Globe, Lock, TrendingUp, Users, Award, Star, CheckCircle, Clock } from 'lucide-react';
 import { CALENDLY_URL, WHATSAPP_URL, TIMELINE, AWARDS, COMPETITORS, scrollToSection } from '@/lib/index';
@@ -44,13 +45,14 @@ function Reveal({ children, className = '', delay = 0 }: { children: React.React
     </motion.div>
   );
 }
-function CTAPrimary({ href, children }: { href: string; children: React.ReactNode }) {
+function CTAPrimary({ children }: { href?: string; children: React.ReactNode }) {
+  const { open } = useCalendly();
   return (
-    <a href={href} target="_blank" rel="noopener noreferrer"
+    <button onClick={open}
       className="inline-flex items-center gap-3 px-8 py-4 rounded-full font-black text-sm text-white"
-      style={{ background: 'linear-gradient(135deg,#8800FF,#6600CC)', boxShadow: '0 0 40px rgba(136,0,255,0.4)' }}>
+      style={{ background: 'linear-gradient(135deg,#8800FF,#6600CC)', boxShadow: '0 0 40px rgba(136,0,255,0.4)', border: 'none', cursor: 'pointer' }}>
       {children}
-    </a>
+    </button>
   );
 }
 

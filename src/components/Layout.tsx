@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ArrowRight } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { scrollToSection, WHATSAPP_URL, CALENDLY_URL, ROUTE_PATHS, PARTNER_BADGES } from '@/lib/index';
+import { useCalendly } from '@/components/CalendlyModal';
 
 const navLinks = [
   { label: 'O Problema',  action: 'scroll', id: 'problema' },
@@ -192,6 +193,7 @@ export function Header() {
 }
 
 export function Footer() {
+  const { open: openCalendly } = useCalendly();
   return (
     <footer style={{ borderTop: '1px solid rgba(255,255,255,0.06)', background: '#080A10' }}>
       <div style={{ maxWidth: 1280, margin: '0 auto', padding: '64px 24px 40px' }}>
@@ -325,19 +327,19 @@ export function Footer() {
               Diagnóstico gratuito de 30 min com um especialista Pareto.
             </p>
           </div>
-          <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer"
+          <button onClick={openCalendly}
             style={{
               display: 'inline-flex', alignItems: 'center', gap: 8,
               padding: '12px 28px', borderRadius: 8, background: '#C8F135',
               color: '#0B0D14', fontFamily: "'Inter', sans-serif", fontWeight: 700,
-              fontSize: 14, textDecoration: 'none', whiteSpace: 'nowrap',
+              fontSize: 14, whiteSpace: 'nowrap', border: 'none', cursor: 'pointer',
               transition: 'all 0.22s ease', boxShadow: '0 0 0 rgba(200,241,53,0)',
             }}
             onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = '0 0 24px rgba(200,241,53,0.45)'; (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'; }}
             onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = '0 0 0 rgba(200,241,53,0)'; (e.currentTarget as HTMLElement).style.transform = ''; }}>
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0B0D14" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
             Agendar com Especialista
-          </a>
+          </button>
         </div>
 
         {/* Bottom bar */}

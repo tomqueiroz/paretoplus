@@ -2,6 +2,7 @@ import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import { MotionConfig } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { Header, Footer } from '@/components/Layout';
+import { CalendlyProvider } from '@/components/CalendlyModal';
 import Home from '@/pages/Home';
 import Sobre from '@/pages/Sobre';
 import Privacidade from '@/pages/Privacidade';
@@ -41,6 +42,7 @@ function BackToTop() {
 function App() {
   return (
     <MotionConfig reducedMotion="user">
+      <CalendlyProvider>
       <Router>
         <div className="min-h-screen" style={{ background: '#0D0D0D' }}>
           <Header />
@@ -53,6 +55,7 @@ function App() {
           <BackToTop />
         </div>
       </Router>
+      </CalendlyProvider>
     </MotionConfig>
   );
 }

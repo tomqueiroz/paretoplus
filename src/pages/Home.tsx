@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { insertLead, insertExitLead } from '@/lib/supabase';
+import { useCalendly } from '@/components/CalendlyModal';
 import { motion, AnimatePresence, useInView, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight, Calendar, ChevronDown, X, Award, Quote, Zap, Brain, Settings, Users } from 'lucide-react';
 import { ParticleCanvas } from '@/components/ParticleCanvas';
@@ -135,6 +136,12 @@ function PrimaryBtn({ href, onClick, children }: { href?: string; onClick?: () =
   };
   if (href) return <a href={href} target="_blank" rel="noopener noreferrer" style={base} onMouseEnter={enter} onMouseLeave={leave}>{children}</a>;
   return <button onClick={onClick} style={base} onMouseEnter={enter} onMouseLeave={leave}>{children}</button>;
+}
+
+// Wrapper que reutiliza PrimaryBtn mas abre o Calendly em popup
+function CalendlyPrimaryBtn({ children }: { children: React.ReactNode }) {
+  const { open } = useCalendly();
+  return <PrimaryBtn onClick={open}>{children}</PrimaryBtn>;
 }
 
 function GhostBtn({ href, onClick, children }: { href?: string; onClick?: () => void; children: React.ReactNode }) {
@@ -686,9 +693,9 @@ export default function Home() {
               {/* CTAs */}
               <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6, duration: 0.6, ease }}
                 style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center', marginBottom: 32 }} className="cta-row">
-                <PrimaryBtn href={CALENDLY_URL}>
+                <CalendlyPrimaryBtn>
                   <Calendar size={16} /> Agendar com Especialista
-                </PrimaryBtn>
+                </CalendlyPrimaryBtn>
                 <GhostBtn onClick={() => scrollToSection('resultados')}>
                   Principais cases <ArrowRight size={14} />
                 </GhostBtn>
@@ -872,7 +879,7 @@ export default function Home() {
               </div>
 
               <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-                <PrimaryBtn href={CALENDLY_URL}><Calendar size={15} /> Agendar com Especialista</PrimaryBtn>
+                <CalendlyPrimaryBtn><Calendar size={15} /> Agendar com Especialista</CalendlyPrimaryBtn>
                 <GhostBtn onClick={() => scrollToSection('solucoes')}>Ver soluções <ArrowRight size={13} /></GhostBtn>
               </div>
             </Reveal>
@@ -998,7 +1005,7 @@ export default function Home() {
               <Body style={{ marginBottom: 28, maxWidth: 480, margin: '0 auto 28px', color: 'rgba(136,146,164,0.6)' }}>
                 Se você identificou pelo menos dois desses padrões na sua operação, a próxima conversa importa.
               </Body>
-              <PrimaryBtn href={CALENDLY_URL}><Calendar size={15} /> Diagnosticar Minha Operação</PrimaryBtn>
+              <CalendlyPrimaryBtn><Calendar size={15} /> Diagnosticar Minha Operação</CalendlyPrimaryBtn>
             </Reveal>
           </div>
         </section>
@@ -1185,9 +1192,9 @@ export default function Home() {
               <p style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 600, fontSize: 'clamp(1.1rem, 2.5vw, 1.6rem)', color: '#fff', lineHeight: 1.4, marginBottom: 40 }}>
                 Seja cliente Pareto e esteja entre os <span style={{ color: '#C8F135' }}>20%</span>.
               </p>
-              <PrimaryBtn href={CALENDLY_URL}>
+              <CalendlyPrimaryBtn>
                 <Calendar size={16} /> Quero meu Diagnóstico Gratuito
-              </PrimaryBtn>
+              </CalendlyPrimaryBtn>
               <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 12, color: 'rgba(136,146,164,0.45)', marginTop: 16 }}>
                 30 min · Sem compromisso · LGPD Compliant
               </p>
@@ -1355,7 +1362,7 @@ export default function Home() {
             </motion.div>
 
             <Reveal>
-              <PrimaryBtn href={CALENDLY_URL}><Calendar size={15} /> Quero Meu Diagnóstico Gratuito</PrimaryBtn>
+              <CalendlyPrimaryBtn><Calendar size={15} /> Quero Meu Diagnóstico Gratuito</CalendlyPrimaryBtn>
               <Body muted style={{ marginTop: 14, fontSize: 12 }}>30 minutos · Sem compromisso · LGPD Compliant</Body>
             </Reveal>
           </div>
@@ -1433,7 +1440,7 @@ export default function Home() {
                 Em 30 minutos de diagnóstico, nossos especialistas identificam onde a IA gera retorno imediato no seu negócio. Sem pitch genérico. Sem compromisso. Com clareza real sobre o seu cenário específico.
               </Body>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, justifyContent: 'center' }}>
-                <PrimaryBtn href={CALENDLY_URL}><Calendar size={16} /> Quero meu diagnóstico gratuito</PrimaryBtn>
+                <CalendlyPrimaryBtn><Calendar size={16} /> Quero meu diagnóstico gratuito</CalendlyPrimaryBtn>
                 <GhostBtn href={WHATSAPP_URL}>WhatsApp <ArrowRight size={14} /></GhostBtn>
               </div>
               <Body muted style={{ marginTop: 20, fontSize: 12 }}>LGPD Compliant · Privacidade garantida</Body>
