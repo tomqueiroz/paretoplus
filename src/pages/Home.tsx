@@ -244,29 +244,40 @@ function ClientNamesBg() {
   );
 }
 
-// Arquivos enviados pelo usuário — excluindo circulares de plataformas: 1,2,3,4,5,6,9,16,20,24
-const HERO_LOGO_SRCS = [7,8,10,11,12,13,14,15,17,18,19,21,22,23,25].map(
-  (n) => `/images/hero-logos/${n}.png`
-);
+// 24 logos exatos enviados pelo usuário — nomes próprios, sem numeração
+const HERO_LOGO_SRCS = [
+  'coinbase','spotify','stone','mcd','shopify','flam','remax','epic',
+  'anima','sams','nivea','greenp','cea','wmc','universal','itau',
+  'sg','salta','publi','pepsi','hering','multip','nvidia','gpa',
+].map((n) => `/images/hero-logos/${n}.png`);
 
 function FloatingLogoBg() {
   const nodes = [
-    // Lado direito — toda a altura
-    { x: '60%', y: '9%',  dur: 20, delay: 0.0, dy: 10 },
-    { x: '74%', y: '6%',  dur: 23, delay: 1.3, dy: 8  },
-    { x: '87%', y: '13%', dur: 18, delay: 0.6, dy: 12 },
-    { x: '95%', y: '8%',  dur: 21, delay: 2.0, dy: 9  },
-    { x: '67%', y: '21%', dur: 17, delay: 0.4, dy: 13 },
-    { x: '81%', y: '27%', dur: 25, delay: 1.8, dy: 10 },
-    { x: '92%', y: '22%', dur: 19, delay: 3.1, dy: 11 },
-    { x: '58%', y: '38%', dur: 22, delay: 0.9, dy: 14 },
-    { x: '72%', y: '45%', dur: 20, delay: 2.5, dy: 8  },
-    { x: '85%', y: '55%', dur: 24, delay: 0.2, dy: 11 },
-    { x: '96%', y: '48%', dur: 18, delay: 1.6, dy: 12 },
-    // Lado esquerdo — apenas abaixo do texto (y > 73%)
-    { x: '8%',  y: '76%', dur: 21, delay: 2.3, dy: 11 },
-    { x: '22%', y: '82%', dur: 19, delay: 1.0, dy: 10 },
-    { x: '36%', y: '88%', dur: 24, delay: 3.2, dy: 13 },
+    // lado direito — toda a altura
+    { x: '60%', y: '8%',  dur: 20, delay: 0.0, dy: 10 },
+    { x: '74%', y: '5%',  dur: 23, delay: 1.3, dy: 8  },
+    { x: '87%', y: '12%', dur: 18, delay: 0.6, dy: 12 },
+    { x: '95%', y: '7%',  dur: 21, delay: 2.0, dy: 9  },
+    { x: '67%', y: '20%', dur: 17, delay: 0.4, dy: 13 },
+    { x: '81%', y: '26%', dur: 25, delay: 1.8, dy: 10 },
+    { x: '92%', y: '21%', dur: 19, delay: 3.1, dy: 11 },
+    { x: '58%', y: '34%', dur: 22, delay: 0.9, dy: 14 },
+    { x: '72%', y: '40%', dur: 20, delay: 2.5, dy: 8  },
+    { x: '85%', y: '35%', dur: 24, delay: 0.2, dy: 11 },
+    { x: '96%', y: '44%', dur: 18, delay: 1.6, dy: 12 },
+    { x: '64%', y: '53%', dur: 21, delay: 3.4, dy: 9  },
+    { x: '78%', y: '58%', dur: 19, delay: 0.7, dy: 13 },
+    { x: '91%', y: '51%', dur: 26, delay: 2.2, dy: 10 },
+    { x: '57%', y: '65%', dur: 17, delay: 1.1, dy: 11 },
+    { x: '71%', y: '70%', dur: 22, delay: 0.3, dy: 8  },
+    { x: '84%', y: '75%', dur: 20, delay: 2.9, dy: 14 },
+    { x: '95%', y: '80%', dur: 23, delay: 1.5, dy: 10 },
+    { x: '66%', y: '85%', dur: 18, delay: 3.7, dy: 12 },
+    { x: '80%', y: '88%', dur: 25, delay: 0.8, dy: 9  },
+    // lado esquerdo — apenas abaixo do texto (y > 73%)
+    { x: '7%',  y: '76%', dur: 21, delay: 2.3, dy: 11 },
+    { x: '21%', y: '82%', dur: 19, delay: 1.0, dy: 10 },
+    { x: '35%', y: '87%', dur: 24, delay: 3.2, dy: 13 },
     { x: '14%', y: '91%', dur: 22, delay: 2.7, dy: 10 },
   ];
   return (
@@ -571,7 +582,8 @@ export default function Home() {
           {/* Layer 0: hero gradient */}
           <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, #0B0D14 0%, #1A1040 50%, #0D1929 100%)' }} />
 
-          {/* Layer 1: logos removidos */}
+          {/* Layer 1: logos dos clientes flutuando */}
+          <FloatingLogoBg />
 
           {/* Layer 3: neural network lines */}
           <div style={{ position: 'absolute', inset: 0 }}><ParticleCanvas /></div>
