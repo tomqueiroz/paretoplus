@@ -385,10 +385,7 @@ export default function Home() {
           {/* Layer 2: data grid */}
           <div className="data-grid" />
 
-          {/* Layer 3: neural network particles */}
-          <div style={{ position: 'absolute', inset: 0 }}><ParticleCanvas /></div>
-
-          {/* Layer 4: glow orbs */}
+          {/* Layer 4: glow orbs — subtle radial blurs only */}
           <div style={{ position: 'absolute', top: '8%', right: '12%', width: 500, height: 500, borderRadius: '50%', background: 'radial-gradient(ellipse, rgba(108,99,255,0.13) 0%, transparent 70%)', pointerEvents: 'none' }} />
           <div style={{ position: 'absolute', bottom: '15%', left: '5%', width: 420, height: 420, borderRadius: '50%', background: 'radial-gradient(ellipse, rgba(0,212,255,0.08) 0%, transparent 70%)', pointerEvents: 'none' }} />
           <div style={{ position: 'absolute', top: '40%', left: '35%', width: 360, height: 360, borderRadius: '50%', background: 'radial-gradient(ellipse, rgba(255,107,53,0.05) 0%, transparent 70%)', pointerEvents: 'none' }} />
