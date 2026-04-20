@@ -612,8 +612,8 @@ export default function Home() {
 
               {/* H1 — AI First. GRANDE | H2 — 2026... MENOR */}
               <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.28, duration: 0.85, ease }}>
-                <h1 className="hero-shimmer-text" style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 900, fontSize: 'clamp(4rem, 9vw, 7.5rem)', letterSpacing: '-0.04em', lineHeight: 0.92, margin: '0 0 18px 0', display: 'block' }}>AI First.</h1>
-                <h2 style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 800, fontSize: 'clamp(1.2rem, 2.4vw, 2rem)', letterSpacing: '-0.025em', lineHeight: 1.12, margin: '0 0 24px 0', color: '#fff' }}>2026 é o último ano<br />em que isso ainda é opcional.</h2>
+                <h1 className="hero-shimmer-text" style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 900, fontSize: 'clamp(2.8rem, 6.3vw, 5.25rem)', letterSpacing: '-0.04em', lineHeight: 0.92, margin: '0 0 18px 0', display: 'block' }}>AI First.</h1>
+                <h2 style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 800, fontSize: 'clamp(1.5rem, 3vw, 2.5rem)', letterSpacing: '-0.025em', lineHeight: 1.12, margin: '0 0 24px 0', color: '#fff' }}>2026 é o último ano<br />em que isso ainda é opcional.</h2>
               </motion.div>
 
               {/* Subline */}
