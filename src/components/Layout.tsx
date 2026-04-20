@@ -52,7 +52,7 @@ export function Header() {
         </Link>
 
         {/* Desktop nav */}
-        <nav style={{ display: 'none', alignItems: 'center', gap: 32 }} className="lg:flex">
+        <nav style={{ display: 'flex', alignItems: 'center', gap: 32 }} className="desktop-nav">
           {navLinks.map((link) => (
             link.action === 'link' ? (
               <Link key={link.label} to={link.href!} style={{
@@ -79,7 +79,7 @@ export function Header() {
         </nav>
 
         {/* Desktop CTA */}
-          <div style={{ display: 'none', alignItems: 'center', gap: 10 }} className="lg:flex">
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }} className="desktop-nav">
             <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer"
               style={{
                 fontFamily: "'Inter', sans-serif", fontWeight: 500, fontSize: 12,
@@ -108,7 +108,7 @@ export function Header() {
           </div>
 
         {/* Mobile hamburger */}
-        <button className="lg:hidden" onClick={() => setMenuOpen(!menuOpen)}
+        <button className="mobile-hamburger" onClick={() => setMenuOpen(!menuOpen)}
           style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.7)', cursor: 'pointer', padding: 6 }}>
           {menuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
@@ -180,6 +180,29 @@ export function Footer() {
                     </div>
                   ) : null
                 )}
+              </div>
+            </div>
+
+            {/* Social */}
+            <div style={{ marginTop: 20 }}>
+              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 10, fontWeight: 600, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'rgba(136,146,164,0.45)', marginBottom: 12 }}>
+                Redes Sociais
+              </p>
+              <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+                {[
+                  { label: 'LinkedIn',  href: 'https://www.linkedin.com/company/pareto-io', svg: '<path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/>' },
+                  { label: 'Instagram', href: 'https://www.instagram.com/pareto.io', svg: '<rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>' },
+                  { label: 'YouTube',   href: 'https://www.youtube.com/@paretoio',          svg: '<path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.97C18.88 4 12 4 12 4s-6.88 0-8.59.45A2.78 2.78 0 001.46 6.42 29 29 0 001 12a29 29 0 00.46 5.58 2.78 2.78 0 001.95 1.97C5.12 20 12 20 12 20s6.88 0 8.59-.45a2.78 2.78 0 001.95-1.97A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/>' },
+                  { label: 'TikTok',    href: 'https://www.tiktok.com/@pareto.io',           svg: '<path d="M9 12a4 4 0 104 4V4a5 5 0 005 5"/>' },
+                  { label: 'X',         href: 'https://x.com/pareto_io',                     svg: '<path d="M4 4l16 16M20 4L4 20"/>' },
+                ].map((s) => (
+                  <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer" title={s.label}
+                    style={{ width: 34, height: 34, borderRadius: 8, background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s ease' }}
+                    onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = 'rgba(200,241,53,0.12)'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(200,241,53,0.3)'; }}
+                    onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.05)'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.08)'; }}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(136,146,164,0.8)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" dangerouslySetInnerHTML={{ __html: s.svg }} />
+                  </a>
+                ))}
               </div>
             </div>
           </div>

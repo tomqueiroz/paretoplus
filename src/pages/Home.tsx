@@ -527,13 +527,16 @@ export default function Home() {
         {/* ══════════════════════════════════════════════════════
             01 · HERO — Deep Space, Neural Network BG
         ══════════════════════════════════════════════════════ */}
-        <section id="hero" style={{ position: 'relative', minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', overflow: 'hidden' }}>
+        <section id="hero" style={{ position: 'relative', height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', overflow: 'hidden' }}>
 
           {/* Layer 0: hero gradient */}
           <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, #0B0D14 0%, #1A1040 50%, #0D1929 100%)' }} />
 
-          {/* Layer 1: floating client name tags — right side social proof texture */}
-          <ClientNamesBg />
+          {/* Layer 1: floating client name tags — right side social proof texture (not rendered) */}
+          {/* <ClientNamesBg /> */}
+
+          {/* Layer 3: neural network lines */}
+          <div style={{ position: 'absolute', inset: 0 }}><ParticleCanvas /></div>
 
           {/* Layer 2: data grid */}
           <div className="data-grid" />
@@ -547,7 +550,7 @@ export default function Home() {
           <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 240, background: `linear-gradient(to bottom, transparent 0%, ${BG} 100%)`, pointerEvents: 'none' }} />
 
           {/* Hero content */}
-          <motion.div style={{ opacity: heroOpacity, position: 'relative', zIndex: 10, maxWidth: 1280, margin: '0 auto', padding: '0 24px', width: '100%', paddingTop: 120, paddingBottom: 100 }}>
+          <motion.div style={{ opacity: heroOpacity, position: 'relative', zIndex: 10, maxWidth: 1280, margin: '0 auto', padding: '0 24px', width: '100%', paddingTop: 80 }}>
             <div style={{ maxWidth: 760 }}>
 
               {/* Eyebrow */}
@@ -581,15 +584,7 @@ export default function Home() {
                 </GhostBtn>
               </motion.div>
 
-              {/* Scroll down — visível acima da dobra */}
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.9 }}
-                onClick={() => scrollToSection('sobre-pareto')}
-                style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 6, cursor: 'pointer', marginBottom: 40 }}>
-                <Mono color="rgba(108,99,255,0.45)" size={10}>scroll</Mono>
-                <motion.div animate={{ y: [0, 7, 0] }} transition={{ repeat: Infinity, duration: 1.8 }}>
-                  <ChevronDown size={18} style={{ color: 'rgba(108,99,255,0.4)' }} />
-                </motion.div>
-              </motion.div>
+
 
               {/* Trust badges */}
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.85 }}
@@ -603,22 +598,19 @@ export default function Home() {
               </motion.div>
             </div>
 
-            {/* Stats row */}
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.1 }}
-              style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '24px 40px', marginTop: 72, paddingTop: 32, borderTop: '1px solid rgba(255,255,255,0.05)', maxWidth: 600 }}
-              className="sm:grid-cols-4">
-              {KEY_STATS.slice(0, 4).map((s) => (
-                <div key={s.label}>
-                  <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'clamp(1.4rem, 2.5vw, 1.8rem)', fontWeight: 600, color: C, letterSpacing: '-0.02em', marginBottom: 4 }}>
-                    <AnimatedNumber value={s.value} prefix={s.prefix} suffix={s.suffix} />
-                  </div>
-                  <Body muted style={{ fontSize: 12, lineHeight: 1.4 }}>{s.label}</Body>
-                </div>
-              ))}
-            </motion.div>
+
           </motion.div>
 
-          {/* scroll indicator moved inline above */}
+          {/* Scroll down — fixed bottom of hero */}
+          <motion.div
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }}
+            onClick={() => scrollToSection('sobre-pareto')}
+            style={{ position: 'absolute', bottom: 32, left: '50%', transform: 'translateX(-50%)', zIndex: 20, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, cursor: 'pointer' }}>
+            <Mono color="rgba(255,255,255,0.3)" size={9}>scroll</Mono>
+            <motion.div animate={{ y: [0, 8, 0] }} transition={{ repeat: Infinity, duration: 1.6, ease: 'easeInOut' }}>
+              <ChevronDown size={20} style={{ color: 'rgba(200,241,53,0.6)' }} />
+            </motion.div>
+          </motion.div>
         </section>
 
         {/* ══════════════════════════════════════════════════════
@@ -1053,6 +1045,35 @@ export default function Home() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             <LogoMarqueeRow logos={CLIENT_LOGO_IMGS.slice(0, half)} speed={60} />
             <LogoMarqueeRow logos={CLIENT_LOGO_IMGS.slice(half)} reverse speed={50} />
+          </div>
+        </section>
+
+        {/* ══════════════════════════════════════════════════════
+            McKINSEY — 80% fracassam
+        ══════════════════════════════════════════════════════ */}
+        <section style={{ padding: '80px 24px', background: 'rgba(11,13,20,0.95)', position: 'relative', overflow: 'hidden' }}>
+          <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 60% 70% at 50% 50%, rgba(108,99,255,0.09) 0%, transparent 70%)', pointerEvents: 'none' }} />
+          <div className="data-grid" />
+          <div style={{ maxWidth: 860, margin: '0 auto', textAlign: 'center', position: 'relative', zIndex: 2 }}>
+            <Reveal>
+              <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'clamp(3rem, 8vw, 6rem)', fontWeight: 800, color: 'rgba(255,255,255,0.06)', letterSpacing: '-0.04em', lineHeight: 1, marginBottom: 8, userSelect: 'none' }}>80%</div>
+              <blockquote style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 700, fontSize: 'clamp(1.4rem, 3vw, 2.4rem)', color: '#fff', lineHeight: 1.25, margin: '0 0 12px', letterSpacing: '-0.02em' }}>
+                "80% dos projetos de IA fracassam."
+              </blockquote>
+              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 13, color: 'rgba(136,146,164,0.6)', marginBottom: 32, fontStyle: 'italic' }}>
+                — McKinsey &amp; Company. The State of AI.
+              </p>
+              <div style={{ width: 48, height: 2, background: 'linear-gradient(to right, #6C63FF, #00D4FF)', margin: '0 auto 32px' }} />
+              <p style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 600, fontSize: 'clamp(1.1rem, 2.5vw, 1.6rem)', color: '#fff', lineHeight: 1.4, marginBottom: 40 }}>
+                Seja cliente Pareto e esteja entre os <span style={{ color: '#C8F135' }}>20%</span>.
+              </p>
+              <PrimaryBtn href={CALENDLY_URL}>
+                <Calendar size={16} /> Quero meu Diagnóstico Gratuito
+              </PrimaryBtn>
+              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 12, color: 'rgba(136,146,164,0.45)', marginTop: 16 }}>
+                30 min · Sem compromisso · LGPD Compliant
+              </p>
+            </Reveal>
           </div>
         </section>
 

@@ -38,7 +38,7 @@ export function ParticleCanvas() {
       const mat = i % 5 === 0 ? purpleMat : i % 7 === 0 ? limeMat : whiteMat;
       const mesh = new THREE.Mesh(nodeGeo, mat);
       mesh.position.copy(pos);
-      scene.add(mesh);
+      // scene.add(mesh); // balls removed — lines only
     }
 
     // Edges (connect nearby nodes)
