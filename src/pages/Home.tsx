@@ -245,61 +245,62 @@ function ClientNamesBg() {
   );
 }
 
-// Logos flutuando sobre a rede neural — 50px largura, 50% opacidade, sem caixas
-// Distribuídos por toda a hero, não só no lado direito
+// Todos os 25 logos dos clientes flutuando sobre a rede neural
+// 50px largura · opacity 0.5 · sem caixas · sem mix-blend
 function FloatingLogoBg() {
-  // Índices seguros na CLIENT_LOGO_ORDER: logos com formato de texto/wordmark (sem fundo circular)
-  // CLIENT_LOGO_ORDER = [1,19,25,12,20,9,24,5,11,15,21,22,18,6,10,23,4,8,17,14,3,2,7,13,16]
-  // Excluídos: idx 21 (Spotify=redondo), idx 22 (Coinbase=redondo), idx 23 (Shopify=redondo)
-  // Seguros: 0(Itaú),1(Samsung),2(McDonald),3(NVIDIA),4(PepsiCo),5(Universal),6(NIVEA),
-  //          7(C&A),8(Greenpeace),9(Hering),10(Multiplan),11(Flamengo),12(Saint-Gobain),
-  //          13(Anima),14(REMAX),15(Publicis),16(EpicGames),17(WM McCann),18(GPA),19(Grupo Salta)
-  const safeIdxs = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19];
-  const nodes: { x: string; y: string; si: number; dur: number; delay: number; dy: number }[] = [
-    // Lado direito — toda a altura (x > 54%)
-    { x: '58%', y: '10%', si: 0,  dur: 19, delay: 0.0, dy: 12 },
-    { x: '72%', y: '7%',  si: 1,  dur: 22, delay: 1.2, dy: 8  },
-    { x: '86%', y: '14%', si: 2,  dur: 17, delay: 0.5, dy: 14 },
-    { x: '94%', y: '26%', si: 3,  dur: 24, delay: 2.1, dy: 10 },
-    { x: '63%', y: '30%', si: 4,  dur: 20, delay: 3.0, dy: 16 },
-    { x: '78%', y: '37%', si: 5,  dur: 18, delay: 0.8, dy: 11 },
-    { x: '90%', y: '43%', si: 6,  dur: 25, delay: 1.7, dy: 9  },
-    { x: '56%', y: '50%', si: 7,  dur: 21, delay: 2.6, dy: 13 },
-    { x: '70%', y: '55%', si: 8,  dur: 23, delay: 0.3, dy: 15 },
-    { x: '83%', y: '60%', si: 9,  dur: 19, delay: 1.9, dy: 10 },
-    { x: '94%', y: '66%', si: 10, dur: 22, delay: 3.4, dy: 12 },
-    { x: '61%', y: '71%', si: 11, dur: 18, delay: 0.6, dy: 8  },
-    { x: '75%', y: '77%', si: 12, dur: 26, delay: 2.3, dy: 14 },
-    { x: '89%', y: '82%', si: 13, dur: 20, delay: 1.0, dy: 11 },
-    { x: '66%', y: '19%', si: 14, dur: 16, delay: 0.4, dy: 13 },
-    { x: '80%', y: '24%', si: 15, dur: 21, delay: 2.0, dy: 9  },
-    // Lado esquerdo — apenas abaixo da área de texto (y > 72%)
-    { x: '8%',  y: '74%', si: 16, dur: 21, delay: 1.4, dy: 13 },
-    { x: '22%', y: '78%', si: 17, dur: 17, delay: 2.8, dy: 9  },
-    { x: '36%', y: '82%', si: 18, dur: 23, delay: 0.2, dy: 15 },
-    { x: '14%', y: '87%', si: 19, dur: 19, delay: 3.1, dy: 10 },
-    { x: '48%', y: '89%', si: 0,  dur: 25, delay: 1.6, dy: 12 },
-    { x: '28%', y: '92%', si: 1,  dur: 20, delay: 2.4, dy: 11 },
-    // Canto direito extra
-    { x: '97%', y: '8%',  si: 2,  dur: 20, delay: 0.9, dy: 8  },
-    { x: '97%', y: '48%', si: 3,  dur: 18, delay: 2.5, dy: 14 },
-    { x: '53%', y: '87%', si: 4,  dur: 24, delay: 3.8, dy: 10 },
+  // 25 posições cobrindo toda a hero:
+  // - lado direito (x > 54%): qualquer y
+  // - lado esquerdo (x ≤ 54%): apenas abaixo do texto (y > 73%)
+  const nodes = [
+    { x: '60%', y: '9%',  dur: 20, delay: 0.0, dy: 11 },
+    { x: '74%', y: '6%',  dur: 23, delay: 1.3, dy: 8  },
+    { x: '87%', y: '13%', dur: 18, delay: 0.6, dy: 13 },
+    { x: '95%', y: '7%',  dur: 21, delay: 2.0, dy: 9  },
+    { x: '67%', y: '21%', dur: 17, delay: 0.4, dy: 14 },
+    { x: '81%', y: '27%', dur: 25, delay: 1.8, dy: 10 },
+    { x: '92%', y: '22%', dur: 19, delay: 3.1, dy: 12 },
+    { x: '57%', y: '36%', dur: 22, delay: 0.9, dy: 15 },
+    { x: '71%', y: '40%', dur: 20, delay: 2.5, dy: 8  },
+    { x: '84%', y: '35%', dur: 24, delay: 0.2, dy: 11 },
+    { x: '96%', y: '42%', dur: 18, delay: 1.6, dy: 13 },
+    { x: '63%', y: '52%', dur: 21, delay: 3.4, dy: 9  },
+    { x: '77%', y: '57%', dur: 19, delay: 0.7, dy: 14 },
+    { x: '90%', y: '50%', dur: 26, delay: 2.2, dy: 10 },
+    { x: '56%', y: '64%', dur: 17, delay: 1.1, dy: 12 },
+    { x: '70%', y: '68%', dur: 22, delay: 0.3, dy: 8  },
+    { x: '83%', y: '63%', dur: 20, delay: 2.9, dy: 15 },
+    { x: '94%', y: '72%', dur: 23, delay: 1.5, dy: 11 },
+    { x: '65%', y: '79%', dur: 18, delay: 3.7, dy: 13 },
+    { x: '79%', y: '84%', dur: 25, delay: 0.8, dy: 9  },
+    // Lado esquerdo — abaixo do texto (y > 73%)
+    { x: '7%',  y: '76%', dur: 21, delay: 2.3, dy: 12 },
+    { x: '21%', y: '81%', dur: 19, delay: 1.0, dy: 10 },
+    { x: '35%', y: '86%', dur: 24, delay: 3.2, dy: 14 },
+    { x: '47%', y: '91%', dur: 20, delay: 0.5, dy: 8  },
+    { x: '14%', y: '91%', dur: 22, delay: 2.7, dy: 11 },
   ];
   return (
     <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden', zIndex: 4 }}>
-      {nodes.map((n, idx) => (
-        <motion.div key={idx}
+      {nodes.map((n, i) => (
+        <motion.div key={i}
           initial={{ opacity: 0 }}
           animate={{ opacity: 0.5, y: [0, -n.dy, 0] }}
           transition={{
-            opacity: { delay: n.delay + 0.8, duration: 1.1 },
+            opacity: { delay: n.delay + 0.8, duration: 1.0 },
             y: { duration: n.dur, repeat: Infinity, ease: 'easeInOut', delay: n.delay },
           }}
-          style={{ position: 'absolute', left: n.x, top: n.y, transform: 'translate(-50%, -50%)', width: 50, pointerEvents: 'none' }}>
+          style={{ position: 'absolute', left: n.x, top: n.y, transform: 'translate(-50%,-50%)', pointerEvents: 'none' }}>
           <img
-            src={CLIENT_LOGO_IMGS[safeIdxs[n.si]]}
+            src={CLIENT_LOGO_IMGS[i]}
             alt=""
-            style={{ width: 50, height: 'auto', maxHeight: 30, objectFit: 'contain', filter: 'grayscale(1) brightness(15) contrast(1.2)', mixBlendMode: 'screen', display: 'block' }}
+            style={{
+              width: 50,
+              height: 'auto',
+              maxHeight: 30,
+              objectFit: 'contain',
+              filter: 'grayscale(1) brightness(10)',
+              display: 'block',
+            }}
           />
         </motion.div>
       ))}
