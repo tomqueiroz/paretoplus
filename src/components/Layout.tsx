@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ArrowRight } from 'lucide-react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { scrollToSection, WHATSAPP_URL, CALENDLY_URL, ROUTE_PATHS, PARTNER_BADGES } from '@/lib/index';
 
 const navLinks = [
@@ -16,6 +16,7 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   const isHome = location.pathname === '/';
 
   useEffect(() => {
@@ -24,14 +25,23 @@ export function Header() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  // When arriving at home with a hash, scroll to the section
+  useEffect(() => {
+    if (isHome && location.hash) {
+      const id = location.hash.replace('#', '');
+      // Give the page a tick to mount before scrolling
+      setTimeout(() => scrollToSection(id), 80);
+    }
+  }, [isHome, location.hash]);
+
   const handleNav = (link: typeof navLinks[number]) => {
     setMenuOpen(false);
     if (link.action === 'scroll') {
       if (isHome) {
         scrollToSection(link.id!);
       } else {
-        // Navigate to home with hash anchor
-        window.location.href = `/#${link.id}`;
+        // Navigate to home and let the hash effect above scroll to section
+        navigate(`/#${link.id}`);
       }
     }
   };

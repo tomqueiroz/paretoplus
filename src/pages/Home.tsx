@@ -217,10 +217,10 @@ function LogoMarqueeRow({ logos, reverse = false, speed = 55 }: { logos: string[
         transition={{ duration: speed, repeat: Infinity, ease: 'linear' }}
         style={{ display: 'flex', gap: 0, whiteSpace: 'nowrap', alignItems: 'center' }}>
         {doubled.map((src, i) => (
-          <div key={i} style={{ flexShrink: 0, width: 140, height: 68, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 20px', margin: '0 4px', borderRadius: 10, background: 'rgba(18,21,31,0.55)', border: '1px solid rgba(255,255,255,0.05)', transition: 'all 0.25s ease', cursor: 'default' }}
+          <div key={i} style={{ flexShrink: 0, width: 220, height: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 24px', margin: '0 4px', borderRadius: 10, background: 'rgba(18,21,31,0.55)', border: '1px solid rgba(255,255,255,0.05)', transition: 'all 0.25s ease', cursor: 'default' }}
             onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = 'rgba(108,99,255,0.08)'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(108,99,255,0.22)'; }}
             onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = 'rgba(18,21,31,0.55)'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.05)'; }}>
-            <img src={src} alt="" style={{ maxWidth: 90, maxHeight: 36, width: 'auto', height: 'auto', objectFit: 'contain', filter: 'grayscale(1) brightness(1.8)', opacity: 0.5, mixBlendMode: 'screen', transition: 'opacity 0.25s ease' }}
+            <img src={src} alt="" style={{ maxWidth: 180, maxHeight: 72, width: 'auto', height: 'auto', objectFit: 'contain', filter: 'grayscale(1) brightness(1.8)', opacity: 0.5, mixBlendMode: 'screen', transition: 'opacity 0.25s ease' }}
               onMouseEnter={(e) => { (e.currentTarget as HTMLImageElement).style.opacity = '1'; }}
               onMouseLeave={(e) => { (e.currentTarget as HTMLImageElement).style.opacity = '0.5'; }} />
           </div>

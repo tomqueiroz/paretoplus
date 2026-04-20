@@ -170,8 +170,8 @@ export default function Sobre() {
             <motion.div variants={staggerItem}><EyebrowLabel>Perfil Institucional · Pareto Plus 2026</EyebrowLabel></motion.div>
             <motion.div variants={staggerItem}>
               <H1 style={{ marginBottom: 20 }}>
-                13 Anos Construindo<br />
-                <span className="hero-shimmer-text">o Futuro do Brasil.</span>
+                13 Anos Criando Soluções<br />
+                <span className="hero-shimmer-text">com IA Aplicada aos Negócios.</span>
               </H1>
             </motion.div>
             <motion.div variants={staggerItem}>
@@ -363,7 +363,7 @@ export default function Sobre() {
                 <div style={{ padding: '16px 12px', display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 72, background: 'rgba(18,21,31,0.80)', backdropFilter: 'blur(12px)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 16, transition: 'all 0.25s ease' }}
                   onMouseEnter={(e: React.MouseEvent<HTMLDivElement>) => { e.currentTarget.style.borderColor = 'rgba(108,99,255,0.3)'; e.currentTarget.style.background = 'rgba(108,99,255,0.06)'; }}
                   onMouseLeave={(e: React.MouseEvent<HTMLDivElement>) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)'; e.currentTarget.style.background = 'rgba(18,21,31,0.80)'; }}>
-                  <img src={src} alt="" style={{ maxWidth: 96, maxHeight: 36, objectFit: 'contain', filter: 'grayscale(1) brightness(1.8)', opacity: 0.5, mixBlendMode: 'screen', transition: 'opacity 0.25s' }}
+                  <img src={src} alt="" style={{ maxWidth: 192, maxHeight: 72, objectFit: 'contain', filter: 'grayscale(1) brightness(1.8)', opacity: 0.5, mixBlendMode: 'screen', transition: 'opacity 0.25s' }}
                     onMouseEnter={(e: React.MouseEvent<HTMLImageElement>) => { e.currentTarget.style.opacity = '1'; }}
                     onMouseLeave={(e: React.MouseEvent<HTMLImageElement>) => { e.currentTarget.style.opacity = '0.5'; }} />
                 </div>
