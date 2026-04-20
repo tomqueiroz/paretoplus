@@ -16,8 +16,32 @@ const staggerItem = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0
 
 const WA_LINK = 'https://api.whatsapp.com/send/?phone=5511915513210&text&type=phone_number&app_absent=0';
 // Mesma ordem da Home — premium brands first, logos circulares de plataformas ao final
-const CLIENT_LOGO_ORDER = [1,19,25,12,20,9,24,5,11,15,21,22,18,6,10,23,4,8,17,14,3,16];
-const CLIENT_LOGO_IMGS = CLIENT_LOGO_ORDER.map((n) => `/images/clients/logo_${n}.png`);
+const CLIENT_LOGO_IMGS = [
+  '/images/hero-logos/coinbase.png',
+  '/images/hero-logos/spotify.png',
+  '/images/hero-logos/stone.png',
+  '/images/hero-logos/mcd.png',
+  '/images/hero-logos/shopify.png',
+  '/images/hero-logos/flam.png',
+  '/images/hero-logos/remax.png',
+  '/images/hero-logos/epic.png',
+  '/images/hero-logos/anima.png',
+  '/images/hero-logos/sams.png',
+  '/images/hero-logos/nivea.png',
+  '/images/hero-logos/greenp.png',
+  '/images/hero-logos/cea.png',
+  '/images/hero-logos/wmc.png',
+  '/images/hero-logos/universal.png',
+  '/images/hero-logos/itau.png',
+  '/images/hero-logos/sg.png',
+  '/images/hero-logos/salta.png',
+  '/images/hero-logos/publi.png',
+  '/images/hero-logos/pepsi.png',
+  '/images/hero-logos/hering.png',
+  '/images/hero-logos/multip.png',
+  '/images/hero-logos/nvidia.png',
+  '/images/hero-logos/gpa.png',
+];
 
 function Reveal({ children, style = {} }: { children: React.ReactNode; style?: React.CSSProperties }) {
   const ref = useRef<HTMLDivElement>(null);
