@@ -204,6 +204,44 @@ function LogoMarqueeRow({ logos, reverse = false, speed = 55 }: { logos: string[
   );
 }
 
+// Client name floating tags for hero right side
+const CLIENT_NAMES = ['Itaú','Spotify','Stone','Epic Games','C&A','Animna','Shopify','WMcCann','UMG','RE/MAX','Greenpeace','NVIDIA','Coinbase','Grupo Salta','HERING','GPA','Saint-Gobain','Coinbase','Samsung','PepsiCo','Multiplan','Flamengo','Publicis','NIVEA','McDonald\'s'];
+
+function ClientNamesBg() {
+  const items = [
+    { x: '54%', y: '9%',  name: 'NVIDIA',     delay: 0,   dur: 20 },
+    { x: '72%', y: '5%',  name: 'Samsung',    delay: 1.2, dur: 18 },
+    { x: '86%', y: '12%', name: 'Spotify',    delay: 2,   dur: 22 },
+    { x: '58%', y: '28%', name: 'McDonald\'s', delay: 0.5, dur: 19 },
+    { x: '76%', y: '24%', name: 'RE/MAX',     delay: 3,   dur: 24 },
+    { x: '88%', y: '32%', name: 'Shopify',    delay: 1.5, dur: 21 },
+    { x: '52%', y: '46%', name: 'PepsiCo',    delay: 2.8, dur: 17 },
+    { x: '68%', y: '42%', name: 'HERING',     delay: 0.8, dur: 23 },
+    { x: '84%', y: '48%', name: 'Flamengo',   delay: 1.8, dur: 20 },
+    { x: '56%', y: '62%', name: 'Stone',      delay: 3.5, dur: 25 },
+    { x: '74%', y: '58%', name: 'Publicis',   delay: 1,   dur: 18 },
+    { x: '88%', y: '65%', name: 'Greenpeace', delay: 2.2, dur: 22 },
+    { x: '62%', y: '76%', name: 'Itaú',       delay: 0.3, dur: 19 },
+    { x: '80%', y: '74%', name: 'Epic Games', delay: 4,   dur: 21 },
+    { x: '50%', y: '85%', name: 'NIVEA',      delay: 1.6, dur: 23 },
+  ];
+  return (
+    <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden', zIndex: 1 }}>
+      {items.map((item, i) => (
+        <motion.div key={i}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: [0, 0.22, 0.14, 0.22], y: [0, -12, 0] }}
+          transition={{ opacity: { delay: item.delay + 0.6, duration: 2, repeat: Infinity, repeatDelay: 4 }, y: { duration: item.dur, repeat: Infinity, ease: 'easeInOut', delay: item.delay } }}
+          style={{ position: 'absolute', left: item.x, top: item.y }}>
+          <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, fontWeight: 500, color: 'rgba(200,241,53,0.55)', letterSpacing: '0.08em', whiteSpace: 'nowrap', textTransform: 'uppercase' }}>
+            {item.name}
+          </span>
+        </motion.div>
+      ))}
+    </div>
+  );
+}
+
 // Floating logos for hero background — premium social proof texture
 // No boxes — logos only, grayscale, low opacity, 250% bigger than before
 function FloatingLogoBg() {
@@ -380,8 +418,8 @@ export default function Home() {
           {/* Layer 0: hero gradient */}
           <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, #0B0D14 0%, #1A1040 50%, #0D1929 100%)' }} />
 
-          {/* Layer 1: floating client logos — premium social proof texture */}
-          <FloatingLogoBg />
+          {/* Layer 1: floating client name tags — right side social proof texture */}
+          <ClientNamesBg />
 
           {/* Layer 2: data grid */}
           <div className="data-grid" />
