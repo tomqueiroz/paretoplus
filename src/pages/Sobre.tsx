@@ -61,7 +61,7 @@ function EyebrowLabel({ children }: { children: React.ReactNode }) {
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
       <div style={{ width: 20, height: 1, background: V, opacity: 0.7 }} />
-      <Mono color={C} size={22}>{children}</Mono>
+      <Mono color={C} size={17}>{children}</Mono>
     </div>
   );
 }
@@ -165,7 +165,7 @@ export default function Sobre() {
         <div style={{ position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)', width: '45%', maxWidth: 660, pointerEvents: 'none', zIndex: 2 }}>
           <img src="/images/hero_logos_grid.png" alt="" style={{ width: '100%', height: 'auto', objectFit: 'contain', filter: 'brightness(10) grayscale(1)', opacity: 0.05, maskImage: 'linear-gradient(to left, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.25) 60%, transparent 100%)', WebkitMaskImage: 'linear-gradient(to left, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.25) 60%, transparent 100%)' }} />
         </div>
-        <div style={{ position: 'relative', zIndex: 10, maxWidth: 1280, margin: '0 auto', padding: '48px 24px 80px', width: '100%' }}>
+        <div style={{ position: 'relative', zIndex: 10, maxWidth: 1280, margin: '0 auto', padding: 'clamp(16px,4vw,48px) clamp(16px,4vw,24px) clamp(48px,8vw,80px)', width: '100%' }}>
           <motion.div initial="hidden" animate="visible" variants={stagger} style={{ maxWidth: 760 }}>
             <motion.div variants={staggerItem}><EyebrowLabel>Perfil Institucional · Pareto Plus 2026</EyebrowLabel></motion.div>
             <motion.div variants={staggerItem}>
@@ -279,7 +279,7 @@ export default function Sobre() {
       <section style={{ padding: '80px 24px', background: `${S1}80`, position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 60% 50% at 60% 50%, rgba(108,99,255,0.08) 0%, transparent 70%)', pointerEvents: 'none' }} />
         <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 64, alignItems: 'center', marginBottom: 64 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(24px,5vw,64px)', alignItems: 'center', marginBottom: 64 }} className="grid-cols-1 lg:grid-cols-2">
             <Reveal>
               <EyebrowLabel>Tess AI — Nossa Plataforma</EyebrowLabel>
               <H2 style={{ marginBottom: 20 }}>A Maior Rede de IA<br /><span style={{ color: V }}>do Mundo. Num Único Lugar.</span></H2>

@@ -38,7 +38,7 @@ function EyebrowLabel({ children }: { children: React.ReactNode }) {
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
       <div style={{ width: 20, height: 1, background: V, opacity: 0.7 }} />
-      <Mono color={C} size={22}>{children}</Mono>
+      <Mono color={C} size={17}>{children}</Mono>
     </div>
   );
 }
@@ -218,10 +218,10 @@ function LogoMarqueeRow({ logos, reverse = false, speed = 55 }: { logos: string[
         transition={{ duration: speed, repeat: Infinity, ease: 'linear' }}
         style={{ display: 'flex', gap: 0, whiteSpace: 'nowrap', alignItems: 'center' }}>
         {doubled.map((src, i) => (
-          <div key={i} style={{ flexShrink: 0, width: 220, height: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 24px', margin: '0 4px', borderRadius: 10, background: 'rgba(18,21,31,0.55)', border: '1px solid rgba(255,255,255,0.05)', transition: 'all 0.25s ease', cursor: 'default' }}
+          <div key={i} className="marquee-card" style={{ flexShrink: 0, width: 220, height: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 24px', margin: '0 4px', borderRadius: 10, background: 'rgba(18,21,31,0.55)', border: '1px solid rgba(255,255,255,0.05)', transition: 'all 0.25s ease', cursor: 'default' }}
             onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = 'rgba(108,99,255,0.08)'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(108,99,255,0.22)'; }}
             onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = 'rgba(18,21,31,0.55)'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.05)'; }}>
-            <img src={src} alt="" style={{ maxWidth: 180, maxHeight: 72, width: 'auto', height: 'auto', objectFit: 'contain', filter: 'grayscale(1) brightness(1.8)', opacity: 0.5, mixBlendMode: 'screen', transition: 'opacity 0.25s ease' }}
+            <img src={src} alt="" className="marquee-card-img" style={{ maxWidth: 180, maxHeight: 72, width: 'auto', height: 'auto', objectFit: 'contain', filter: 'grayscale(1) brightness(1.8)', opacity: 0.5, mixBlendMode: 'screen', transition: 'opacity 0.25s ease' }}
               onMouseEnter={(e) => { (e.currentTarget as HTMLImageElement).style.opacity = '1'; }}
               onMouseLeave={(e) => { (e.currentTarget as HTMLImageElement).style.opacity = '0.5'; }} />
           </div>
@@ -277,6 +277,7 @@ const HERO_LOGO_SRCS = [
 ].map((n) => `/images/hero-logos/${n}.png`);
 
 function FloatingLogoBg() {
+  // Hidden on mobile via CSS class
   const nodes = [
     // lado direito — toda a altura
     { x: '60%', y: '8%',  dur: 20, delay: 0.0, dy: 10 },
@@ -306,7 +307,7 @@ function FloatingLogoBg() {
     { x: '14%', y: '91%', dur: 22, delay: 2.7, dy: 10 },
   ];
   return (
-    <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden', zIndex: 4 }}>
+    <div className="floating-logo-bg" style={{ position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden', zIndex: 4 }}>
       {nodes.map((n, i) => (
         <motion.div key={i}
           initial={{ opacity: 0 }}
@@ -592,7 +593,7 @@ export default function Home() {
         {/* ══════════════════════════════════════════════════════
             01 · HERO — Deep Space, Neural Network BG
         ══════════════════════════════════════════════════════ */}
-        <section id="hero" style={{ position: 'relative', height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', overflow: 'hidden' }}>
+        <section id="hero" style={{ position: 'relative', minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', overflow: 'hidden' }}>
 
           {/* Layer 0: hero gradient */}
           <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, #0B0D14 0%, #1A1040 50%, #0D1929 100%)' }} />
@@ -624,7 +625,7 @@ export default function Home() {
           <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 240, background: `linear-gradient(to bottom, transparent 0%, ${BG} 100%)`, pointerEvents: 'none' }} />
 
           {/* Hero content */}
-          <motion.div style={{ opacity: heroOpacity, position: 'relative', zIndex: 10, maxWidth: 1280, margin: '0 auto', padding: '0 24px', width: '100%', paddingTop: 130 }}>
+          <motion.div style={{ opacity: heroOpacity, position: 'relative', zIndex: 10, maxWidth: 1280, margin: '0 auto', padding: '0 16px', width: '100%', paddingTop: 'clamp(90px, 18vw, 130px)' }}>
             <div style={{ maxWidth: 760 }}>
 
               {/* Eyebrow */}
@@ -647,7 +648,7 @@ export default function Home() {
 
               {/* CTAs */}
               <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6, duration: 0.6, ease }}
-                style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center', marginBottom: 32 }}>
+                style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center', marginBottom: 32 }} className="cta-row">
                 <PrimaryBtn href={CALENDLY_URL}>
                   <Calendar size={16} /> Agendar com Especialista
                 </PrimaryBtn>
@@ -660,7 +661,7 @@ export default function Home() {
 
               {/* Trust badges */}
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.85 }}
-                style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }} className="badges-row">
                 {['#6 G2 Best AI 2024', '16 Google Awards', '#1 Brasil Marketing IA', 'US$5M Seed 2025'].map((b) => (
                   <div key={b} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '5px 12px', borderRadius: 99, background: 'rgba(108,99,255,0.08)', border: '1px solid rgba(108,99,255,0.2)' }}>
                     <div style={{ width: 5, height: 5, borderRadius: '50%', background: C }} />
@@ -802,7 +803,7 @@ export default function Home() {
         <section id="sobre-pareto" style={{ padding: '80px 24px 72px', position: 'relative', overflow: 'hidden', background: 'rgba(18,21,31,0.55)' }}>
           <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 65% 55% at 80% 50%, rgba(108,99,255,0.09) 0%, transparent 70%)', pointerEvents: 'none' }} />
           <div className="data-grid" />
-          <div style={{ maxWidth: 1280, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 64, alignItems: 'center' }} className="grid-cols-1 lg:grid-cols-2">
+          <div style={{ maxWidth: 1280, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(24px,5vw,64px)', alignItems: 'center' }} className="grid-cols-1 lg:grid-cols-2">
 
             {/* Left — texto */}
             <Reveal>
@@ -816,7 +817,7 @@ export default function Home() {
               </Body>
 
               {/* 4 ícones Premium — o que a Pareto faz */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 32 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 16, marginBottom: 32 }}>
                 {[
                   { icon: '⚙️', label: 'Automação de Processos', desc: 'RPA, workflows e integrações 24/7 sem headcount extra' },
                   { icon: '🤖', label: 'AI Workers', desc: 'Colaboradores digitais com funções e reporte real' },
@@ -853,7 +854,7 @@ export default function Home() {
               </GlassCard>
 
               {/* 3 mini stats */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: 12 }}>
                 {[
                   { v: '3×',   l: 'Custo real por colaborador',     c: V },
                   { v: '~40%', l: 'Tempo em tarefas repetitivas',   c: C },
@@ -1078,7 +1079,7 @@ export default function Home() {
             </Reveal>
 
             {/* Tess AI */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 64, alignItems: 'center' }} className="grid-cols-1 lg:grid-cols-2">
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(24px,5vw,64px)', alignItems: 'center' }} className="grid-cols-1 lg:grid-cols-2">
               <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={scaleIn}>
                 <div style={{ position: 'relative', borderRadius: 16, overflow: 'hidden', border: '1px solid rgba(108,99,255,0.2)' }}>
                   <img src="/images/tess_ai_illustration.png" alt="Tess AI" style={{ width: '100%', display: 'block', filter: 'grayscale(0.55) contrast(1.08)' }} loading="lazy" />
@@ -1101,7 +1102,7 @@ export default function Home() {
                 </blockquote>
                 <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 12, color: 'rgba(136,146,164,0.55)', marginTop: 8, marginBottom: 0 }}>— Pareto · Tess AI Platform Philosophy</p>
               </div>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(110px, 1fr))', gap: 12 }}>
                   {[['#6', 'Global G2 2024'], ['+200', 'Modelos de IA'], ['+2M', 'Usuários Ativos']].map(([v, l]) => (
                     <GlassCard key={l} style={{ padding: '16px 12px', textAlign: 'center' }}>
                       <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '1.4rem', fontWeight: 600, color: C, marginBottom: 4 }}>{v}</div>
@@ -1221,7 +1222,7 @@ export default function Home() {
         <section id="parceria" style={{ padding: '96px 24px', position: 'relative', background: `${S1}60` }}>
           <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(ellipse 55% 45% at 15% 50%, rgba(108,99,255,0.07) 0%, transparent 70%)`, pointerEvents: 'none' }} />
           <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'center' }} className="grid-cols-1 lg:grid-cols-2">
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(24px,5vw,80px)', alignItems: 'center' }} className="grid-cols-1 lg:grid-cols-2">
 
               <Reveal>
                 <EyebrowLabel>O que você está contratando</EyebrowLabel>

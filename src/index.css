@@ -303,6 +303,37 @@ body {
 /* ── Mobile ── */
 @media (max-width: 768px) {
   html { font-size: 90%; }
+
+  /* Logos flutuantes somem em mobile */
+  .floating-logo-bg { display: none !important; }
+
+  /* Marquee cards menores em mobile */
+  .marquee-card { width: 140px !important; height: 70px !important; padding: 0 12px !important; }
+  .marquee-card-img { max-width: 110px !important; max-height: 46px !important; }
+
+  /* Grids 2 colunas → 1 coluna em mobile */
+  .grid-cols-1.lg\:grid-cols-2 { grid-template-columns: 1fr !important; gap: 32px !important; }
+
+  /* Form inputs — evitar zoom iOS */
+  input[type="text"], input[type="email"], input[type="tel"], textarea, select {
+    font-size: 16px !important;
+  }
+
+  /* Sections — padding lateral */
+  section { padding-left: 16px !important; padding-right: 16px !important; }
+
+  /* Badges row — wrap e centralizar */
+  .badges-row { flex-wrap: wrap !important; justify-content: center !important; gap: 8px !important; }
+
+  /* Hero padding top menor */
+  #hero { padding-bottom: 60px; }
+
+  /* Testimonials / cards — full width */
+  .glass-card { padding: 20px 16px !important; }
+
+  /* CTAs em coluna em mobile */
+  .cta-row { flex-direction: column !important; align-items: stretch !important; width: 100%; }
+  .cta-row a, .cta-row button { width: 100% !important; text-align: center !important; justify-content: center !important; }
 }
 
 /* ── Tailwind base overrides for dark ── */
