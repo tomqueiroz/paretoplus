@@ -54,7 +54,7 @@ function Reveal({ children, style = {} }: { children: React.ReactNode; style?: R
 }
 
 function Mono({ children, color = C, size = 12 }: { children: React.ReactNode; color?: string; size?: number }) {
-  return <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: size, fontWeight: 500, color, letterSpacing: '0.04em' }}>{children}</span>;
+  return <span className="eyebrow-text" style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: size, fontWeight: 500, color, letterSpacing: '0.04em' }}>{children}</span>;
 }
 
 function EyebrowLabel({ children }: { children: React.ReactNode }) {

@@ -28,7 +28,7 @@ const scaleIn = { hidden: { opacity: 0, scale: 0.94 }, visible: { opacity: 1, sc
 
 function Mono({ children, color = C, size = 12 }: { children: React.ReactNode; color?: string; size?: number }) {
   return (
-    <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: size, fontWeight: 500, color, letterSpacing: '0.04em' }}>
+    <span className="eyebrow-text" style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: size, fontWeight: 500, color, letterSpacing: '0.04em' }}>
       {children}
     </span>
   );

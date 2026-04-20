@@ -331,7 +331,8 @@ body {
   /* Testimonials / cards — full width */
   .glass-card { padding: 20px 16px !important; }
 
-  /* CTAs em coluna em mobile */
+  /* EyebrowLabel — tracking menor em mobile */
+  .eyebrow-text { letter-spacing: 0.08em !important; font-size: 13px !important; white-space: normal !important; }
   .cta-row { flex-direction: column !important; align-items: stretch !important; width: 100%; }
   .cta-row a, .cta-row button { width: 100% !important; text-align: center !important; justify-content: center !important; }
 }
