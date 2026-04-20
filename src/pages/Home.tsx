@@ -248,41 +248,43 @@ function ClientNamesBg() {
 // Logos flutuando sobre a rede neural — 50px largura, 50% opacidade, sem caixas
 // Distribuídos por toda a hero, não só no lado direito
 function FloatingLogoBg() {
-  // 25 logos espalhados pela hero inteira — evitando a área de texto (x < 55% para y < 70%)
+  // 25 logos espalhados pela hero — lado esquerdo só abaixo da área de texto (y > 72%)
+  // Usa CLIENT_LOGO_ORDER excluindo logos com fundo circular (Coinbase idx 22, TikTok não está na lista)
+  // Índices seguros (logos com fundo transparente/branco): 0..18 da ordem definida
   const nodes = [
-    // Lado direito — toda a altura
-    { x: '58%', y: '12%', i: 0,  dur: 19, delay: 0.0, dy: 12 },
-    { x: '72%', y: '8%',  i: 1,  dur: 22, delay: 1.2, dy: 8  },
-    { x: '86%', y: '15%', i: 2,  dur: 17, delay: 0.5, dy: 14 },
-    { x: '94%', y: '28%', i: 3,  dur: 24, delay: 2.1, dy: 10 },
-    { x: '63%', y: '32%', i: 4,  dur: 20, delay: 3.0, dy: 16 },
-    { x: '78%', y: '38%', i: 5,  dur: 18, delay: 0.8, dy: 11 },
-    { x: '90%', y: '44%', i: 6,  dur: 25, delay: 1.7, dy: 9  },
-    { x: '56%', y: '52%', i: 7,  dur: 21, delay: 2.6, dy: 13 },
-    { x: '70%', y: '56%', i: 8,  dur: 23, delay: 0.3, dy: 15 },
+    // Lado direito — toda a altura (x > 54%)
+    { x: '58%', y: '10%', i: 0,  dur: 19, delay: 0.0, dy: 12 },
+    { x: '72%', y: '7%',  i: 1,  dur: 22, delay: 1.2, dy: 8  },
+    { x: '86%', y: '14%', i: 2,  dur: 17, delay: 0.5, dy: 14 },
+    { x: '94%', y: '26%', i: 3,  dur: 24, delay: 2.1, dy: 10 },
+    { x: '63%', y: '30%', i: 4,  dur: 20, delay: 3.0, dy: 16 },
+    { x: '78%', y: '37%', i: 5,  dur: 18, delay: 0.8, dy: 11 },
+    { x: '90%', y: '43%', i: 6,  dur: 25, delay: 1.7, dy: 9  },
+    { x: '56%', y: '50%', i: 7,  dur: 21, delay: 2.6, dy: 13 },
+    { x: '70%', y: '55%', i: 8,  dur: 23, delay: 0.3, dy: 15 },
     { x: '83%', y: '60%', i: 9,  dur: 19, delay: 1.9, dy: 10 },
-    { x: '95%', y: '68%', i: 10, dur: 22, delay: 3.4, dy: 12 },
-    { x: '61%', y: '72%', i: 11, dur: 18, delay: 0.6, dy: 8  },
-    { x: '75%', y: '78%', i: 12, dur: 26, delay: 2.3, dy: 14 },
+    { x: '94%', y: '66%', i: 10, dur: 22, delay: 3.4, dy: 12 },
+    { x: '61%', y: '71%', i: 11, dur: 18, delay: 0.6, dy: 8  },
+    { x: '75%', y: '77%', i: 12, dur: 26, delay: 2.3, dy: 14 },
     { x: '89%', y: '82%', i: 13, dur: 20, delay: 1.0, dy: 11 },
-    // Lado esquerdo — apenas abaixo da área de texto (y > 68%)
-    { x: '8%',  y: '70%', i: 14, dur: 21, delay: 1.4, dy: 13 },
-    { x: '22%', y: '75%', i: 15, dur: 17, delay: 2.8, dy: 9  },
-    { x: '36%', y: '80%', i: 16, dur: 23, delay: 0.2, dy: 15 },
-    { x: '14%', y: '85%', i: 17, dur: 19, delay: 3.1, dy: 10 },
-    { x: '48%', y: '88%', i: 18, dur: 25, delay: 1.6, dy: 12 },
-    // Extrema direita / cantos
-    { x: '97%', y: '10%', i: 19, dur: 20, delay: 0.9, dy: 8  },
-    { x: '97%', y: '50%', i: 20, dur: 18, delay: 2.5, dy: 14 },
-    { x: '97%', y: '88%', i: 21, dur: 22, delay: 1.1, dy: 11 },
-    { x: '53%', y: '90%', i: 22, dur: 24, delay: 3.8, dy: 10 },
-    { x: '66%', y: '20%', i: 23, dur: 16, delay: 0.4, dy: 13 },
-    { x: '80%', y: '25%', i: 24, dur: 21, delay: 2.0, dy: 9  },
+    { x: '66%', y: '19%', i: 14, dur: 16, delay: 0.4, dy: 13 },
+    { x: '80%', y: '24%', i: 15, dur: 21, delay: 2.0, dy: 9  },
+    // Lado esquerdo — apenas abaixo da área de texto (y > 72%)
+    { x: '8%',  y: '74%', i: 16, dur: 21, delay: 1.4, dy: 13 },
+    { x: '22%', y: '78%', i: 17, dur: 17, delay: 2.8, dy: 9  },
+    { x: '36%', y: '82%', i: 18, dur: 23, delay: 0.2, dy: 15 },
+    { x: '14%', y: '87%', i: 0,  dur: 19, delay: 3.1, dy: 10 },
+    { x: '48%', y: '89%', i: 1,  dur: 25, delay: 1.6, dy: 12 },
+    { x: '28%', y: '92%', i: 2,  dur: 20, delay: 2.4, dy: 11 },
+    // Canto direito extra
+    { x: '97%', y: '8%',  i: 3,  dur: 20, delay: 0.9, dy: 8  },
+    { x: '97%', y: '48%', i: 4,  dur: 18, delay: 2.5, dy: 14 },
+    { x: '53%', y: '87%', i: 5,  dur: 24, delay: 3.8, dy: 10 },
   ];
   return (
     <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden', zIndex: 4 }}>
-      {nodes.map((n) => (
-        <motion.div key={n.i}
+      {nodes.map((n, idx) => (
+        <motion.div key={idx}
           initial={{ opacity: 0 }}
           animate={{ opacity: 0.5, y: [0, -n.dy, 0] }}
           transition={{
@@ -303,8 +305,9 @@ function FloatingLogoBg() {
             style={{
               width: 50,
               height: 'auto',
+              maxHeight: 32,
               objectFit: 'contain',
-              filter: 'grayscale(1) brightness(4)',
+              filter: 'grayscale(1) brightness(6) contrast(0.8)',
               mixBlendMode: 'screen',
               display: 'block',
             }}
