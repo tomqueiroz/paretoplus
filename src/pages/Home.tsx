@@ -221,7 +221,8 @@ function FloatingLogoBg() {
     { x: '64%',  y: '80%', w: 95,  delay: 2.8, dur: 22 },
     { x: '90%',  y: '62%', w: 110, delay: 0.5, dur: 26 },
   ];
-  const picks = [0,2,5,7,9,11,14,16,18,20,22,24];
+  // Picks: excludes logo_1 (Itaú - dark bg), uses only white-bg logos
+  const picks = [1,3,4,6,8,10,12,15,17,19,21,23];
   return (
     <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden', zIndex: 1 }}>
       {positions.map((p, i) => (
