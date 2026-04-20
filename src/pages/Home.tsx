@@ -298,7 +298,7 @@ function FloatingLogoBg() {
               height: 'auto',
               maxHeight: 30,
               objectFit: 'contain',
-              filter: 'grayscale(1) brightness(10)',
+              filter: 'grayscale(1) brightness(4)',
               display: 'block',
             }}
           />
