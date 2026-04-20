@@ -433,6 +433,43 @@ function ExitPopup({ onClose }: { onClose: () => void }) {
 }
 
 // ─── CONTACT FORM → Supabase ──────────────────────────────────────────────────
+function CasesPopupButton() {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <button onClick={() => setOpen(true)} style={{
+        display: 'inline-flex', alignItems: 'center', gap: 8,
+        padding: '12px 28px', borderRadius: 8, border: '1px solid rgba(200,241,53,0.4)',
+        background: 'rgba(200,241,53,0.08)', color: '#C8F135',
+        fontFamily: "'Inter', sans-serif", fontWeight: 700, fontSize: 14,
+        letterSpacing: '0.02em', cursor: 'pointer', transition: 'all 0.22s ease',
+      }}
+        onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = 'rgba(200,241,53,0.18)'; (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'; }}
+        onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = 'rgba(200,241,53,0.08)'; (e.currentTarget as HTMLElement).style.transform = ''; }}>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8F135" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Ver todos os Cases
+      </button>
+      <AnimatePresence>
+        {open && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            style={{ position: 'fixed', inset: 0, zIndex: 10000, background: 'rgba(0,0,0,0.88)', backdropFilter: 'blur(12px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16 }}
+            onClick={() => setOpen(false)}>
+            <motion.div initial={{ scale: 0.92, opacity: 0, y: 24 }} animate={{ scale: 1, opacity: 1, y: 0 }} exit={{ scale: 0.92, opacity: 0 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+              onClick={(e) => e.stopPropagation()}
+              style={{ position: 'relative', width: '100%', maxWidth: 1100, height: '85vh', borderRadius: 16, overflow: 'hidden', border: '1px solid rgba(200,241,53,0.25)', boxShadow: '0 0 80px rgba(200,241,53,0.12)' }}>
+              <button onClick={() => setOpen(false)} style={{ position: 'absolute', top: 14, right: 14, zIndex: 10, background: 'rgba(0,0,0,0.7)', border: '1px solid rgba(255,255,255,0.15)', borderRadius: 8, color: '#fff', cursor: 'pointer', padding: '6px 12px', fontFamily: "'Inter', sans-serif", fontSize: 13, display: 'flex', alignItems: 'center', gap: 6 }}>
+                <X size={16} /> Fechar
+              </button>
+              <iframe src="https://cases.pareto.io/" title="Pareto AI Cases" style={{ width: '100%', height: '100%', border: 'none', background: '#fff' }} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope" />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+}
+
 function ContactForm() {
   const [form, setForm] = useState({ name: '', company: '', email: '', phone: '', challenge: '' });
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
@@ -625,7 +662,7 @@ export default function Home() {
           <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 240, background: `linear-gradient(to bottom, transparent 0%, ${BG} 100%)`, pointerEvents: 'none' }} />
 
           {/* Hero content */}
-          <motion.div style={{ opacity: heroOpacity, position: 'relative', zIndex: 10, maxWidth: 1280, margin: '0 auto', padding: '0 16px', width: '100%', paddingTop: 'clamp(90px, 18vw, 130px)' }}>
+          <motion.div style={{ opacity: heroOpacity, position: 'relative', zIndex: 10, maxWidth: 1280, margin: '0 auto', padding: '0 16px', width: '100%', paddingTop: 'clamp(90px, 18vw, 130px)', paddingBottom: 'clamp(48px,8vw,80px)' }}>
             <div style={{ maxWidth: 760 }}>
 
               {/* Eyebrow */}
@@ -1079,14 +1116,7 @@ export default function Home() {
             </Reveal>
 
             {/* Tess AI */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(24px,5vw,64px)', alignItems: 'center' }} className="grid-cols-1 lg:grid-cols-2">
-              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={scaleIn}>
-                <div style={{ position: 'relative', borderRadius: 16, overflow: 'hidden', border: '1px solid rgba(108,99,255,0.2)' }}>
-                  <img src="/images/tess_ai_illustration.png" alt="Tess AI" style={{ width: '100%', display: 'block', filter: 'grayscale(0.55) contrast(1.08)' }} loading="lazy" />
-                  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(108,99,255,0.22) 0%, rgba(0,212,255,0.08) 100%)', pointerEvents: 'none' }} />
-                  <div style={{ position: 'absolute', inset: 0, boxShadow: 'inset 0 0 50px rgba(108,99,255,0.22)', pointerEvents: 'none' }} />
-                </div>
-              </motion.div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
               <Reveal>
                 <EyebrowLabel>Plataforma Proprietária</EyebrowLabel>
                 <H2 style={{ marginBottom: 18 }}>Tess AI: acima do ChatGPT<br /><span style={{ color: V }}>no ranking global.</span></H2>
@@ -1111,6 +1141,14 @@ export default function Home() {
                   ))}
                 </div>
               </Reveal>
+              {/* Tess AI image — below text, full width */}
+              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={scaleIn}>
+                <div style={{ position: 'relative', borderRadius: 16, overflow: 'hidden', border: '1px solid rgba(108,99,255,0.2)', maxWidth: 720, margin: '0 auto' }}>
+                  <img src="/images/tess_ai_illustration.png" alt="Tess AI" style={{ width: '100%', display: 'block', filter: 'grayscale(0.55) contrast(1.08)' }} loading="lazy" />
+                  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(108,99,255,0.22) 0%, rgba(0,212,255,0.08) 100%)', pointerEvents: 'none' }} />
+                  <div style={{ position: 'absolute', inset: 0, boxShadow: 'inset 0 0 50px rgba(108,99,255,0.22)', pointerEvents: 'none' }} />
+                </div>
+              </motion.div>
             </div>
           </div>
         </section>
@@ -1123,8 +1161,8 @@ export default function Home() {
             <Body muted style={{ marginTop: 6 }}>As marcas mais exigentes do mundo escolheram a Pareto.</Body>
           </Reveal>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-            <LogoMarqueeRow logos={CLIENT_LOGO_IMGS.slice(0, half)} speed={60} />
-            <LogoMarqueeRow logos={CLIENT_LOGO_IMGS.slice(half)} reverse speed={50} />
+            <LogoMarqueeRow logos={CLIENT_LOGO_IMGS.slice(0, half)} speed={30} />
+            <LogoMarqueeRow logos={CLIENT_LOGO_IMGS.slice(half)} reverse speed={25} />
           </div>
         </section>
 
@@ -1200,9 +1238,11 @@ export default function Home() {
             </motion.div>
 
             <Reveal style={{ textAlign: 'center' }}>
-              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, color: 'rgba(136,146,164,0.55)', maxWidth: 520, margin: '0 auto 8px', lineHeight: 1.7, fontStyle: 'italic' }}>
+              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, color: 'rgba(136,146,164,0.55)', maxWidth: 520, margin: '0 auto 24px', lineHeight: 1.7, fontStyle: 'italic' }}>
                 "Esses resultados não são exceção. São o que acontece quando IA é implementada com metodologia correta, dados reais e equipe sênior dedicada."
               </p>
+              {/* Cases popup button */}
+              <CasesPopupButton />
             </Reveal>
           </div>
         </section>
