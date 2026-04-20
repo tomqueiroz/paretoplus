@@ -180,7 +180,10 @@ function IconBadge({ icon: Icon, color = V }: { icon: React.ElementType; color?:
 }
 
 // 25 client logo paths
-const CLIENT_LOGO_IMGS = Array.from({ length: 25 }, (_, i) => `/images/clients/logo_${i + 1}.png`);
+// Logos ordenados por prestígio — sem logos circulares de plataformas nas primeiras posições
+// Ordem: premium brands first, tech/platform logos ao final
+const CLIENT_LOGO_ORDER = [1,19,25,12,20,9,24,5,11,15,21,22,18,6,10,23,4,8,17,14,3,2,7,13,16];
+const CLIENT_LOGO_IMGS = CLIENT_LOGO_ORDER.map((n) => `/images/clients/logo_${n}.png`);
 
 function LogoMarqueeRow({ logos, reverse = false, speed = 55 }: { logos: string[]; reverse?: boolean; speed?: number }) {
   const doubled = [...logos, ...logos];
@@ -586,6 +589,15 @@ export default function Home() {
           <div style={{ position: 'absolute', bottom: '15%', left: '5%', width: 420, height: 420, borderRadius: '50%', background: 'radial-gradient(ellipse, rgba(0,212,255,0.08) 0%, transparent 70%)', pointerEvents: 'none' }} />
           <div style={{ position: 'absolute', top: '40%', left: '35%', width: 360, height: 360, borderRadius: '50%', background: 'radial-gradient(ellipse, rgba(255,107,53,0.05) 0%, transparent 70%)', pointerEvents: 'none' }} />
 
+          {/* Layer 5: A10 logo grid — right side, white semi-transparent, behind neural lines */}
+          <div style={{ position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)', width: '48%', maxWidth: 720, pointerEvents: 'none', zIndex: 2 }}>
+            <img
+              src="/images/hero_logos_grid.png"
+              alt=""
+              style={{ width: '100%', height: 'auto', objectFit: 'contain', filter: 'brightness(10) grayscale(1)', opacity: 0.055, maskImage: 'linear-gradient(to left, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 60%, transparent 100%)', WebkitMaskImage: 'linear-gradient(to left, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 60%, transparent 100%)' }}
+            />
+          </div>
+
           {/* Fade to next section */}
           <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 240, background: `linear-gradient(to bottom, transparent 0%, ${BG} 100%)`, pointerEvents: 'none' }} />
 
@@ -598,12 +610,10 @@ export default function Home() {
                 <EyebrowLabel>IA Customizada para cada Negócio</EyebrowLabel>
               </motion.div>
 
-              {/* H1 — AI First. como H2 degradê animado + frase principal branca */}
+              {/* H1 — AI First. GRANDE | H2 — 2026... MENOR */}
               <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.28, duration: 0.85, ease }}>
-                <H1 style={{ marginBottom: 24 }}>
-                  <h2 style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 800, fontSize: 'clamp(1.4rem, 2.8vw, 2.2rem)', letterSpacing: '-0.02em', lineHeight: 1.1, margin: '0 0 6px 0', display: 'block' }} className="hero-shimmer-text">AI First.</h2>
-                  <span style={{ color: '#fff', display: 'block', fontWeight: 900, letterSpacing: '-0.03em', lineHeight: 1.05 }}>2026 é o último ano<br />em que isso ainda é opcional.</span>
-                </H1>
+                <h1 className="hero-shimmer-text" style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 900, fontSize: 'clamp(4rem, 9vw, 7.5rem)', letterSpacing: '-0.04em', lineHeight: 0.92, margin: '0 0 18px 0', display: 'block' }}>AI First.</h1>
+                <h2 style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 800, fontSize: 'clamp(1.2rem, 2.4vw, 2rem)', letterSpacing: '-0.025em', lineHeight: 1.12, margin: '0 0 24px 0', color: '#fff' }}>2026 é o último ano<br />em que isso ainda é opcional.</h2>
               </motion.div>
 
               {/* Subline */}

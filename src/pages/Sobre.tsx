@@ -15,7 +15,9 @@ const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.1 } } 
 const staggerItem = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease } } };
 
 const WA_LINK = 'https://api.whatsapp.com/send/?phone=5511915513210&text&type=phone_number&app_absent=0';
-const CLIENT_LOGO_IMGS = Array.from({ length: 25 }, (_, i) => `/images/clients/logo_${i + 1}.png`);
+// Mesma ordem da Home — premium brands first, logos circulares de plataformas ao final
+const CLIENT_LOGO_ORDER = [1,19,25,12,20,9,24,5,11,15,21,22,18,6,10,23,4,8,17,14,3,2,7,13,16];
+const CLIENT_LOGO_IMGS = CLIENT_LOGO_ORDER.map((n) => `/images/clients/logo_${n}.png`);
 
 function Reveal({ children, style = {} }: { children: React.ReactNode; style?: React.CSSProperties }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -135,6 +137,10 @@ export default function Sobre() {
         <div className="data-grid" />
         <div style={{ position: 'absolute', top: '20%', right: '10%', width: 480, height: 480, borderRadius: '50%', background: 'radial-gradient(ellipse, rgba(108,99,255,0.13) 0%, transparent 70%)', pointerEvents: 'none' }} />
         <div style={{ position: 'absolute', bottom: '10%', left: '5%', width: 360, height: 360, borderRadius: '50%', background: 'radial-gradient(ellipse, rgba(0,212,255,0.07) 0%, transparent 70%)', pointerEvents: 'none' }} />
+        {/* A10 logo grid — right side, white semi-transparent */}
+        <div style={{ position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)', width: '45%', maxWidth: 660, pointerEvents: 'none', zIndex: 2 }}>
+          <img src="/images/hero_logos_grid.png" alt="" style={{ width: '100%', height: 'auto', objectFit: 'contain', filter: 'brightness(10) grayscale(1)', opacity: 0.05, maskImage: 'linear-gradient(to left, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.25) 60%, transparent 100%)', WebkitMaskImage: 'linear-gradient(to left, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.25) 60%, transparent 100%)' }} />
+        </div>
         <div style={{ position: 'relative', zIndex: 10, maxWidth: 1280, margin: '0 auto', padding: '48px 24px 80px', width: '100%' }}>
           <motion.div initial="hidden" animate="visible" variants={stagger} style={{ maxWidth: 760 }}>
             <motion.div variants={staggerItem}><EyebrowLabel>Perfil Institucional · Pareto Plus 2026</EyebrowLabel></motion.div>

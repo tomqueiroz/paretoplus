@@ -8,7 +8,7 @@ const navLinks = [
   { label: 'O Problema',  action: 'scroll', id: 'problema' },
   { label: 'Soluções',    action: 'scroll', id: 'solucoes' },
   { label: 'Resultados',  action: 'scroll', id: 'resultados' },
-  { label: 'Sobre',       action: 'link',   href: ROUTE_PATHS.SOBRE },
+  { label: 'Por que a Pareto?', action: 'link', href: ROUTE_PATHS.SOBRE },
 ];
 const WA_LINK = 'https://api.whatsapp.com/send/?phone=5511915513210&text&type=phone_number&app_absent=0';
 
@@ -204,7 +204,7 @@ export function Footer() {
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 10 }}>
               {[
                 { label: 'Home',              to: ROUTE_PATHS.HOME, internal: true },
-                { label: 'Sobre a Pareto',    to: ROUTE_PATHS.SOBRE, internal: true },
+                { label: 'Por que a Pareto?',    to: ROUTE_PATHS.SOBRE, internal: true },
                 { label: 'Privacidade',       to: ROUTE_PATHS.PRIVACIDADE, internal: true },
                 { label: 'Tess AI',           href: 'https://tess.im', external: true },
                 { label: 'pareto.io',         href: 'https://pareto.io', external: true },
