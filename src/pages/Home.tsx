@@ -174,20 +174,60 @@ function IconBadge({ icon: Icon, color = V }: { icon: React.ElementType; color?:
   );
 }
 
-function MarqueeRow({ items, reverse = false }: { items: string[]; reverse?: boolean }) {
-  const doubled = [...items, ...items];
+// 25 client logo paths
+const CLIENT_LOGO_IMGS = Array.from({ length: 25 }, (_, i) => `/images/clients/logo_${i + 1}.png`);
+
+function LogoMarqueeRow({ logos, reverse = false, speed = 55 }: { logos: string[]; reverse?: boolean; speed?: number }) {
+  const doubled = [...logos, ...logos];
   return (
-    <div style={{ overflow: 'hidden', maskImage: 'linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)' }}>
+    <div style={{ overflow: 'hidden', maskImage: 'linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)', WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)' }}>
       <motion.div
         animate={{ x: reverse ? ['0%', '50%'] : ['0%', '-50%'] }}
-        transition={{ duration: 40, repeat: Infinity, ease: 'linear' }}
-        style={{ display: 'flex', gap: 16, whiteSpace: 'nowrap' }}>
-        {doubled.map((item, i) => (
-          <div key={i} style={{ flexShrink: 0, padding: '8px 20px', borderRadius: 8, fontSize: 13, fontFamily: "'Inter', sans-serif", fontWeight: 500, background: 'rgba(18,21,31,0.7)', border: '1px solid rgba(255,255,255,0.05)', color: '#8892A4' }}>
-            {item}
+        transition={{ duration: speed, repeat: Infinity, ease: 'linear' }}
+        style={{ display: 'flex', gap: 0, whiteSpace: 'nowrap', alignItems: 'center' }}>
+        {doubled.map((src, i) => (
+          <div key={i} style={{ flexShrink: 0, width: 140, height: 68, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 20px', margin: '0 4px', borderRadius: 10, background: 'rgba(18,21,31,0.55)', border: '1px solid rgba(255,255,255,0.05)', transition: 'all 0.25s ease', cursor: 'default' }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = 'rgba(108,99,255,0.08)'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(108,99,255,0.22)'; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = 'rgba(18,21,31,0.55)'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.05)'; }}>
+            <img src={src} alt="" style={{ maxWidth: 90, maxHeight: 36, width: 'auto', height: 'auto', objectFit: 'contain', filter: 'brightness(0) invert(1)', opacity: 0.42, transition: 'opacity 0.25s ease' }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLImageElement).style.opacity = '0.85'; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLImageElement).style.opacity = '0.42'; }} />
           </div>
         ))}
       </motion.div>
+    </div>
+  );
+}
+
+// Floating logos for hero background — premium social proof texture
+function FloatingLogoBg() {
+  const positions = [
+    { x: '8%',  y: '18%', size: 52, delay: 0,   dur: 18 },
+    { x: '22%', y: '72%', size: 44, delay: 2.5, dur: 22 },
+    { x: '38%', y: '12%', size: 48, delay: 1,   dur: 20 },
+    { x: '55%', y: '65%', size: 40, delay: 3,   dur: 25 },
+    { x: '68%', y: '20%', size: 56, delay: 0.8, dur: 19 },
+    { x: '80%', y: '55%', size: 44, delay: 1.8, dur: 21 },
+    { x: '90%', y: '30%', size: 48, delay: 4,   dur: 23 },
+    { x: '14%', y: '45%', size: 40, delay: 2,   dur: 20 },
+    { x: '48%', y: '80%', size: 44, delay: 3.5, dur: 24 },
+    { x: '72%', y: '78%', size: 40, delay: 1.2, dur: 18 },
+    { x: '32%', y: '40%', size: 36, delay: 2.8, dur: 22 },
+    { x: '88%', y: '10%', size: 42, delay: 0.5, dur: 26 },
+  ];
+  // Pick logos by index spread across the 25
+  const picks = [0,2,5,7,9,11,14,16,18,20,22,24];
+  return (
+    <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden', zIndex: 1 }}>
+      {positions.map((p, i) => (
+        <motion.div key={i}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1, y: [0, -14, 0] }}
+          transition={{ opacity: { delay: p.delay + 1.2, duration: 0.8 }, y: { duration: p.dur, repeat: Infinity, ease: 'easeInOut', delay: p.delay } }}
+          style={{ position: 'absolute', left: p.x, top: p.y, width: p.size, height: p.size, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 10, background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.04)', backdropFilter: 'blur(4px)' }}>
+          <img src={CLIENT_LOGO_IMGS[picks[i]]} alt="" style={{ maxWidth: p.size * 0.65, maxHeight: p.size * 0.45, objectFit: 'contain', filter: 'brightness(0) invert(1)', opacity: 0.18 }} />
+        </motion.div>
+      ))}
     </div>
   );
 }
@@ -314,8 +354,7 @@ export default function Home() {
   }, [onMouseLeave]);
   const closeExit = () => { sessionStorage.setItem('pareto_exit', '1'); setShowExit(false); };
 
-  const clients = CLIENT_LOGOS.map((c) => c.name);
-  const half = Math.ceil(clients.length / 2);
+  const half = Math.ceil(CLIENT_LOGO_IMGS.length / 2);
 
   return (
     <>
@@ -331,8 +370,8 @@ export default function Home() {
           {/* Layer 0: hero gradient */}
           <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, #0B0D14 0%, #1A1040 50%, #0D1929 100%)' }} />
 
-          {/* Layer 1: starfield dots */}
-          <div className="starfield" />
+          {/* Layer 1: floating client logos — premium social proof texture */}
+          <FloatingLogoBg />
 
           {/* Layer 2: data grid */}
           <div className="data-grid" />
@@ -848,9 +887,9 @@ export default function Home() {
             <Mono color="rgba(108,99,255,0.55)" size={10}>Portfólio</Mono>
             <Body muted style={{ marginTop: 6 }}>As marcas mais exigentes do mundo escolheram a Pareto.</Body>
           </Reveal>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            <MarqueeRow items={clients.slice(0, half)} />
-            <MarqueeRow items={clients.slice(half)} reverse />
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <LogoMarqueeRow logos={CLIENT_LOGO_IMGS.slice(0, half)} speed={60} />
+            <LogoMarqueeRow logos={CLIENT_LOGO_IMGS.slice(half)} reverse speed={50} />
           </div>
         </section>
 
