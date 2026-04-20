@@ -157,6 +157,30 @@ body {
   background-clip: text;
 }
 
+/* Hero H1 gradient — Pareto brand: violet → cyan → amber → violet */
+@keyframes hero-shimmer {
+  0%   { background-position: 0% 50%; }
+  33%  { background-position: 50% 50%; }
+  66%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.hero-shimmer-text {
+  background: linear-gradient(
+    120deg,
+    #6C63FF 0%,
+    #00D4FF 25%,
+    #C8F135 50%,
+    #FF6B35 70%,
+    #00D4FF 85%,
+    #6C63FF 100%
+  );
+  background-size: 300% 300%;
+  animation: hero-shimmer 5s ease infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
 /* ── Glassmorphism card ── */
 .glass-card {
   background: rgba(18, 21, 31, 0.80);

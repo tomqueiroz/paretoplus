@@ -111,21 +111,26 @@ function AnimatedNumber({ value, suffix = '', prefix = '' }: { value: number; su
   return <span ref={ref}>{prefix}{count}{suffix}</span>;
 }
 
+// Lime-yellow brand color for primary CTAs
+const LIME = '#C8F135';
+
 function PrimaryBtn({ href, onClick, children }: { href?: string; onClick?: () => void; children: React.ReactNode }) {
   const base: React.CSSProperties = {
     display: 'inline-flex', alignItems: 'center', gap: 8,
     padding: '12px 28px', borderRadius: 6, fontFamily: "'Inter', sans-serif",
-    fontWeight: 600, fontSize: 14, color: '#fff', textDecoration: 'none', cursor: 'pointer',
-    background: V, border: 'none', boxShadow: '0 0 0 rgba(108,99,255,0)',
-    transition: 'box-shadow 0.25s ease, transform 0.2s ease',
+    fontWeight: 700, fontSize: 14, color: '#0B0D14', textDecoration: 'none', cursor: 'pointer',
+    background: LIME, border: 'none', boxShadow: '0 0 0 rgba(200,241,53,0)',
+    transition: 'box-shadow 0.25s ease, transform 0.2s ease, background 0.2s ease',
   };
   const enter = (e: React.MouseEvent<HTMLElement>) => {
-    (e.currentTarget as HTMLElement).style.boxShadow = '0 0 24px rgba(108,99,255,0.5)';
+    (e.currentTarget as HTMLElement).style.boxShadow = '0 0 28px rgba(200,241,53,0.45)';
     (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)';
+    (e.currentTarget as HTMLElement).style.background = '#d6f74a';
   };
   const leave = (e: React.MouseEvent<HTMLElement>) => {
-    (e.currentTarget as HTMLElement).style.boxShadow = '0 0 0 rgba(108,99,255,0)';
+    (e.currentTarget as HTMLElement).style.boxShadow = '0 0 0 rgba(200,241,53,0)';
     (e.currentTarget as HTMLElement).style.transform = '';
+    (e.currentTarget as HTMLElement).style.background = LIME;
   };
   if (href) return <a href={href} target="_blank" rel="noopener noreferrer" style={base} onMouseEnter={enter} onMouseLeave={leave}>{children}</a>;
   return <button onClick={onClick} style={base} onMouseEnter={enter} onMouseLeave={leave}>{children}</button>;
@@ -200,32 +205,36 @@ function LogoMarqueeRow({ logos, reverse = false, speed = 55 }: { logos: string[
 }
 
 // Floating logos for hero background — premium social proof texture
+// No boxes — logos only, grayscale, low opacity, 250% bigger than before
 function FloatingLogoBg() {
   const positions = [
-    { x: '8%',  y: '18%', size: 52, delay: 0,   dur: 18 },
-    { x: '22%', y: '72%', size: 44, delay: 2.5, dur: 22 },
-    { x: '38%', y: '12%', size: 48, delay: 1,   dur: 20 },
-    { x: '55%', y: '65%', size: 40, delay: 3,   dur: 25 },
-    { x: '68%', y: '20%', size: 56, delay: 0.8, dur: 19 },
-    { x: '80%', y: '55%', size: 44, delay: 1.8, dur: 21 },
-    { x: '90%', y: '30%', size: 48, delay: 4,   dur: 23 },
-    { x: '14%', y: '45%', size: 40, delay: 2,   dur: 20 },
-    { x: '48%', y: '80%', size: 44, delay: 3.5, dur: 24 },
-    { x: '72%', y: '78%', size: 40, delay: 1.2, dur: 18 },
-    { x: '32%', y: '40%', size: 36, delay: 2.8, dur: 22 },
-    { x: '88%', y: '10%', size: 42, delay: 0.5, dur: 26 },
+    { x: '6%',   y: '15%', w: 130, delay: 0,   dur: 18 },
+    { x: '20%',  y: '70%', w: 110, delay: 2.5, dur: 22 },
+    { x: '36%',  y: '10%', w: 120, delay: 1,   dur: 20 },
+    { x: '53%',  y: '62%', w: 100, delay: 3,   dur: 25 },
+    { x: '66%',  y: '18%', w: 140, delay: 0.8, dur: 19 },
+    { x: '78%',  y: '52%', w: 110, delay: 1.8, dur: 21 },
+    { x: '88%',  y: '28%', w: 120, delay: 4,   dur: 23 },
+    { x: '12%',  y: '43%', w: 100, delay: 2,   dur: 20 },
+    { x: '46%',  y: '78%', w: 110, delay: 3.5, dur: 24 },
+    { x: '70%',  y: '76%', w: 100, delay: 1.2, dur: 18 },
+    { x: '30%',  y: '38%', w: 90,  delay: 2.8, dur: 22 },
+    { x: '86%',  y: '8%',  w: 105, delay: 0.5, dur: 26 },
   ];
-  // Pick logos by index spread across the 25
   const picks = [0,2,5,7,9,11,14,16,18,20,22,24];
   return (
     <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden', zIndex: 1 }}>
       {positions.map((p, i) => (
         <motion.div key={i}
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1, y: [0, -14, 0] }}
-          transition={{ opacity: { delay: p.delay + 1.2, duration: 0.8 }, y: { duration: p.dur, repeat: Infinity, ease: 'easeInOut', delay: p.delay } }}
-          style={{ position: 'absolute', left: p.x, top: p.y, width: p.size, height: p.size, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 10, background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.04)', backdropFilter: 'blur(4px)' }}>
-          <img src={CLIENT_LOGO_IMGS[picks[i]]} alt="" style={{ maxWidth: p.size * 0.65, maxHeight: p.size * 0.45, objectFit: 'contain', filter: 'brightness(0) invert(1)', opacity: 0.18 }} />
+          animate={{ opacity: 1, y: [0, -16, 0] }}
+          transition={{ opacity: { delay: p.delay + 0.8, duration: 1 }, y: { duration: p.dur, repeat: Infinity, ease: 'easeInOut', delay: p.delay } }}
+          style={{ position: 'absolute', left: p.x, top: p.y }}>
+          <img
+            src={CLIENT_LOGO_IMGS[picks[i]]}
+            alt=""
+            style={{ width: p.w, height: 'auto', objectFit: 'contain', filter: 'brightness(0) invert(1) grayscale(1)', opacity: 0.14 }}
+          />
         </motion.div>
       ))}
     </div>
@@ -393,15 +402,14 @@ export default function Home() {
 
               {/* Eyebrow */}
               <motion.div initial={{ opacity: 0, y: -12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15, duration: 0.6, ease }}>
-                <EyebrowLabel>Holding · IA Aplicada a Negócios · São Paulo · Palo Alto · Est. 2011</EyebrowLabel>
+                <EyebrowLabel>IA Aplicada a Negócios</EyebrowLabel>
               </motion.div>
 
               {/* H1 */}
               <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.28, duration: 0.85, ease }}>
                 <H1 style={{ marginBottom: 24 }}>
-                  <span style={{ color: 'rgba(255,255,255,0.55)', display: 'block', fontSize: '0.55em', fontWeight: 400, letterSpacing: '0.02em', marginBottom: 6, fontFamily: "'Inter', sans-serif" }}>AI First:</span>
-                  <span style={{ color: '#fff', display: 'block' }}>2026 é o último ano</span>
-                  <span className="shimmer-text">em que isso ainda é opcional.</span>
+                  <span style={{ color: '#fff', display: 'block', fontWeight: 900, letterSpacing: '-0.03em', lineHeight: 1 }}>AI First.</span>
+                  <span className="hero-shimmer-text" style={{ display: 'block', marginTop: 4 }}>2026 é o último ano<br />em que isso ainda é opcional.</span>
                 </H1>
               </motion.div>
 
