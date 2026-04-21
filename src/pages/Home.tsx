@@ -47,12 +47,12 @@ function Mono({ children, color = C, size = 12 }: { children: React.ReactNode; c
   );
 }
 
-function EyebrowLabel({ children, dark = false }: { children: React.ReactNode; dark?: boolean }) {
+function EyebrowLabel({ children, dark = false, color }: { children: React.ReactNode; dark?: boolean; color?: string }) {
   const lineColor = dark ? 'rgba(203,236,46,0.6)' : G600;
-  const textColor = dark ? LIME : G600;
+  const textColor = color ?? (dark ? LIME : G600);
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
-      <div style={{ width: 20, height: 1, background: lineColor, opacity: 0.7 }} />
+      <div style={{ width: 20, height: 1, background: color ?? lineColor, opacity: 0.7 }} />
       <Mono color={textColor} size={11}>{children}</Mono>
     </div>
   );
@@ -198,22 +198,22 @@ function CalendlyPrimaryBtn({ children }: { children: React.ReactNode }) {
   return <PrimaryBtn onClick={open}>{children}</PrimaryBtn>;
 }
 
-function GhostBtn({ href, onClick, children }: { href?: string; onClick?: () => void; children: React.ReactNode }) {
+function GhostBtn({ href, onClick, children, white = false }: { href?: string; onClick?: () => void; children: React.ReactNode; white?: boolean }) {
   const base: React.CSSProperties = {
     display: 'inline-flex', alignItems: 'center', gap: 8,
     padding: '11px 24px', borderRadius: 50, fontFamily: "'DM Sans', sans-serif",
-    fontWeight: 500, fontSize: 14, color: G600,
+    fontWeight: 500, fontSize: 14, color: white ? WHITE : G600,
     textDecoration: 'none', cursor: 'pointer', background: 'transparent',
-    border: `1px solid ${G200}`, transition: 'all 0.25s ease',
+    border: `1px solid ${white ? 'rgba(255,255,255,0.4)' : G200}`, transition: 'all 0.25s ease',
   };
   const enter = (e: React.MouseEvent<HTMLElement>) => {
-    (e.currentTarget as HTMLElement).style.color = G900;
-    (e.currentTarget as HTMLElement).style.borderColor = G400;
-    (e.currentTarget as HTMLElement).style.background = WHITE;
+    (e.currentTarget as HTMLElement).style.color = white ? WHITE : G900;
+    (e.currentTarget as HTMLElement).style.borderColor = white ? 'rgba(255,255,255,0.85)' : G400;
+    (e.currentTarget as HTMLElement).style.background = white ? 'rgba(255,255,255,0.1)' : WHITE;
   };
   const leave = (e: React.MouseEvent<HTMLElement>) => {
-    (e.currentTarget as HTMLElement).style.color = G600;
-    (e.currentTarget as HTMLElement).style.borderColor = G200;
+    (e.currentTarget as HTMLElement).style.color = white ? WHITE : G600;
+    (e.currentTarget as HTMLElement).style.borderColor = white ? 'rgba(255,255,255,0.4)' : G200;
     (e.currentTarget as HTMLElement).style.background = 'transparent';
   };
   if (href) return <a href={href} target="_blank" rel="noopener noreferrer" style={base} onMouseEnter={enter} onMouseLeave={leave}>{children}</a>;
@@ -421,7 +421,7 @@ function BadgesBar() {
   return (
     <div style={{ background: G900, borderTop: '1px solid rgba(255,255,255,0.05)', borderBottom: '1px solid rgba(255,255,255,0.05)', padding: '14px 24px' }}>
       <div style={{ maxWidth: 1280, margin: '0 auto', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center', gap: 12 }}>
-        <Mono color="rgba(136,146,164,0.35)" size={10}>Parceiro oficial:</Mono>
+        <Mono color={WHITE} size={10}>Parceiro oficial:</Mono>
         {PARTNER_BADGES.map((b) =>
           b.img ? (
             <div key={b.name} title={b.name}
@@ -729,7 +729,7 @@ export default function Home() {
 
               {/* Eyebrow */}
               <motion.div initial={{ opacity: 0, y: -12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15, duration: 0.6, ease }}>
-                <EyebrowLabel>IA Customizada para cada Negócio</EyebrowLabel>
+                <EyebrowLabel color={WHITE}>IA Customizada para cada Negócio</EyebrowLabel>
               </motion.div>
 
               {/* H1 — AI First. GRANDE | H2 — 2026... MENOR */}
@@ -740,8 +740,8 @@ export default function Home() {
 
               {/* Subline */}
               <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45, duration: 0.7, ease }}>
-                <Body style={{ fontSize: 16, lineHeight: 1.75, marginBottom: 36, maxWidth: 580, color: G400 }}>
-                  A Pareto é a holding especializada em <span style={{ color: '#fff', fontWeight: 500 }}>IA Aplicada a Negócios</span> que opera desde 2013. Não entregamos aplicativos genéricos — entendemos a sua operação em profundidade e construímos inteligência integrada que reduz custo, acelera equipes e gera resultado mensurável, com os seus dados.
+                <Body style={{ fontSize: 16, lineHeight: 1.75, marginBottom: 36, maxWidth: 580, color: WHITE }}>
+                  A Pareto é a holding especializada em <span style={{ color: LIME, fontWeight: 500 }}>IA Aplicada a Negócios</span> que opera desde 2013. Não entregamos aplicativos genéricos — entendemos a sua operação em profundidade e construímos inteligência integrada que reduz custo, acelera equipes e gera resultado mensurável, com os seus dados.
                 </Body>
               </motion.div>
 
@@ -751,7 +751,7 @@ export default function Home() {
                 <CalendlyPrimaryBtn>
                   <Calendar size={16} /> Agendar com Especialista
                 </CalendlyPrimaryBtn>
-                <GhostBtn onClick={() => scrollToSection('resultados')}>
+                <GhostBtn onClick={() => scrollToSection('resultados')} white>
                   Principais cases <ArrowRight size={14} />
                 </GhostBtn>
               </motion.div>
@@ -791,7 +791,7 @@ export default function Home() {
         <ParallaxStrip img="/images/brazil_network.jpg" height={400} overlay="linear-gradient(to right, rgba(11,13,20,0.72) 0%, rgba(108,99,255,0.22) 50%, rgba(0,212,255,0.08) 100%)">
           <motion.div initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} style={{ maxWidth: 760 }}>
             <EyebrowLabel dark>Decisão</EyebrowLabel>
-            <H1 style={{ fontSize: 'clamp(1.9rem, 4vw, 3.4rem)', lineHeight: 1.1, marginBottom: 0 }}>
+            <H1 style={{ fontSize: 'clamp(1.9rem, 4vw, 3.4rem)', lineHeight: 1.1, marginBottom: 0, color: WHITE }}>
               O Brasil de 2030 está sendo
               <br />construído agora.
               <br /><span className="hero-shimmer-text">Por quem decidiu em 2026.</span>
@@ -810,7 +810,7 @@ export default function Home() {
                 71<span style={{ fontSize: '0.42em', verticalAlign: 'super' }}>%</span>
               </div>
               <H2 style={{ marginBottom: 16, maxWidth: 600, marginLeft: 'auto', marginRight: 'auto' }}>
-                das empresas brasileiras não atingiram suas metas de marketing em 2024.
+                das empresas brasileiras não atingiram suas metas de marketing em 2025.
               </H2>
               <Body style={{ maxWidth: 520, margin: '0 auto', color: G400 }}>
                 Não foi falta de esforço. Não foi falta de verba. Foi o modelo errado — construído para um mercado que não existe mais.
@@ -883,12 +883,12 @@ export default function Home() {
         {/* ── Parallax: Escritório ──────────────────────────────── */}
         <ParallaxStrip img="/images/pareto_office1.png" height={300}>
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-            <Mono color={V} size={10} >Pareto · São Paulo · Est. 2011</Mono>
+            <Mono color={WHITE} size={10} >Pareto · São Paulo · Est. 2011</Mono>
             <H2 style={{ marginTop: 12, marginBottom: 10 }}>
               +160 especialistas.<br />
               <span style={{ color: C }}>Um único KPI: resultado financeiro.</span>
             </H2>
-            <Body muted>300+ empresas transformadas · R$3B+ em mídia gerenciada · 13 anos de operação</Body>
+            <Body muted style={{ color: WHITE }}>300+ empresas transformadas · R$3B+ em mídia gerenciada · 13 anos de operação</Body>
           </motion.div>
         </ParallaxStrip>
 
@@ -970,7 +970,7 @@ export default function Home() {
                 <div style={{ width: 52, height: 52, borderRadius: 14, background: 'rgba(203,236,46,0.12)', border: `1px solid ${LIME_DIM}40`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><IconSVG name="award" size={24} color={LIME} /></div>
                 <div>
                   <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, fontSize: 13, color: '#fff', marginBottom: 3 }}>Tess AI — G2 Best Software Awards 2024</div>
-                  <Body muted style={{ fontSize: 12, color: G400 }}>#6 Melhor IA do mundo · Acima do ChatGPT (#10) e Google Gemini (#22)</Body>
+                  <Body muted style={{ fontSize: 12, color: WHITE }}>#6 Melhor IA do mundo · Acima do ChatGPT (#10) e Google Gemini (#22)</Body>
                 </div>
               </GlassCard>
             </motion.div>
@@ -1191,7 +1191,7 @@ export default function Home() {
                 <blockquote style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 700, fontSize: 'clamp(1.1rem, 2vw, 1.5rem)', color: '#fff', margin: 0, lineHeight: 1.35 }}>
                   <span className="hero-shimmer-text">"O futuro da IA é colaborativo."</span>
                 </blockquote>
-                <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 12, color: 'rgba(136,146,164,0.55)', marginTop: 8, marginBottom: 0 }}>— Pareto · Tess AI Platform Philosophy</p>
+                <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 12, color: WHITE, marginTop: 8, marginBottom: 0 }}>— Pareto · Tess AI Platform Philosophy</p>
               </div>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(110px, 1fr))', gap: 12 }}>
                   {[['#6', 'Global G2 2024'], ['+200', 'Modelos de IA'], ['+2M', 'Usuários Ativos']].map(([v, l]) => (
@@ -1249,7 +1249,7 @@ export default function Home() {
               <CalendlyPrimaryBtn>
                 <Calendar size={16} /> Quero meu Diagnóstico Gratuito
               </CalendlyPrimaryBtn>
-              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 12, color: 'rgba(136,146,164,0.45)', marginTop: 16 }}>
+              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 12, color: WHITE, marginTop: 16 }}>
                 30 min · Sem compromisso · LGPD Compliant
               </p>
             </Reveal>
@@ -1435,7 +1435,7 @@ export default function Home() {
               Cada processo manual na sua operação<br />
               <span style={{ color: A }}>é custo que você escolhe manter.</span>
             </H2>
-            <Body muted>Diagnóstico gratuito em 30 minutos. Mapa de impacto real — sem pitch genérico.</Body>
+            <Body muted style={{ color: WHITE }}>Diagnóstico gratuito em 30 minutos. Mapa de impacto real — sem pitch genérico.</Body>
           </motion.div>
         </ParallaxStrip>
 

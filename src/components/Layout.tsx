@@ -278,7 +278,7 @@ export function Footer() {
 
   const mutedLink: React.CSSProperties = {
     fontFamily: "'DM Sans', sans-serif",
-    fontSize: 13, fontWeight: 300, color: 'rgba(138,130,120,0.8)',
+    fontSize: 13, fontWeight: 300, color: WHITE,
     textDecoration: 'none', transition: 'color 0.2s ease',
   };
 
@@ -299,7 +299,7 @@ export function Footer() {
               style={{ height: 26, width: 'auto', marginBottom: 16, objectFit: 'contain' }} />
             <p style={{
               fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 300,
-              lineHeight: 1.75, color: 'rgba(138,130,120,0.85)', maxWidth: 280, marginBottom: 24,
+              lineHeight: 1.75, color: WHITE, maxWidth: 280, marginBottom: 24,
             }}>
               Parceiro estratégico de IA para empresas que já decidiram que o futuro começa agora.
               13 anos de operação. 300+ empresas.
@@ -310,7 +310,7 @@ export function Footer() {
               <p style={{
                 fontFamily: "'DM Sans', sans-serif", fontSize: 10, fontWeight: 500,
                 letterSpacing: '0.18em', textTransform: 'uppercase',
-                color: 'rgba(138,130,120,0.4)', marginBottom: 12,
+                color: WHITE, marginBottom: 12,
               }}>Parceiro oficial</p>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
                 {PARTNER_BADGES.map((b) =>
@@ -337,7 +337,7 @@ export function Footer() {
               <p style={{
                 fontFamily: "'DM Sans', sans-serif", fontSize: 10, fontWeight: 500,
                 letterSpacing: '0.18em', textTransform: 'uppercase',
-                color: 'rgba(138,130,120,0.4)', marginBottom: 12,
+                color: WHITE, marginBottom: 12,
               }}>Redes Sociais</p>
               <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                 {[
@@ -355,7 +355,7 @@ export function Footer() {
                     }}
                     onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = 'rgba(203,236,46,0.1)'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(203,236,46,0.3)'; }}
                     onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.05)'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.08)'; }}>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(138,130,120,0.7)"
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffffff"
                       strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"
                       dangerouslySetInnerHTML={{ __html: s.svg }} />
                   </a>
@@ -369,7 +369,7 @@ export function Footer() {
             <h4 style={{
               fontFamily: "'DM Sans', sans-serif", fontSize: 10, fontWeight: 500,
               letterSpacing: '0.18em', textTransform: 'uppercase',
-              color: 'rgba(138,130,120,0.45)', marginBottom: 20,
+              color: WHITE, marginBottom: 20,
             }}>Navegação</h4>
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 10 }}>
               {[
@@ -406,13 +406,13 @@ export function Footer() {
             <h4 style={{
               fontFamily: "'DM Sans', sans-serif", fontSize: 10, fontWeight: 500,
               letterSpacing: '0.18em', textTransform: 'uppercase',
-              color: 'rgba(138,130,120,0.45)', marginBottom: 20,
+              color: WHITE, marginBottom: 20,
             }}>Contato</h4>
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 10 }}>
-              <li style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 300, color: 'rgba(138,130,120,0.55)' }}>
+              <li style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 300, color: WHITE }}>
                 Av. Paulista, 2.022 - 2º andar
               </li>
-              <li style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 300, color: 'rgba(138,130,120,0.55)' }}>
+              <li style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 300, color: WHITE }}>
                 Consolação — São Paulo/SP
               </li>
               <li>
@@ -453,7 +453,7 @@ export function Footer() {
             </p>
             <p style={{
               fontFamily: "'DM Sans', sans-serif",
-              fontSize: 13, fontWeight: 300, color: 'rgba(138,130,120,0.75)', margin: 0,
+              fontSize: 13, fontWeight: 300, color: WHITE, margin: 0,
             }}>
               Diagnóstico gratuito de 30 min com um especialista Pareto.
             </p>
@@ -482,22 +482,22 @@ export function Footer() {
         }}>
           <p style={{
             fontFamily: "'DM Sans', sans-serif",
-            fontSize: 12, fontWeight: 300, color: 'rgba(74,69,64,0.8)',
+            fontSize: 12, fontWeight: 300, color: WHITE,
           }}>
             © 2026 Pareto Soluções em Tecnologia Ltda. Todos os direitos reservados.
           </p>
           <div style={{ display: 'flex', gap: 20, alignItems: 'center' }}>
             <Link to={ROUTE_PATHS.PRIVACIDADE}
-              style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, fontWeight: 300, color: 'rgba(74,69,64,0.8)', textDecoration: 'none', transition: 'color 0.2s ease' }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = 'rgba(138,130,120,0.8)'; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = 'rgba(74,69,64,0.8)'; }}>
+              style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, fontWeight: 300, color: WHITE, textDecoration: 'none', transition: 'color 0.2s ease' }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = LIME; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = WHITE; }}>
               Política de Privacidade
             </Link>
             <span style={{
               fontFamily: "'DM Sans', sans-serif",
               fontSize: 10, fontWeight: 500,
               letterSpacing: '0.12em', textTransform: 'uppercase',
-              color: 'rgba(203,236,46,0.4)',
+              color: WHITE,
             }}>LGPD Compliant</span>
           </div>
         </div>

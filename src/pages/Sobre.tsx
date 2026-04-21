@@ -63,11 +63,11 @@ function Mono({ children, color = C, size = 12 }: { children: React.ReactNode; c
   return <span className="eyebrow-text" style={{ fontFamily: "'DM Sans', sans-serif", fontSize: size, fontWeight: 500, color, letterSpacing: '0.04em' }}>{children}</span>;
 }
 
-function EyebrowLabel({ children }: { children: React.ReactNode }) {
+function EyebrowLabel({ children, color }: { children: React.ReactNode; color?: string }) {
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
-      <div style={{ width: 20, height: 1, background: LIME_DIM, opacity: 0.7 }} />
-      <Mono color={G600} size={11}>{children}</Mono>
+      <div style={{ width: 20, height: 1, background: color ?? LIME_DIM, opacity: 0.7 }} />
+      <Mono color={color ?? G600} size={11}>{children}</Mono>
     </div>
   );
 }
@@ -179,9 +179,9 @@ export default function Sobre() {
         </div>
         <div style={{ position: 'relative', zIndex: 10, maxWidth: 1280, margin: '0 auto', padding: 'clamp(16px,4vw,48px) clamp(16px,4vw,24px) clamp(48px,8vw,80px)', width: '100%' }}>
           <motion.div initial="hidden" animate="visible" variants={stagger} style={{ maxWidth: 760 }}>
-            <motion.div variants={staggerItem}><EyebrowLabel>Perfil Institucional · Pareto Plus 2026</EyebrowLabel></motion.div>
+            <motion.div variants={staggerItem}><EyebrowLabel color={WHITE}>Perfil Institucional · Pareto Plus 2026</EyebrowLabel></motion.div>
             <motion.div variants={staggerItem}>
-              <H1 style={{ marginBottom: 20 }}>
+              <H1 style={{ marginBottom: 20, color: WHITE }}>
                 <span style={{ fontSize: 'clamp(1.2rem, 2.7vw, 2.28rem)' }}>13 Anos Criando Soluções</span><br />
                 <span className="hero-shimmer-text">com IA Aplicada aos Negócios.</span>
               </H1>
@@ -306,7 +306,7 @@ export default function Sobre() {
               </div>
               <div style={{ padding: '18px 22px', borderRadius: 12, background: G900, border: `1px solid ${G800}`, textAlign: 'center', marginBottom: 20 }}>
                 <blockquote style={{ fontFamily: "'Playfair Display', Georgia, serif", fontWeight: 700, fontSize: 'clamp(1rem, 1.8vw, 1.35rem)', color: '#fff', margin: 0 }} className="hero-shimmer-text">"O futuro da IA é colaborativo."</blockquote>
-                <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 11, color: 'rgba(136,146,164,0.5)', marginTop: 6, marginBottom: 0 }}>— Pareto · Tess AI Platform Philosophy</p>
+                <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 11, color: WHITE, marginTop: 6, marginBottom: 0 }}>— Pareto · Tess AI Platform Philosophy</p>
               </div>
               <a href="https://tess.im" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 700, color: V, textDecoration: 'none' }}>Conhecer a Tess AI <ExternalLink size={13} /></a>
             </Reveal>
@@ -415,9 +415,9 @@ export default function Sobre() {
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 70% 60% at 50% 50%, rgba(108,99,255,0.12) 0%, transparent 70%)', pointerEvents: 'none' }} />
         <div style={{ position: 'relative', zIndex: 2, maxWidth: 680, margin: '0 auto' }}>
           <Reveal>
-            <EyebrowLabel>Próximo Passo</EyebrowLabel>
+            <EyebrowLabel color={WHITE}>Próximo Passo</EyebrowLabel>
             <H2 style={{ marginBottom: 20, color: '#fff' }}>Pronto para recuperar<br /><span style={{ color: LIME }}>seu tempo?</span></H2>
-            <Body style={{ marginBottom: 36, maxWidth: 480, margin: '0 auto 36px' }}>Converse com nosso time e descubra qual solução se encaixa na sua operação.</Body>
+            <Body style={{ marginBottom: 36, maxWidth: 480, margin: '0 auto 36px', color: WHITE }}>Converse com nosso time e descubra qual solução se encaixa na sua operação.</Body>
             <PrimaryBtn href={WA_LINK}><Calendar size={15} /> Falar com Especialista Pareto</PrimaryBtn>
           </Reveal>
         </div>
