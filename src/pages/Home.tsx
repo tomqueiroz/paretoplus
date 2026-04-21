@@ -382,7 +382,7 @@ function FloatingLogoBg() {
           <img
             src={HERO_LOGO_SRCS[i]}
             alt=""
-            style={{ width: 100, height: 'auto', maxHeight: 60, objectFit: 'contain', display: 'block' }}
+            style={{ width: 100, height: 'auto', maxHeight: 60, objectFit: 'contain', display: 'block', filter: 'grayscale(1) brightness(1.4)', opacity: 0.7 }}
           />
         </motion.div>
       ))}
@@ -403,7 +403,7 @@ function ParallaxStrip({ img, height = 300, overlay, children }: {
   return (
     <div ref={ref} style={{ position: 'relative', overflow: 'hidden', height }}>
       <motion.div style={{ y, position: 'absolute', inset: '-14% 0', height: '128%' }}>
-        <img src={img} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.6, filter: 'grayscale(1) contrast(1.15) brightness(0.55)' }} />
+        <img src={img} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.7, filter: 'grayscale(1) contrast(1.1) brightness(0.5)' }} />
         <div style={{ position: 'absolute', inset: 0, background: 'rgba(10,9,8,0.55)' }} />
       </motion.div>
       {children && (
@@ -694,7 +694,7 @@ export default function Home() {
         <section id="hero" style={{ position: 'relative', minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', overflow: 'hidden' }}>
 
           {/* Layer 0: hero gradient */}
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, #13100C 0%, #241F1A 50%, #1A130A 100%)' }} />
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #0d0d0d 100%)' }} />
 
           {/* Layer 1: logos dos clientes flutuando */}
           <FloatingLogoBg />
@@ -705,10 +705,10 @@ export default function Home() {
           {/* Layer 2: data grid */}
           <div className="data-grid" />
 
-          {/* Layer 4: glow orbs — subtle radial blurs only */}
-          <div style={{ position: 'absolute', top: '8%', right: '12%', width: 500, height: 500, borderRadius: '50%', background: 'radial-gradient(ellipse, rgba(108,99,255,0.13) 0%, transparent 70%)', pointerEvents: 'none' }} />
-          <div style={{ position: 'absolute', bottom: '15%', left: '5%', width: 420, height: 420, borderRadius: '50%', background: 'radial-gradient(ellipse, rgba(0,212,255,0.08) 0%, transparent 70%)', pointerEvents: 'none' }} />
-          <div style={{ position: 'absolute', top: '40%', left: '35%', width: 360, height: 360, borderRadius: '50%', background: 'radial-gradient(ellipse, rgba(255,107,53,0.05) 0%, transparent 70%)', pointerEvents: 'none' }} />
+          {/* Layer 4: glow orbs — subtle radial blurs only — P&B */}
+          <div style={{ position: 'absolute', top: '8%', right: '12%', width: 500, height: 500, borderRadius: '50%', background: 'radial-gradient(ellipse, rgba(180,180,180,0.08) 0%, transparent 70%)', pointerEvents: 'none' }} />
+          <div style={{ position: 'absolute', bottom: '15%', left: '5%', width: 420, height: 420, borderRadius: '50%', background: 'radial-gradient(ellipse, rgba(160,160,160,0.05) 0%, transparent 70%)', pointerEvents: 'none' }} />
+          <div style={{ position: 'absolute', top: '40%', left: '35%', width: 360, height: 360, borderRadius: '50%', background: 'radial-gradient(ellipse, rgba(140,140,140,0.04) 0%, transparent 70%)', pointerEvents: 'none' }} />
 
           {/* Layer 5: A10 logo grid — right side, white semi-transparent, behind neural lines */}
           <div style={{ position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)', width: '48%', maxWidth: 720, pointerEvents: 'none', zIndex: 2 }}>
@@ -898,20 +898,19 @@ export default function Home() {
         {/* ══════════════════════════════════════════════════════
             02 · SOBRE A PARETO — Terceira dobra
         ══════════════════════════════════════════════════════ */}
-        <section id="sobre-pareto" style={{ padding: '80px 24px 72px', position: 'relative', overflow: 'hidden', background: G900 }}>
-          <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 65% 55% at 80% 50%, rgba(108,99,255,0.09) 0%, transparent 70%)', pointerEvents: 'none' }} />
-          <div className="data-grid" />
+        <section id="sobre-pareto" style={{ padding: '80px 24px 72px', position: 'relative', overflow: 'hidden', background: WHITE }}>
+          <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 65% 55% at 80% 50%, rgba(203,236,46,0.07) 0%, transparent 70%)', pointerEvents: 'none' }} />
           <div style={{ maxWidth: 1280, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(24px,5vw,64px)', alignItems: 'center' }} className="grid-cols-1 lg:grid-cols-2">
 
             {/* Left — texto */}
             <Reveal>
               <EyebrowLabel>Pareto · AI for Business</EyebrowLabel>
-              <H2 style={{ marginBottom: 20 }}>
-                <span className="gradient-text">Inteligência Artificial</span><br />
+              <H2 style={{ marginBottom: 20, color: G900 }}>
+                <span style={{ color: G900 }}>Inteligência Artificial</span><br />
                 como ativo estratégico.
               </H2>
-              <Body style={{ fontSize: 16, lineHeight: 1.8, marginBottom: 28 }}>
-                Expandindo internacionalmente com sua plataforma proprietária <span style={{ color: '#fff', fontWeight: 500 }}>Tess AI</span>, a Pareto implementa IA que gera retorno financeiro mensurável — não projetos-piloto sem fim. 13 anos de operação. 300+ empresas. Tess AI, a <span style={{ color: '#00D4FF', fontWeight: 500 }}>6ª melhor plataforma de IA do mundo</span> (G2 2024).
+              <Body style={{ fontSize: 16, lineHeight: 1.8, marginBottom: 28, color: G600 }}>
+                Expandindo internacionalmente com sua plataforma proprietária <span style={{ color: G900, fontWeight: 600 }}>Tess AI</span>, a Pareto implementa IA que gera retorno financeiro mensurável — não projetos-piloto sem fim. 13 anos de operação. 300+ empresas. Tess AI, a <span style={{ color: LIME_DIM, fontWeight: 600 }}>6ª melhor plataforma de IA do mundo</span> (G2 2024).
               </Body>
 
               {/* 4 ícones Premium — o que a Pareto faz */}
@@ -922,12 +921,12 @@ export default function Home() {
                   { icon: 'brain', label: 'Agentes Inteligentes', desc: 'IA generativa integrada ao seu ERP, CRM e dados' },
                   { icon: 'target', label: 'AI Builders Alocados', desc: 'Time sênior embarcado com ROI rastreado por sprint' },
                 ].map((item) => (
-                  <GlassCard key={item.label} style={{ padding: '20px 18px 18px', display: 'flex', flexDirection: 'column', gap: 10, alignItems: 'flex-start', position: 'relative', paddingTop: 32 }} hover={false}>
-                    <div style={{ position: 'absolute', top: -16, left: 18, width: 36, height: 36, borderRadius: 10, background: G900, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 12px rgba(0,0,0,0.18)' }}>
+                  <GlassCard key={item.label} style={{ padding: '20px 18px 18px', display: 'flex', flexDirection: 'column', gap: 10, alignItems: 'flex-start', position: 'relative', paddingTop: 32, background: OFF, border: `1px solid ${G100}` }} hover={false}>
+                    <div style={{ position: 'absolute', top: -16, left: 18, width: 36, height: 36, borderRadius: 10, background: G900, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 12px rgba(0,0,0,0.12)' }}>
                       <IconSVG name={item.icon} size={18} color={LIME} />
                     </div>
                     <div style={{ fontFamily: "'Playfair Display', Georgia, serif", fontWeight: 700, fontSize: 14, color: G900, lineHeight: 1.3 }}>{item.label}</div>
-                    <Body muted style={{ fontSize: 11 }}>{item.desc}</Body>
+                    <Body muted style={{ fontSize: 11, color: G400 }}>{item.desc}</Body>
                   </GlassCard>
                 ))}
               </div>
@@ -938,39 +937,39 @@ export default function Home() {
               </div>
             </Reveal>
 
-            {/* Right — visual metrics premium */}
+              {/* Right — visual metrics premium */}
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={scaleIn}
               style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
 
               {/* Big stat card */}
-              <GlassCard style={{ padding: '32px 36px', textAlign: 'center', background: 'rgba(108,99,255,0.07)', borderColor: 'rgba(108,99,255,0.3)' }}>
-                <div style={{ fontFamily: "'DM Sans', monospace", fontSize: 'clamp(3rem, 6vw, 4.5rem)', fontWeight: 600, color: V, letterSpacing: '-0.04em', lineHeight: 1, marginBottom: 10 }}>
+              <GlassCard style={{ padding: '32px 36px', textAlign: 'center', background: OFF, border: `1px solid ${G100}` }}>
+                <div style={{ fontFamily: "'DM Sans', monospace", fontSize: 'clamp(3rem, 6vw, 4.5rem)', fontWeight: 600, color: LIME_DIM, letterSpacing: '-0.04em', lineHeight: 1, marginBottom: 10 }}>
                   <AnimatedNumber value={285} suffix="%" />
                 </div>
-                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 500, fontSize: 14, color: '#fff', marginBottom: 6 }}>ROI médio com stack de IA bem implementado</div>
-                <Body muted style={{ fontSize: 12 }}>vs. abaixo do custo de aquisição sem IA estruturada</Body>
+                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, fontSize: 14, color: G900, marginBottom: 6 }}>ROI médio com stack de IA bem implementado</div>
+                <Body muted style={{ fontSize: 12, color: G400 }}>vs. abaixo do custo de aquisição sem IA estruturada</Body>
               </GlassCard>
 
               {/* 3 mini stats */}
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: 12 }}>
                 {[
-                  { v: '3×',   l: 'Custo real por colaborador',     c: V },
-                  { v: '~40%', l: 'Tempo em tarefas repetitivas',   c: C },
-                  { v: '12m',  l: 'Payback médio de automação IA',   c: A },
+                  { v: '3×',   l: 'Custo real por colaborador',     c: LIME_DIM },
+                  { v: '~40%', l: 'Tempo em tarefas repetitivas',   c: G900 },
+                  { v: '12m',  l: 'Payback médio de automação IA',   c: LIME_DIM },
                 ].map((s) => (
-                  <GlassCard key={s.l} style={{ padding: '18px 14px', textAlign: 'center' }}>
-                    <div style={{ fontFamily: "'DM Sans', monospace", fontSize: '1.4rem', fontWeight: 600, color: s.c, marginBottom: 6 }}>{s.v}</div>
-                    <Body muted style={{ fontSize: 10, lineHeight: 1.45 }}>{s.l}</Body>
+                  <GlassCard key={s.l} style={{ padding: '18px 14px', textAlign: 'center', background: OFF, border: `1px solid ${G100}` }}>
+                    <div style={{ fontFamily: "'DM Sans', monospace", fontSize: '1.4rem', fontWeight: 700, color: s.c, marginBottom: 6 }}>{s.v}</div>
+                    <Body muted style={{ fontSize: 10, lineHeight: 1.45, color: G400 }}>{s.l}</Body>
                   </GlassCard>
                 ))}
               </div>
 
               {/* Tess AI badge */}
-              <GlassCard style={{ padding: '20px 24px', display: 'flex', alignItems: 'center', gap: 20 }}>
-                <div style={{ width: 52, height: 52, borderRadius: 14, background: 'rgba(19,16,12,0.07)', border: `1px solid ${G100}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><IconSVG name="award" size={24} color={LIME_DIM} /></div>
+              <GlassCard style={{ padding: '20px 24px', display: 'flex', alignItems: 'center', gap: 20, background: G900, border: `1px solid ${G800}` }}>
+                <div style={{ width: 52, height: 52, borderRadius: 14, background: 'rgba(203,236,46,0.12)', border: `1px solid ${LIME_DIM}40`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><IconSVG name="award" size={24} color={LIME} /></div>
                 <div>
                   <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, fontSize: 13, color: '#fff', marginBottom: 3 }}>Tess AI — G2 Best Software Awards 2024</div>
-                  <Body muted style={{ fontSize: 12 }}>#6 Melhor IA do mundo · Acima do ChatGPT (#10) e Google Gemini (#22)</Body>
+                  <Body muted style={{ fontSize: 12, color: G400 }}>#6 Melhor IA do mundo · Acima do ChatGPT (#10) e Google Gemini (#22)</Body>
                 </div>
               </GlassCard>
             </motion.div>
@@ -1106,7 +1105,7 @@ export default function Home() {
             {/* How it works — 4 steps */}
             <Reveal style={{ textAlign: 'center', marginBottom: 28 }}>
               <EyebrowLabel>Do diagnóstico ao caixa</EyebrowLabel>
-              <H3 style={{ marginBottom: 6 }}>4 etapas. Sem overhead desnecessário.</H3>
+              <h3 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontWeight: 700, fontSize: 'clamp(2.4rem, 5vw, 5.4rem)', letterSpacing: '-1.5px', lineHeight: 1.0, margin: '0 0 6px', color: G900 }}>4 etapas. Sem overhead desnecessário.</h3>
             </Reveal>
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger}
               style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16 }}>
@@ -1167,10 +1166,10 @@ export default function Home() {
               </div>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, justifyContent: 'center' }}>
                 {AWARDS.filter((a) => a.highlight).map((a) => (
-                  <div key={a.title} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '7px 14px', borderRadius: 99, background: 'rgba(108,99,255,0.07)', border: `1px solid ${G100}` }}>
-                    <Award size={13} style={{ color: C, flexShrink: 0 }} />
-                    <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 12, color: 'rgba(255,255,255,0.65)' }}>{a.title}</span>
-                    <Mono color={V} size={11}>— {a.org} {a.year}</Mono>
+                  <div key={a.title} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '7px 14px', borderRadius: 99, background: WHITE, border: `1px solid ${G100}` }}>
+                    <Award size={13} style={{ color: LIME_DIM, flexShrink: 0 }} />
+                    <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 12, color: G900 }}>{a.title}</span>
+                    <Mono color={G600} size={11}>— {a.org} {a.year}</Mono>
                   </div>
                 ))}
               </div>
@@ -1180,7 +1179,7 @@ export default function Home() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
               <Reveal>
                 <EyebrowLabel>Plataforma Proprietária</EyebrowLabel>
-                <H2 style={{ marginBottom: 18 }}>Tess AI: acima do ChatGPT<br /><span style={{ color: V }}>no ranking global.</span></H2>
+                <H2 style={{ marginBottom: 18 }}>Tess AI: acima do ChatGPT<br /><span style={{ color: LIME }}>no ranking global.</span></H2>
                 <Body style={{ marginBottom: 14 }}>
                   A Pareto não usa ferramentas de terceiros como core. A Tess AI, nossa plataforma proprietária, foi eleita pelo G2 Awards 2024 como o <span style={{ color: '#fff' }}>6º melhor produto de IA do mundo</span> — à frente do ChatGPT (10º), Google Gemini (22º) e IBM Watson (28º).
                 </Body>
@@ -1205,7 +1204,7 @@ export default function Home() {
               {/* Tess AI image — below text, full width */}
               <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={scaleIn}>
                 <div style={{ position: 'relative', borderRadius: 16, overflow: 'hidden', border: `1px solid ${G100}`, maxWidth: 720, margin: '0 auto' }}>
-                  <img src="/images/tess_ai_illustration.png" alt="Tess AI" style={{ width: '100%', display: 'block', filter: 'grayscale(1) contrast(1.1) brightness(0.6)' }} loading="lazy" />
+                  <img src="/images/tess_ai_illustration.png" alt="Tess AI" style={{ width: '100%', display: 'block', filter: 'grayscale(1) contrast(1.05) brightness(0.7)' }} loading="lazy" />
                   <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(108,99,255,0.22) 0%, rgba(0,212,255,0.08) 100%)', pointerEvents: 'none' }} />
                   <div style={{ position: 'absolute', inset: 0, boxShadow: 'inset 0 0 50px rgba(108,99,255,0.22)', pointerEvents: 'none' }} />
                 </div>
@@ -1375,7 +1374,7 @@ export default function Home() {
 
                 {/* AI agents image */}
                 <div style={{ position: 'relative', borderRadius: 16, overflow: 'hidden', border: '1px solid rgba(0,212,255,0.18)' }}>
-                  <img src="/images/ai_agents_illustration.png" alt="AI Agents" style={{ width: '100%', display: 'block', filter: 'grayscale(1) contrast(1.1) brightness(0.6)' }} loading="lazy" />
+                  <img src="/images/ai_agents_illustration.png" alt="AI Agents" style={{ width: '100%', display: 'block', filter: 'grayscale(1) contrast(1.05) brightness(0.7)' }} loading="lazy" />
                   <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(108,99,255,0.2) 0%, rgba(0,212,255,0.14) 100%)', mixBlendMode: 'color', pointerEvents: 'none' }} />
                   <div style={{ position: 'absolute', inset: 0, boxShadow: 'inset 0 0 40px rgba(0,212,255,0.12)', pointerEvents: 'none' }} />
                 </div>

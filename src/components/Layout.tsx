@@ -66,8 +66,8 @@ export function Header() {
     }
   };
 
-  const navColor = scrolled ? G400 : 'rgba(255,255,255,0.85)';
-  const navHover = scrolled ? G900 : '#fff';
+  const navColor = G600;
+  const navHover = G900;
   const linkStyle: React.CSSProperties = {
     fontFamily: "'DM Sans', sans-serif",
     fontWeight: 500,
@@ -87,7 +87,7 @@ export function Header() {
     <>
       <header
         className={`glass-nav ${scrolled ? 'scrolled' : ''}`}
-        style={{ display: 'flex', alignItems: 'center' }}>
+        style={{ display: 'flex', alignItems: 'center', background: 'rgba(220,225,235,0.65)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}>
         <div style={{
           maxWidth: 1200, margin: '0 auto', padding: '0 32px',
           width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
@@ -97,7 +97,7 @@ export function Header() {
           <button onClick={handleLogoClick}
             style={{ display: 'flex', alignItems: 'center', gap: 8, background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
             <img
-              src={scrolled ? "/images/logo-dark.png" : "/images/logo-white.png"}
+              src="/images/logo-dark.png"
               alt="Pareto"
               style={{ height: 28, width: 'auto', objectFit: 'contain', transition: 'opacity 0.3s ease' }} />
           </button>
@@ -119,7 +119,7 @@ export function Header() {
                   onClick={() => handleNav(link)}
                   style={{
                     ...linkStyle,
-                    ...(link.action === 'cases' ? { color: G900, fontWeight: 600 } : {}),
+                    ...(link.action === 'cases' ? { color: LIME, fontWeight: 700 } : {}),
                   }}
                   onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = navHover; }}
                   onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = link.action === 'cases' ? navHover : navColor; }}>
@@ -158,7 +158,7 @@ export function Header() {
           {/* Mobile hamburger */}
           <button className="mobile-hamburger"
             onClick={() => setMenuOpen(!menuOpen)}
-            style={{ background: 'none', border: 'none', color: scrolled ? G600 : 'rgba(255,255,255,0.85)', cursor: 'pointer', padding: 6 }}>
+            style={{ background: 'none', border: 'none', color: G600, cursor: 'pointer', padding: 6 }}>
             {menuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>

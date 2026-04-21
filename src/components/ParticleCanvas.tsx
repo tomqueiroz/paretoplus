@@ -24,9 +24,9 @@ export function ParticleCanvas() {
     const positions: THREE.Vector3[] = [];
     const nodeGeo = new THREE.SphereGeometry(0.025, 8, 8);
 
-    const purpleMat = new THREE.MeshBasicMaterial({ color: 0x8800ff });
-    const limeMat = new THREE.MeshBasicMaterial({ color: 0xcdff00 });
-    const whiteMat = new THREE.MeshBasicMaterial({ color: 0xffffff, opacity: 0.5, transparent: true });
+    const purpleMat = new THREE.MeshBasicMaterial({ color: 0xaaaaaa });
+    const limeMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+    const whiteMat = new THREE.MeshBasicMaterial({ color: 0x888888, opacity: 0.5, transparent: true });
 
     for (let i = 0; i < nodeCount; i++) {
       const pos = new THREE.Vector3(
@@ -55,7 +55,7 @@ export function ParticleCanvas() {
 
     const edgeGeo = new THREE.BufferGeometry();
     edgeGeo.setAttribute('position', new THREE.Float32BufferAttribute(edgePositions, 3));
-    const edgeMat = new THREE.LineBasicMaterial({ color: 0x8800ff, opacity: 0.15, transparent: true });
+    const edgeMat = new THREE.LineBasicMaterial({ color: 0xaaaaaa, opacity: 0.18, transparent: true });
     const edges = new THREE.LineSegments(edgeGeo, edgeMat);
     scene.add(edges);
 
