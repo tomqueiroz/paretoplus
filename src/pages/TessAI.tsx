@@ -4,6 +4,12 @@ import { ArrowRight, Calendar, Star, Award, Zap, Shield, Globe, CheckCircle, Ext
 import { CALENDLY_URL, TESS_MODELS } from '@/lib/index';
 import { staggerContainer, staggerItem, scaleIn } from '@/lib/motion';
 
+const G900 = '#13100C'; const G800 = '#241F1A'; const G600 = '#4A4540';
+const G400 = '#8A8278'; const G200 = '#BFB8AE'; const G100 = '#DDD7CF';
+const OFF = '#F8F6F3'; const WHITE = '#FFFFFF';
+const LIME = '#CBEC2E'; const LIME_DIM = '#A8C41E';
+
+
 const TSVG: Record<string, string> = {
   zap: 'M13 2L3 14h9l-1 8 10-12h-9l1-8z',
   shield: 'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z',
@@ -35,13 +41,13 @@ function Tag({ children, color = '#CDFF00' }: { children: React.ReactNode; color
 function Heading({ children, className = '' }: { children: React.ReactNode; className?: string }) {
   return (
     <h2 className={`font-black leading-tight ${className}`}
-      style={{ letterSpacing: '-0.03em', fontFamily: 'var(--font-heading)', color: '#13100C' }}>{children}</h2>
+      style={{ letterSpacing: '-0.03em', fontFamily: 'var(--font-heading)', color: G900 }}>{children}</h2>
   );
 }
 function Body({ children, className = '' }: { children: React.ReactNode; className?: string }) {
   return (
     <p className={`leading-relaxed ${className}`}
-      style={{ color: 'rgba(255,255,255,0.52)', fontWeight: 300, fontFamily: 'var(--font-heading)' }}>{children}</p>
+      style={{ color: G600, fontWeight: 300, fontFamily: 'var(--font-heading)' }}>{children}</p>
   );
 }
 function Reveal({ children, className = '', delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
@@ -234,7 +240,7 @@ export default function TessAI() {
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {FEATURES.map(f => (
               <motion.div key={f.name} variants={staggerItem} className="p-7 rounded-2xl relative overflow-hidden"
-                style={{ background: 'rgba(14,14,16,0.98)', border: `1px solid ${f.highlight ? f.color + '30' : 'rgba(255,255,255,0.07)'}` }}>
+                style={{ background: WHITE, border: `1px solid ${f.highlight ? f.color + '30' : 'rgba(255,255,255,0.07)'}` }}>
                 {f.highlight && (
                   <div className="absolute top-0 left-0 right-0 h-px" style={{ background: `linear-gradient(90deg, transparent, ${f.color}, transparent)` }} />
                 )}
@@ -266,7 +272,7 @@ export default function TessAI() {
 
           {/* Architecture diagram */}
           <Reveal>
-            <div className="p-8 rounded-2xl" style={{ background: 'rgba(14,14,16,0.98)', border: '1px solid rgba(205,255,0,0.15)' }}>
+            <div className="p-8 rounded-2xl" style={{ background: WHITE, border: '1px solid rgba(205,255,0,0.15)' }}>
               {/* Layer 1: Input */}
               <div className="text-center mb-6">
                 <div className="inline-block px-6 py-3 rounded-xl text-sm font-black"
@@ -342,7 +348,7 @@ export default function TessAI() {
           <div className="space-y-4">
             {MODELS_CATEGORIES.map(cat => (
               <Reveal key={cat.cat}>
-                <div className="p-6 rounded-2xl" style={{ background: 'rgba(14,14,16,0.98)', border: `1px solid ${cat.color}18` }}>
+                <div className="p-6 rounded-2xl" style={{ background: WHITE, border: `1px solid ${cat.color}18` }}>
                   <div className="flex items-center gap-3 mb-4">
                     <div className="text-xs font-black tracking-widest uppercase" style={{ color: cat.color }}>{cat.cat}</div>
                     <div className="h-px flex-1" style={{ background: `${cat.color}18` }} />
@@ -383,7 +389,7 @@ export default function TessAI() {
               { icon: <CheckCircle className="w-5 h-5" />, title: 'Zero Lock-in', body: 'Todos os agentes e arquiteturas são exportáveis. Transparência total de custos: API + 20% de margem.', color: '#8800FF' },
             ].map(item => (
               <motion.div key={item.title} variants={staggerItem} className="p-6 rounded-2xl"
-                style={{ background: 'rgba(14,14,16,0.98)', border: `1px solid ${item.color}18` }}>
+                style={{ background: WHITE, border: `1px solid ${item.color}18` }}>
                 <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-4" style={{ background: `${item.color}12`, color: item.color }}>
                   {item.icon}
                 </div>
@@ -439,7 +445,7 @@ export default function TessAI() {
 
           {/* Quote */}
           <Reveal>
-            <div className="p-7 rounded-2xl" style={{ background: 'rgba(14,14,16,0.98)', border: '1px solid rgba(205,255,0,0.15)' }}>
+            <div className="p-7 rounded-2xl" style={{ background: WHITE, border: '1px solid rgba(205,255,0,0.15)' }}>
               <div className="text-3xl mb-4" style={{ color: 'rgba(205,255,0,0.3)', fontFamily: 'Georgia, serif' }}>"</div>
               <p className="text-base font-bold text-white italic mb-5 leading-relaxed">
                 "Enquanto os grandes players tentam empurrar IA em projetos top-down — que frequentemente geram

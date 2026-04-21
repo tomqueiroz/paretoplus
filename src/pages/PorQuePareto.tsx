@@ -1,3 +1,4 @@
+import React from 'react';
 import { useRef } from 'react';
 import { useCalendly } from '@/components/CalendlyModal';
 import { motion, useInView, useScroll, useTransform } from 'framer-motion';
@@ -52,12 +53,35 @@ function IconSVG({ name, size = 20, color = 'currentColor', strokeWidth = 1.6 }:
 }
 
 
+
+// ─── ParallaxStrip ─────────────────────────────────────────────────────────
+import { useScroll as _useScroll, useTransform as _useTransform } from 'framer-motion';
+
+function ParallaxStrip({ img, height = 360, children }: { img: string; height?: number; children?: React.ReactNode }) {
+  const ref = React.useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = _useScroll({ target: ref, offset: ['start end', 'end start'] });
+  const y = _useTransform(scrollYProgress, [0, 1], ['-10%', '10%']);
+  return (
+    <div ref={ref} style={{ position: 'relative', overflow: 'hidden', height }}>
+      <motion.div style={{ y, position: 'absolute', inset: '-14% 0', height: '128%' }}>
+        <img src={img} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'grayscale(1) contrast(1.15) brightness(0.5)' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'rgba(10,9,8,0.55)' }} />
+      </motion.div>
+      {children && (
+        <div style={{ position: 'relative', zIndex: 2, height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 40px', textAlign: 'center', color: '#fff' }}>
+          {children}
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ─── Primitives ──────────────────────────────────────────────────────────────
-function Tag({ children, color = '#8800FF' }: { children: React.ReactNode; color?: string }) {
+function Tag({ children, color = G600 }: { children: React.ReactNode; color?: string }) {
   return (
     <div className="inline-flex items-center gap-2 mb-5">
       <div className="w-5 h-px" style={{ background: color }} />
-      <span className="text-[17px] font-black tracking-[0.3em] uppercase" style={{ color: color === "#8800FF" ? G900 : color }}>{children}</span>
+      <span className="text-[17px] font-black tracking-[0.3em] uppercase" style={{ color }}>{children}</span>
     </div>
   );
 }
@@ -106,7 +130,7 @@ export default function PorQuePareto() {
       <section className="relative min-h-[76vh] flex items-end overflow-hidden">
         <motion.div className="absolute inset-0" style={{ y: heroY }}>
           <img src="/images/pareto_office1.png" alt="" aria-hidden className="w-full h-full object-cover"
-            style={{ filter: 'brightness(0.2) saturate(1.1)' }} />
+            style={{ filter: 'grayscale(1) contrast(1.15) brightness(0.35)' }} />
         </motion.div>
         {/* Purple radial */}
         <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse 80% 60% at 30% 50%, rgba(19,16,12,0.22) 0%, transparent 70%)' }} />
@@ -207,7 +231,7 @@ export default function PorQuePareto() {
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={scaleIn} className="relative">
               <div className="rounded-2xl overflow-hidden" style={{ border: `1px solid #BFB8AE` }}>
                 <img src="/images/pareto_office2.jpg" alt="Escritório Pareto" className="w-full object-cover"
-                  style={{ filter: 'brightness(0.55) saturate(1.1)' }} />
+                  style={{ filter: 'grayscale(1) contrast(1.1) brightness(0.45)' }} />
                 <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(8,8,8,0.9) 0%, transparent 50%)' }} />
                 <div className="absolute bottom-0 left-0 right-0 p-6">
                   <div className="text-sm font-black text-white mb-1">Av. Paulista, 2202 — São Paulo</div>
@@ -364,7 +388,7 @@ export default function PorQuePareto() {
 
             {/* Tess AI */}
             <Reveal delay={0.1}>
-              <div className="p-8 rounded-2xl h-full" style={{ background: 'rgba(205,255,0,0.04)', border: `1px solid #DDD7CF` }}>
+              <div className="p-8 rounded-2xl h-full" style={{ background: WHITE, border: `1px solid #DDD7CF` }}>
                 <div className="text-xs font-black tracking-widest uppercase mb-3" style={{ color: '#CBEC2E' }}>Vertical II</div>
                 <div className="text-3xl font-black text-white mb-2">Tess AI</div>
                 <p className="text-sm font-bold mb-5" style={{ color: '#CBEC2E' }}>Plataforma Proprietária · #6 Melhor IA do Mundo</p>

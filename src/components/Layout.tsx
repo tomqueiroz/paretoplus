@@ -29,7 +29,6 @@ const WA_LINK = 'https://api.whatsapp.com/send/?phone=5511915513210&text&type=ph
 /* ─── HEADER ────────────────────────────────────────────────────────── */
 export function Header() {
   const [scrolled, setScrolled]   = useState(false);
-  const [visible, setVisible]     = useState(false);
   const [menuOpen, setMenuOpen]   = useState(false);
   const [casesOpen, setCasesOpen] = useState(false);
   const location  = useLocation();
@@ -38,9 +37,7 @@ export function Header() {
 
   useEffect(() => {
     const onScroll = () => {
-      const y = window.scrollY;
-      setScrolled(y > 32);
-      setVisible(y > 64);
+      setScrolled(window.scrollY > 40);
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
@@ -69,15 +66,17 @@ export function Header() {
     }
   };
 
+  const navColor = scrolled ? G400 : 'rgba(255,255,255,0.85)';
+  const navHover = scrolled ? G900 : '#fff';
   const linkStyle: React.CSSProperties = {
     fontFamily: "'DM Sans', sans-serif",
     fontWeight: 500,
     fontSize: 11,
     letterSpacing: '0.08em',
     textTransform: 'uppercase',
-    color: G400,
+    color: navColor,
     textDecoration: 'none',
-    transition: 'color 0.2s ease',
+    transition: 'color 0.25s ease',
     background: 'none',
     border: 'none',
     cursor: 'pointer',
@@ -88,23 +87,19 @@ export function Header() {
     <>
       <header
         className={`glass-nav ${scrolled ? 'scrolled' : ''}`}
-        style={{
-          display: 'flex', alignItems: 'center',
-          opacity: visible ? 1 : 0,
-          transform: visible ? 'translateY(0)' : 'translateY(-8px)',
-          pointerEvents: visible ? 'auto' : 'none',
-          transition: 'opacity 0.3s ease, transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease',
-        }}>
+        style={{ display: 'flex', alignItems: 'center' }}>
         <div style={{
           maxWidth: 1200, margin: '0 auto', padding: '0 32px',
           width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         }}>
 
-          {/* Logo */}
+          {/* Logo — white sobre hero escuro, dark após scroll */}
           <button onClick={handleLogoClick}
             style={{ display: 'flex', alignItems: 'center', gap: 8, background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
-            <img src="/images/logo-dark.png" alt="Pareto"
-              style={{ height: 28, width: 'auto', objectFit: 'contain' }} />
+            <img
+              src={scrolled ? "/images/logo-dark.png" : "/images/logo-white.png"}
+              alt="Pareto"
+              style={{ height: 28, width: 'auto', objectFit: 'contain', transition: 'opacity 0.3s ease' }} />
           </button>
 
           {/* Desktop nav */}
@@ -115,8 +110,8 @@ export function Header() {
                   to={link.href!}
                   onClick={() => { setMenuOpen(false); window.scrollTo({ top: 0 }); }}
                   style={linkStyle}
-                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = G900; }}
-                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = G400; }}>
+                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = navHover; }}
+                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = navColor; }}>
                   {link.label}
                 </Link>
               ) : (
@@ -126,8 +121,8 @@ export function Header() {
                     ...linkStyle,
                     ...(link.action === 'cases' ? { color: G900, fontWeight: 600 } : {}),
                   }}
-                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = G900; }}
-                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = link.action === 'cases' ? G900 : G400; }}>
+                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = navHover; }}
+                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = link.action === 'cases' ? navHover : navColor; }}>
                   {link.label}
                 </button>
               )
@@ -163,7 +158,7 @@ export function Header() {
           {/* Mobile hamburger */}
           <button className="mobile-hamburger"
             onClick={() => setMenuOpen(!menuOpen)}
-            style={{ background: 'none', border: 'none', color: G600, cursor: 'pointer', padding: 6 }}>
+            style={{ background: 'none', border: 'none', color: scrolled ? G600 : 'rgba(255,255,255,0.85)', cursor: 'pointer', padding: 6 }}>
             {menuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>

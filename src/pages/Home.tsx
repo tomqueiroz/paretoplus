@@ -47,11 +47,13 @@ function Mono({ children, color = C, size = 12 }: { children: React.ReactNode; c
   );
 }
 
-function EyebrowLabel({ children }: { children: React.ReactNode }) {
+function EyebrowLabel({ children, dark = false }: { children: React.ReactNode; dark?: boolean }) {
+  const lineColor = dark ? 'rgba(203,236,46,0.6)' : G600;
+  const textColor = dark ? LIME : G600;
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
-      <div style={{ width: 20, height: 1, background: G600, opacity: 0.5 }} />
-      <Mono color={G600} size={11}>{children}</Mono>
+      <div style={{ width: 20, height: 1, background: lineColor, opacity: 0.7 }} />
+      <Mono color={textColor} size={11}>{children}</Mono>
     </div>
   );
 }
@@ -278,10 +280,10 @@ function LogoMarqueeRow({ logos, reverse = false, speed = 55 }: { logos: string[
         transition={{ duration: speed, repeat: Infinity, ease: 'linear' }}
         style={{ display: 'flex', gap: 0, whiteSpace: 'nowrap', alignItems: 'center' }}>
         {doubled.map((src, i) => (
-          <div key={i} className="marquee-card" style={{ flexShrink: 0, width: 220, height: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 24px', margin: '0 4px', borderRadius: 10, background: 'rgba(18,21,31,0.55)', border: '1px solid rgba(255,255,255,0.05)', transition: 'all 0.25s ease', cursor: 'default' }}
+          <div key={i} className="marquee-card" style={{ flexShrink: 0, width: 220, height: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 24px', margin: '0 4px', borderRadius: 10, background: G900, border: '1px solid rgba(255,255,255,0.05)', transition: 'all 0.25s ease', cursor: 'default' }}
             onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = 'rgba(108,99,255,0.08)'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(108,99,255,0.22)'; }}
             onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = 'rgba(18,21,31,0.55)'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.05)'; }}>
-            <img src={src} alt="" className="marquee-card-img" style={{ maxWidth: 180, maxHeight: 72, width: 'auto', height: 'auto', objectFit: 'contain', filter: 'grayscale(1) brightness(1.8)', opacity: 0.5, mixBlendMode: 'screen', transition: 'opacity 0.25s ease' }}
+            <img src={src} alt="" className="marquee-card-img" style={{ maxWidth: 180, maxHeight: 72, width: 'auto', height: 'auto', objectFit: 'contain', filter: 'grayscale(1) brightness(1.8)', opacity: 0.45, mixBlendMode: 'screen', transition: 'all 0.25s ease' }}
               onMouseEnter={(e) => { (e.currentTarget as HTMLImageElement).style.opacity = '1'; }}
               onMouseLeave={(e) => { (e.currentTarget as HTMLImageElement).style.opacity = '0.5'; }} />
           </div>
@@ -401,12 +403,11 @@ function ParallaxStrip({ img, height = 300, overlay, children }: {
   return (
     <div ref={ref} style={{ position: 'relative', overflow: 'hidden', height }}>
       <motion.div style={{ y, position: 'absolute', inset: '-14% 0', height: '128%' }}>
-        <img src={img} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.32, filter: 'grayscale(0.5) contrast(1.1)' }} />
-        <div style={{ position: 'absolute', inset: 0, background: overlay ?? `linear-gradient(135deg, rgba(108,99,255,0.25) 0%, rgba(0,212,255,0.08) 100%)` }} />
-        <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(to bottom, rgba(11,13,20,0.9) 0%, rgba(11,13,20,0.15) 50%, rgba(11,13,20,0.9) 100%)` }} />
+        <img src={img} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.6, filter: 'grayscale(1) contrast(1.15) brightness(0.55)' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'rgba(10,9,8,0.55)' }} />
       </motion.div>
       {children && (
-        <div style={{ position: 'relative', zIndex: 2, height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 24px', textAlign: 'center' }}>
+        <div style={{ position: 'relative', zIndex: 2, height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 24px', textAlign: 'center', color: '#fff' }}>
           {children}
         </div>
       )}
@@ -499,14 +500,14 @@ function CasesPopupButton() {
     <>
       <button onClick={() => setOpen(true)} style={{
         display: 'inline-flex', alignItems: 'center', gap: 8,
-        padding: '12px 28px', borderRadius: 8, border: `1px solid ${G200}`,
-        background: WHITE, color: G900,
-        fontFamily: "'Inter', sans-serif", fontWeight: 700, fontSize: 14,
+        padding: '12px 28px', borderRadius: 8, border: `1px solid ${LIME_DIM}`,
+        background: WHITE, color: LIME_DIM,
+        fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 14,
         letterSpacing: '0.02em', cursor: 'pointer', transition: 'all 0.22s ease',
       }}
         onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = 'rgba(200,241,53,0.18)'; (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'; }}
         onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = 'rgba(200,241,53,0.08)'; (e.currentTarget as HTMLElement).style.transform = ''; }}>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={G900} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={LIME_DIM} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
         Ver todos os Cases
       </button>
       <AnimatePresence>
@@ -788,7 +789,7 @@ export default function Home() {
         ══════════════════════════════════════════════════════ */}
         <ParallaxStrip img="/images/brazil_network.jpg" height={400} overlay="linear-gradient(to right, rgba(11,13,20,0.72) 0%, rgba(108,99,255,0.22) 50%, rgba(0,212,255,0.08) 100%)">
           <motion.div initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} style={{ maxWidth: 760 }}>
-            <EyebrowLabel>Decisão</EyebrowLabel>
+            <EyebrowLabel dark>Decisão</EyebrowLabel>
             <H1 style={{ fontSize: 'clamp(1.9rem, 4vw, 3.4rem)', lineHeight: 1.1, marginBottom: 0 }}>
               O Brasil de 2030 está sendo
               <br />construído agora.
@@ -897,7 +898,7 @@ export default function Home() {
         {/* ══════════════════════════════════════════════════════
             02 · SOBRE A PARETO — Terceira dobra
         ══════════════════════════════════════════════════════ */}
-        <section id="sobre-pareto" style={{ padding: '80px 24px 72px', position: 'relative', overflow: 'hidden', background: 'rgba(18,21,31,0.55)' }}>
+        <section id="sobre-pareto" style={{ padding: '80px 24px 72px', position: 'relative', overflow: 'hidden', background: G900 }}>
           <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 65% 55% at 80% 50%, rgba(108,99,255,0.09) 0%, transparent 70%)', pointerEvents: 'none' }} />
           <div className="data-grid" />
           <div style={{ maxWidth: 1280, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(24px,5vw,64px)', alignItems: 'center' }} className="grid-cols-1 lg:grid-cols-2">
@@ -921,12 +922,12 @@ export default function Home() {
                   { icon: 'brain', label: 'Agentes Inteligentes', desc: 'IA generativa integrada ao seu ERP, CRM e dados' },
                   { icon: 'target', label: 'AI Builders Alocados', desc: 'Time sênior embarcado com ROI rastreado por sprint' },
                 ].map((item) => (
-                  <GlassCard key={item.label} style={{ padding: '16px 18px', display: 'flex', gap: 12 }} hover={false}>
-                    <IconSVG name={item.icon} size={22} color={LIME_DIM} />
-                    <div>
-                      <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 12, color: G900, marginBottom: 3 }}>{item.label}</div>
-                      <Body muted style={{ fontSize: 11 }}>{item.desc}</Body>
+                  <GlassCard key={item.label} style={{ padding: '20px 18px 18px', display: 'flex', flexDirection: 'column', gap: 10, alignItems: 'flex-start', position: 'relative', paddingTop: 32 }} hover={false}>
+                    <div style={{ position: 'absolute', top: -16, left: 18, width: 36, height: 36, borderRadius: 10, background: G900, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 12px rgba(0,0,0,0.18)' }}>
+                      <IconSVG name={item.icon} size={18} color={LIME} />
                     </div>
+                    <div style={{ fontFamily: "'Playfair Display', Georgia, serif", fontWeight: 700, fontSize: 14, color: G900, lineHeight: 1.3 }}>{item.label}</div>
+                    <Body muted style={{ fontSize: 11 }}>{item.desc}</Body>
                   </GlassCard>
                 ))}
               </div>
@@ -1036,10 +1037,10 @@ export default function Home() {
                     <div style={{ padding: '24px 28px 16px', borderBottom: `1px solid ${s.color}18` }}>
                       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
                         <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 10, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', padding: '4px 10px', borderRadius: 99, background: `${s.color}15`, color: s.color }}>{s.label}</span>
-                        <Mono color={`${s.color}25`} size={20}>{s.num}</Mono>
+                        <span style={{ fontFamily: "'Playfair Display', Georgia, serif", fontWeight: 900, fontSize: "3.2rem", color: LIME, lineHeight: 1, letterSpacing: "-2px" }}>{s.num}</span>
                       </div>
-                      <H3 style={{ marginBottom: 8 }}>{s.title}</H3>
-                      <Body muted style={{ fontSize: 12, fontStyle: 'italic', color: `${s.color}80` }}>{s.headline}</Body>
+                      <h3 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontWeight: 700, fontSize: "1.45rem", letterSpacing: "-0.5px", lineHeight: 1.2, margin: "0 0 8px", color: G900 }}>{s.title}</h3>
+                      <Body muted style={{ fontSize: 12, fontStyle: 'italic', color: G600 }}>{s.headline}</Body>
                     </div>
                     <ul style={{ padding: '20px 28px', listStyle: 'none', margin: 0, display: 'flex', flexDirection: 'column', gap: 14, flex: 1 }}>
                       {s.items.map((item) => (
@@ -1204,7 +1205,7 @@ export default function Home() {
               {/* Tess AI image — below text, full width */}
               <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={scaleIn}>
                 <div style={{ position: 'relative', borderRadius: 16, overflow: 'hidden', border: `1px solid ${G100}`, maxWidth: 720, margin: '0 auto' }}>
-                  <img src="/images/tess_ai_illustration.png" alt="Tess AI" style={{ width: '100%', display: 'block', filter: 'grayscale(0.55) contrast(1.08)' }} loading="lazy" />
+                  <img src="/images/tess_ai_illustration.png" alt="Tess AI" style={{ width: '100%', display: 'block', filter: 'grayscale(1) contrast(1.1) brightness(0.6)' }} loading="lazy" />
                   <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(108,99,255,0.22) 0%, rgba(0,212,255,0.08) 100%)', pointerEvents: 'none' }} />
                   <div style={{ position: 'absolute', inset: 0, boxShadow: 'inset 0 0 50px rgba(108,99,255,0.22)', pointerEvents: 'none' }} />
                 </div>
@@ -1310,8 +1311,8 @@ export default function Home() {
         {/* ── Parallax: Prédio ──────────────────────────────────── */}
         <ParallaxStrip img="/images/predio.png" height={260}>
           <motion.div initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-            <Body style={{ fontSize: 15, color: 'rgba(255,255,255,0.65)' }}>Consolação, São Paulo · Hub de Inovação em IA</Body>
-            <Mono color={`${C}80`} size={10}>Pareto HQ · Brasil & Silicon Valley</Mono>
+            <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 18, fontWeight: 400, color: 'rgba(255,255,255,0.90)', lineHeight: 1.5, margin: '0 0 6px' }}>Consolação, São Paulo · <em>Hub</em> de Inovação em IA</p>
+            <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 16, fontWeight: 500, color: LIME, letterSpacing: '0.04em', margin: 0, fontStyle: 'italic' }}>Pareto HQ · <em>Brasil &amp; Silicon Valley</em></p>
           </motion.div>
         </ParallaxStrip>
 
@@ -1374,7 +1375,7 @@ export default function Home() {
 
                 {/* AI agents image */}
                 <div style={{ position: 'relative', borderRadius: 16, overflow: 'hidden', border: '1px solid rgba(0,212,255,0.18)' }}>
-                  <img src="/images/ai_agents_illustration.png" alt="AI Agents" style={{ width: '100%', display: 'block', filter: 'grayscale(0.55) contrast(1.06)' }} loading="lazy" />
+                  <img src="/images/ai_agents_illustration.png" alt="AI Agents" style={{ width: '100%', display: 'block', filter: 'grayscale(1) contrast(1.1) brightness(0.6)' }} loading="lazy" />
                   <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(108,99,255,0.2) 0%, rgba(0,212,255,0.14) 100%)', mixBlendMode: 'color', pointerEvents: 'none' }} />
                   <div style={{ position: 'absolute', inset: 0, boxShadow: 'inset 0 0 40px rgba(0,212,255,0.12)', pointerEvents: 'none' }} />
                 </div>
