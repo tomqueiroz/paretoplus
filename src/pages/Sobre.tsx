@@ -124,7 +124,7 @@ const TESS_BENCHMARKS = [
 
 const SOLUTIONS = [
   {
-    tag: 'Produto', icon: Brain, color: V,
+    tag: 'Produto', icon: Brain, color: LIME_DIM,
     name: 'Pareto AI',
     headline: 'A infraestrutura essencial para quem constrói com IA.',
     desc: 'Tudo que AI Builders precisam para construir, testar e escalar sistemas inteligentes. Metodologias, frameworks operacionais, agentes inteligentes e workflows — em um único ambiente.',
@@ -132,7 +132,7 @@ const SOLUTIONS = [
     link: 'https://pareto.io/solutions',
   },
   {
-    tag: 'Formação', icon: Users, color: C,
+    tag: 'Formação', icon: Users, color: LIME_DIM,
     name: 'Pareto Academy',
     headline: 'AI Training for Professionals and Teams.',
     desc: 'Certificações para quem deseja se tornar um AI Builder e treinamentos corporativos personalizados para o seu time — online ou presenciais.',
@@ -140,7 +140,7 @@ const SOLUTIONS = [
     link: 'https://metodo.pareto.io/',
   },
   {
-    tag: 'Consultoria', icon: Settings, color: A,
+    tag: 'Consultoria', icon: Settings, color: LIME_DIM,
     name: 'Pareto Services',
     headline: 'IA implementada. Resultado mensurável.',
     desc: 'Especialistas em IA, negócios e tecnologia proprietária que automatizam processos críticos, reduzem custos, aumentam a produtividade e receita.',
@@ -148,7 +148,7 @@ const SOLUTIONS = [
     link: WA_LINK,
   },
   {
-    tag: 'Automação', icon: Zap, color: '#C8F135',
+    tag: 'Automação', icon: Zap, color: LIME_DIM,
     name: 'AI Workers',
     headline: 'Colaboradores digitais que executam tarefas reais, sozinhos.',
     desc: 'Sua equipe para de operar e começa a decidir. AI Workers assumem tarefas operacionais completas — analisando, decidindo e agindo sem intervenção humana.',
@@ -159,14 +159,20 @@ const SOLUTIONS = [
 
 export default function Sobre() {
   return (
-    <main style={{ background: BG, color: '#13100C', fontFamily: "'DM Sans', sans-serif" }}>
+    <main style={{ background: BG, color: G900, fontFamily: "'DM Sans', sans-serif" }}>
 
-      {/* ── HERO ─────────────────────────────────────────────────── */}
+      {/* ── HERO ──────────────────────────────────────────────────────────────── */}
       <section style={{ position: 'relative', minHeight: '60vh', display: 'flex', alignItems: 'center', overflow: 'hidden', paddingTop: 100 }}>
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #0d0d0d 100%)' }} />
+        {/* VIDEO BG */}
+        <video autoPlay muted loop playsInline
+          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', filter: 'grayscale(1) brightness(0.65)', opacity: 0.75, zIndex: 0 }}
+          aria-hidden="true">
+          <source src="/videos/sobre_hero.mp4" type="video/mp4" />
+        </video>
+        <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 1 }} />
         <div className="data-grid" />
-          <div style={{ position: 'absolute', top: '20%', right: '10%', width: 480, height: 480, borderRadius: '50%', background: 'radial-gradient(ellipse, rgba(180,180,180,0.07) 0%, transparent 70%)', pointerEvents: 'none' }} />
-        <div style={{ position: 'absolute', bottom: '10%', left: '5%', width: 360, height: 360, borderRadius: '50%', background: 'radial-gradient(ellipse, rgba(140,140,140,0.05) 0%, transparent 70%)', pointerEvents: 'none' }} />
+          <div style={{ position: 'absolute', top: '20%', right: '10%', width: 480, height: 480, borderRadius: '50%', background: 'radial-gradient(ellipse, rgba(203,236,46,0.07) 0%, transparent 70%)', pointerEvents: 'none', zIndex: 2 }} />
+        <div style={{ position: 'absolute', bottom: '10%', left: '5%', width: 360, height: 360, borderRadius: '50%', background: 'radial-gradient(ellipse, rgba(203,236,46,0.04) 0%, transparent 70%)', pointerEvents: 'none', zIndex: 2 }} />
         {/* A10 logo grid — right side, white semi-transparent */}
         <div style={{ position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)', width: '45%', maxWidth: 660, pointerEvents: 'none', zIndex: 2 }}>
           <img src="/images/hero_logos_grid.png" alt="" style={{ width: '100%', height: 'auto', objectFit: 'contain', filter: 'brightness(10) grayscale(1)', opacity: 0.05, maskImage: 'linear-gradient(to left, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.25) 60%, transparent 100%)', WebkitMaskImage: 'linear-gradient(to left, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.25) 60%, transparent 100%)' }} />
@@ -225,16 +231,16 @@ export default function Sobre() {
             style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 20 }}>
             {SOLUTIONS.map((s) => (
               <motion.div key={s.name} variants={staggerItem}>
-                <GlassCard style={{ padding: '28px 24px', height: '100%', display: 'flex', flexDirection: 'column', background: OFF, border: `1px solid ${G100}` }}>
+                <GlassCard style={{ padding: '28px 24px', height: '100%', display: 'flex', flexDirection: 'column', background: WHITE, border: `1px solid ${G100}` }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
-                    <div style={{ width: 40, height: 40, borderRadius: 10, background: `${s.color}15`, border: `1px solid ${s.color}30`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <s.icon size={18} style={{ color: s.color }} />
+                    <div style={{ width: 40, height: 40, borderRadius: 10, background: 'rgba(168,196,30,0.1)', border: `1px solid rgba(168,196,30,0.25)`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <s.icon size={18} style={{ color: LIME_DIM }} />
                     </div>
-                    <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 9, fontWeight: 600, letterSpacing: '0.18em', textTransform: 'uppercase', color: s.color, padding: '3px 8px', borderRadius: 4, background: `${s.color}12`, border: `1px solid ${s.color}20` }}>{s.tag}</span>
+                    <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 9, fontWeight: 600, letterSpacing: '0.18em', textTransform: 'uppercase', color: LIME_DIM, padding: '3px 8px', borderRadius: 4, background: 'rgba(168,196,30,0.08)', border: `1px solid rgba(168,196,30,0.2)` }}>{s.tag}</span>
                   </div>
                   <H3 style={{ fontSize: 18, marginBottom: 8, color: G900 }}>{s.name}</H3>
-                  <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: s.color, fontWeight: 600, marginBottom: 10, lineHeight: 1.5 }}>{s.headline}</p>
-                  <Body muted style={{ fontSize: 13, flex: 1, marginBottom: 18 }}>{s.desc}</Body>
+                  <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: G600, fontWeight: 600, marginBottom: 10, lineHeight: 1.5 }}>{s.headline}</p>
+                  <Body muted style={{ fontSize: 13, flex: 1, marginBottom: 18, color: G400 }}>{s.desc}</Body>
                   <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 20px', display: 'flex', flexDirection: 'column', gap: 7 }}>
                     {s.items.map((item) => (
                       <li key={item} style={{ display: 'flex', gap: 8, fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: G600 }}>
@@ -243,7 +249,7 @@ export default function Sobre() {
                     ))}
                   </ul>
                   <a href={s.link} target="_blank" rel="noopener noreferrer"
-                    style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 600, color: s.color, textDecoration: 'none', marginTop: 'auto' }}
+                    style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 700, color: LIME_DIM, textDecoration: 'none', marginTop: 'auto', borderTop: `1px solid ${G100}`, paddingTop: 14 }}
                     onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.gap = '10px'; }}
                     onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.gap = '6px'; }}>
                     Explorar <ArrowRight size={13} />

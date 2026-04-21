@@ -373,7 +373,7 @@ function FloatingLogoBg() {
       {nodes.map((n, i) => (
         <motion.div key={i}
           initial={{ opacity: 0 }}
-          animate={{ opacity: 0.5, y: [0, -n.dy, 0] }}
+          animate={{ opacity: 0.4, y: [0, -n.dy, 0] }}
           transition={{
             opacity: { delay: n.delay + 0.8, duration: 1.0 },
             y: { duration: n.dur, repeat: Infinity, ease: 'easeInOut', delay: n.delay },
@@ -382,7 +382,7 @@ function FloatingLogoBg() {
           <img
             src={HERO_LOGO_SRCS[i]}
             alt=""
-            style={{ width: 100, height: 'auto', maxHeight: 60, objectFit: 'contain', display: 'block', filter: 'grayscale(1) brightness(1.4)', opacity: 0.7 }}
+            style={{ width: 100, height: 'auto', maxHeight: 60, objectFit: 'contain', display: 'block', filter: 'grayscale(1) brightness(10)', opacity: 0.55 }}
           />
         </motion.div>
       ))}
@@ -403,7 +403,7 @@ function ParallaxStrip({ img, height = 300, overlay, children }: {
   return (
     <div ref={ref} style={{ position: 'relative', overflow: 'hidden', height }}>
       <motion.div style={{ y, position: 'absolute', inset: '-14% 0', height: '128%' }}>
-        <img src={img} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.7, filter: 'grayscale(1) contrast(1.1) brightness(0.5)' }} />
+        <img src={img} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.7, filter: 'grayscale(1) contrast(1.0) brightness(0.8)' }} />
         <div style={{ position: 'absolute', inset: 0, background: 'rgba(10,9,8,0.55)' }} />
       </motion.div>
       {children && (
@@ -693,22 +693,23 @@ export default function Home() {
         ══════════════════════════════════════════════════════ */}
         <section id="hero" style={{ position: 'relative', minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', overflow: 'hidden' }}>
 
-          {/* Layer 0: hero gradient */}
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #0d0d0d 100%)' }} />
+          {/* Layer 0: vídeo abstrato P&B em loop */}
+          <video
+            autoPlay muted loop playsInline
+            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', filter: 'grayscale(1) brightness(0.55)', opacity: 0.7, zIndex: 0 }}
+            aria-hidden="true">
+            <source src="/videos/hero_abstract.mp4" type="video/mp4" />
+          </video>
 
-          {/* Layer 1: logos dos clientes flutuando */}
+          {/* Overlay escuro */}
+          <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.45)', zIndex: 1 }} />
+
+          {/* Layer 1: logos dos clientes flutuando — em verde da marca */}
           <FloatingLogoBg />
 
-          {/* Layer 3: neural network lines */}
-          <div style={{ position: 'absolute', inset: 0 }}><ParticleCanvas /></div>
-
-          {/* Layer 2: data grid */}
-          <div className="data-grid" />
-
-          {/* Layer 4: glow orbs — subtle radial blurs only — P&B */}
-          <div style={{ position: 'absolute', top: '8%', right: '12%', width: 500, height: 500, borderRadius: '50%', background: 'radial-gradient(ellipse, rgba(180,180,180,0.08) 0%, transparent 70%)', pointerEvents: 'none' }} />
-          <div style={{ position: 'absolute', bottom: '15%', left: '5%', width: 420, height: 420, borderRadius: '50%', background: 'radial-gradient(ellipse, rgba(160,160,160,0.05) 0%, transparent 70%)', pointerEvents: 'none' }} />
-          <div style={{ position: 'absolute', top: '40%', left: '35%', width: 360, height: 360, borderRadius: '50%', background: 'radial-gradient(ellipse, rgba(140,140,140,0.04) 0%, transparent 70%)', pointerEvents: 'none' }} />
+          {/* Layer 4: glow orbs LIME suaves */}
+          <div style={{ position: 'absolute', top: '8%', right: '12%', width: 500, height: 500, borderRadius: '50%', background: 'radial-gradient(ellipse, rgba(203,236,46,0.06) 0%, transparent 70%)', pointerEvents: 'none', zIndex: 3 }} />
+          <div style={{ position: 'absolute', bottom: '15%', left: '5%', width: 420, height: 420, borderRadius: '50%', background: 'radial-gradient(ellipse, rgba(203,236,46,0.04) 0%, transparent 70%)', pointerEvents: 'none', zIndex: 3 }} />
 
           {/* Layer 5: A10 logo grid — right side, white semi-transparent, behind neural lines */}
           <div style={{ position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)', width: '48%', maxWidth: 720, pointerEvents: 'none', zIndex: 2 }}>
@@ -829,7 +830,7 @@ export default function Home() {
                     <div style={{ fontFamily: "'DM Sans', monospace", fontSize: 'clamp(1.8rem, 4vw, 2.6rem)', fontWeight: 600, color: c.accent, letterSpacing: '-0.03em', marginBottom: 10 }}>
                       {c.stat}
                     </div>
-                    <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 500, fontSize: 14, color: '#fff', marginBottom: 10 }}>{c.label}</div>
+                    <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, fontSize: 14, color: G900, marginBottom: 10 }}>{c.label}</div>
                     <Body muted style={{ fontSize: 13 }}>{c.desc}</Body>
                   </GlassCard>
                 </motion.div>
@@ -868,7 +869,7 @@ export default function Home() {
                     <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 10, fontWeight: 600, letterSpacing: '0.16em', textTransform: 'uppercase', color: c.tone === 'bright' ? V : c.tone === 'urgent' ? A : 'rgba(136,146,164,0.5)', marginBottom: 16 }}>
                       {c.label}
                     </div>
-                    <blockquote style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 14, fontWeight: 500, color: '#fff', lineHeight: 1.6, marginBottom: 14, fontStyle: 'italic' }}>
+                    <blockquote style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 14, fontWeight: 500, color: c.tone === 'dim' ? 'rgba(255,255,255,0.9)' : 'rgba(160,170,160,0.9)', lineHeight: 1.6, marginBottom: 14, fontStyle: 'italic' }}>
                       {c.quote}
                     </blockquote>
                     <Body muted style={{ fontSize: 12, color: c.tone === 'dim' ? 'rgba(255,100,100,0.65)' : 'rgba(136,146,164,0.7)' }}>{c.result}</Body>
@@ -1105,7 +1106,7 @@ export default function Home() {
             {/* How it works — 4 steps */}
             <Reveal style={{ textAlign: 'center', marginBottom: 28 }}>
               <EyebrowLabel>Do diagnóstico ao caixa</EyebrowLabel>
-              <h3 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontWeight: 700, fontSize: 'clamp(2.4rem, 5vw, 5.4rem)', letterSpacing: '-1.5px', lineHeight: 1.0, margin: '0 0 6px', color: G900 }}>4 etapas. Sem overhead desnecessário.</h3>
+              <h3 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontWeight: 700, fontSize: 'clamp(1.4rem, 3vw, 3.2rem)', letterSpacing: '-1.5px', lineHeight: 1.0, margin: '0 0 6px', color: G900 }}>4 etapas. Sem overhead desnecessário.</h3>
             </Reveal>
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger}
               style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16 }}>
@@ -1117,9 +1118,9 @@ export default function Home() {
               ].map((s) => (
                 <motion.div key={s.n} variants={staggerItem}>
                   <GlassCard style={{ padding: '20px 18px' }} hover={false}>
-                    <Mono color={V} size={11}>{s.n}</Mono>
-                    <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, fontSize: 14, color: '#fff', margin: '8px 0' }}>{s.t}</div>
-                    <Body muted style={{ fontSize: 12 }}>{s.d}</Body>
+                    <div style={{ fontFamily: "'DM Sans', monospace", fontSize: 'clamp(2.2rem, 4vw, 3.6rem)', fontWeight: 800, color: LIME, letterSpacing: '-0.04em', lineHeight: 1, marginBottom: 4 }}>{s.n}</div>
+                    <div style={{ fontFamily: "'Playfair Display', Georgia, serif", fontWeight: 700, fontSize: 15, color: LIME_DIM, margin: '4px 0 8px', letterSpacing: '-0.01em' }}>{s.t}</div>
+                    <Body muted style={{ fontSize: 12, color: G400 }}>{s.d}</Body>
                   </GlassCard>
                 </motion.div>
               ))}
@@ -1181,12 +1182,12 @@ export default function Home() {
                 <EyebrowLabel>Plataforma Proprietária</EyebrowLabel>
                 <H2 style={{ marginBottom: 18 }}>Tess AI: acima do ChatGPT<br /><span style={{ color: LIME }}>no ranking global.</span></H2>
                 <Body style={{ marginBottom: 14 }}>
-                  A Pareto não usa ferramentas de terceiros como core. A Tess AI, nossa plataforma proprietária, foi eleita pelo G2 Awards 2024 como o <span style={{ color: '#fff' }}>6º melhor produto de IA do mundo</span> — à frente do ChatGPT (10º), Google Gemini (22º) e IBM Watson (28º).
+                  A Pareto não usa ferramentas de terceiros como core. A Tess AI, nossa plataforma proprietária, foi eleita pelo G2 Awards 2024 como o <span style={{ color: LIME_DIM, fontWeight: 600 }}>6º melhor produto de IA do mundo</span> — à frente do ChatGPT (10º), Google Gemini (22º) e IBM Watson (28º).
                 </Body>
                 <Body style={{ marginBottom: 28 }}>
                   Isso significa acesso unificado a +200 modelos líderes — GPT-4o, Claude 3.5, Gemini, Midjourney, Runway — com segurança enterprise, Brand Voice exclusiva e automação de workflows personalizada para o seu negócio.
                 </Body>
-              <div style={{ marginTop: 32, padding: '20px 24px', borderRadius: 12, background: OFF, border: `1px solid ${G100}`, textAlign: 'center' }}>
+              <div style={{ marginTop: 32, padding: '20px 24px', borderRadius: 12, background: G900, border: `1px solid ${G800}`, textAlign: 'center' }}>
                 <blockquote style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 700, fontSize: 'clamp(1.1rem, 2vw, 1.5rem)', color: '#fff', margin: 0, lineHeight: 1.35 }}>
                   <span className="hero-shimmer-text">"O futuro da IA é colaborativo."</span>
                 </blockquote>
@@ -1194,8 +1195,8 @@ export default function Home() {
               </div>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(110px, 1fr))', gap: 12 }}>
                   {[['#6', 'Global G2 2024'], ['+200', 'Modelos de IA'], ['+2M', 'Usuários Ativos']].map(([v, l]) => (
-                    <GlassCard key={l} style={{ padding: '16px 12px', textAlign: 'center' }}>
-                      <div style={{ fontFamily: "'DM Sans', monospace", fontSize: '1.4rem', fontWeight: 600, color: C, marginBottom: 4 }}>{v}</div>
+                    <GlassCard key={l} style={{ padding: '16px 12px', textAlign: 'center', background: OFF, border: `1px solid ${G100}` }}>
+                      <div style={{ fontFamily: "'DM Sans', monospace", fontSize: '1.4rem', fontWeight: 700, color: LIME_DIM, marginBottom: 4 }}>{v}</div>
                       <Body muted style={{ fontSize: 11 }}>{l}</Body>
                     </GlassCard>
                   ))}
@@ -1276,19 +1277,19 @@ export default function Home() {
               style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 20, marginBottom: 56 }}>
               {CASES.map((c) => (
                 <motion.div key={c.client} variants={staggerItem}>
-                  <GlassCard style={{ overflow: 'hidden' }}>
-                    <div style={{ padding: '28px 28px 20px', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                      <div style={{ fontFamily: "'DM Sans', monospace", fontSize: 'clamp(2.4rem, 5vw, 3.2rem)', fontWeight: 600, color: C, letterSpacing: '-0.03em', lineHeight: 1, marginBottom: 6 }}>
+                    <GlassCard style={{ overflow: 'hidden', background: WHITE, border: `1px solid ${G100}` }}>
+                    <div style={{ padding: '28px 28px 20px', borderBottom: `1px solid ${G100}` }}>
+                      <div style={{ fontFamily: "'DM Sans', monospace", fontSize: 'clamp(2.4rem, 5vw, 3.2rem)', fontWeight: 700, color: LIME_DIM, letterSpacing: '-0.03em', lineHeight: 1, marginBottom: 6 }}>
                         {c.sign}<AnimatedNumber value={parseInt(c.value)} suffix={parseInt(c.value) > 9 ? '%' : ''} />
                       </div>
-                      <Mono color="rgba(136,146,164,0.55)" size={10}>{c.sector}</Mono>
+                      <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 11, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: G600, marginBottom: 2 }}>{c.sector}</div>
                     </div>
                     <div style={{ padding: '20px 28px' }}>
-                      <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 500, fontSize: 14, color: '#fff', marginBottom: 8, lineHeight: 1.4 }}>{c.metric}</div>
-                      <Body muted style={{ fontSize: 12, marginBottom: 16 }}>{c.description}</Body>
+                      <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, fontSize: 14, color: G900, marginBottom: 8, lineHeight: 1.4 }}>{c.metric}</div>
+                      <Body muted style={{ fontSize: 12, marginBottom: 16, color: G400 }}>{c.description}</Body>
                       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
                         {c.tags.map((t) => (
-                          <span key={t} style={{ padding: '3px 10px', borderRadius: 99, fontFamily: "'Inter', sans-serif", fontSize: 11, background: `${V}10`, color: `${V}CC`, border: `1px solid ${V}20` }}>{t}</span>
+                          <span key={t} style={{ padding: '3px 10px', borderRadius: 99, fontFamily: "'Inter', sans-serif", fontSize: 11, background: 'rgba(168,196,30,0.08)', color: LIME_DIM, border: `1px solid rgba(168,196,30,0.2)` }}>{t}</span>
                         ))}
                       </div>
                     </div>
@@ -1343,7 +1344,7 @@ export default function Home() {
                     <GlassCard key={item.title} style={{ padding: '16px 20px', display: 'flex', gap: 14 }} hover={false}>
                       <div style={{ width: 6, height: 6, borderRadius: '50%', background: C, flexShrink: 0, marginTop: 6 }} />
                       <div>
-                        <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, fontSize: 13, color: '#fff', marginBottom: 4 }}>{item.title}</div>
+                        <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, fontSize: 13, color: G900, marginBottom: 4 }}>{item.title}</div>
                         <Body muted style={{ fontSize: 12 }}>{item.text}</Body>
                       </div>
                     </GlassCard>
@@ -1464,7 +1465,7 @@ export default function Home() {
                 <motion.div key={s.n} variants={staggerItem}>
                   <GlassCard style={{ padding: '28px 24px', height: '100%' }}>
                     <Mono color={V} size={11}>{s.n}</Mono>
-                    <div style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 700, fontSize: 15, color: '#fff', margin: '12px 0 10px' }}>{s.title}</div>
+                    <div style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 700, fontSize: 15, color: G900, margin: '12px 0 10px' }}>{s.title}</div>
                     <Body muted style={{ fontSize: 13 }}>{s.desc}</Body>
                   </GlassCard>
                 </motion.div>
