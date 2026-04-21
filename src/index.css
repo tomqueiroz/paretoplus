@@ -162,22 +162,22 @@ body {
   box-shadow: 0 0 24px rgba(203,236,46,0.08);
 }
 
-/* ── Nav — floating glass, light ── */
+/* ── Nav — glass semitransparente, aparece somente após scroll ── */
 .glass-nav {
-  background: rgba(248,246,243,0.88);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
-  border-bottom: 1px solid rgba(221,215,207,0.6);
-  box-shadow: 0 2px 24px rgba(0,0,0,0.04);
+  background: rgba(248,246,243,0.90);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border-bottom: 1px solid rgba(221,215,207,0.45);
+  box-shadow: 0 2px 20px rgba(0,0,0,0.06);
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 1000;
   height: 64px;
-  transition: background 0.3s ease, box-shadow 0.3s ease;
+  /* opacity/transform gerenciados por JS (via inline style no componente) */
 }
 .glass-nav.scrolled {
-  background: rgba(248,246,243,0.96);
-  box-shadow: 0 4px 32px rgba(0,0,0,0.08);
+  background: rgba(248,246,243,0.92);
+  box-shadow: 0 4px 32px rgba(0,0,0,0.10);
 }
 
 /* ── Dividers ── */
@@ -270,14 +270,16 @@ body {
 }
 .icon-badge:hover { transform: scale(1.06); }
 
-/* ── Data grid subtle overlay ── */
+/* ── Data grid — DISABLED (use .data-dots for subtle decoration) ── */
 .data-grid {
+  display: none;
+}
+/* Subtle dot pattern (opcional, não-quadriculado) */
+.data-dots {
   position: absolute; inset: 0; pointer-events: none;
-  background-image:
-    linear-gradient(var(--p-g100) 1px, transparent 1px),
-    linear-gradient(90deg, var(--p-g100) 1px, transparent 1px);
-  background-size: 48px 48px;
-  opacity: 0.25;
+  background-image: radial-gradient(circle, var(--p-g100) 1px, transparent 1px);
+  background-size: 32px 32px;
+  opacity: 0.3;
 }
 
 /* ── Micro-animations ── */

@@ -60,7 +60,7 @@ function Reveal({ children, style = {} }: { children: React.ReactNode; style?: R
 }
 
 function Mono({ children, color = C, size = 12 }: { children: React.ReactNode; color?: string; size?: number }) {
-  return <span className="eyebrow-text" style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: size, fontWeight: 500, color, letterSpacing: '0.04em' }}>{children}</span>;
+  return <span className="eyebrow-text" style={{ fontFamily: "'DM Sans', sans-serif", fontSize: size, fontWeight: 500, color, letterSpacing: '0.04em' }}>{children}</span>;
 }
 
 function EyebrowLabel({ children }: { children: React.ReactNode }) {
@@ -203,7 +203,7 @@ export default function Sobre() {
             {KEY_STATS.slice(0, 4).map((s) => (
               <motion.div key={s.label} variants={staggerItem}>
                 <GlassCard style={{ padding: '24px 20px', textAlign: 'center' }}>
-                  <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'clamp(1.8rem, 3vw, 2.4rem)', fontWeight: 600, color: C, letterSpacing: '-0.02em', marginBottom: 6 }}>{s.prefix}{s.value}{s.suffix}</div>
+                  <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 'clamp(1.8rem, 3vw, 2.4rem)', fontWeight: 600, color: C, letterSpacing: '-0.02em', marginBottom: 6 }}>{s.prefix}{s.value}{s.suffix}</div>
                   <Body muted style={{ fontSize: 12 }}>{s.label}</Body>
                 </GlassCard>
               </motion.div>
@@ -230,7 +230,7 @@ export default function Sobre() {
                     <div style={{ width: 40, height: 40, borderRadius: 10, background: `${s.color}15`, border: `1px solid ${s.color}30`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                       <s.icon size={18} style={{ color: s.color }} />
                     </div>
-                    <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9, fontWeight: 600, letterSpacing: '0.18em', textTransform: 'uppercase', color: s.color, padding: '3px 8px', borderRadius: 4, background: `${s.color}12`, border: `1px solid ${s.color}20` }}>{s.tag}</span>
+                    <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 9, fontWeight: 600, letterSpacing: '0.18em', textTransform: 'uppercase', color: s.color, padding: '3px 8px', borderRadius: 4, background: `${s.color}12`, border: `1px solid ${s.color}20` }}>{s.tag}</span>
                   </div>
                   <H3 style={{ fontSize: 18, marginBottom: 8, color: '#13100C' }}>{s.name}</H3>
                   <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: s.color, fontWeight: 600, marginBottom: 10, lineHeight: 1.5 }}>{s.headline}</p>
@@ -293,7 +293,7 @@ export default function Sobre() {
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 12, marginBottom: 24 }}>
                 {[['+2M', 'Usuários ativos'], ['+200', 'Modelos de IA'], ['200k', 'Janela de contexto'], ['#6', 'Ranking G2 2024']].map(([v, l]) => (
                   <GlassCard key={l} style={{ padding: '16px 14px', textAlign: 'center' }}>
-                    <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '1.4rem', fontWeight: 600, color: C, marginBottom: 4 }}>{v}</div>
+                    <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '1.4rem', fontWeight: 600, color: C, marginBottom: 4 }}>{v}</div>
                     <Body muted style={{ fontSize: 11 }}>{l}</Body>
                   </GlassCard>
                 ))}
@@ -316,9 +316,9 @@ export default function Sobre() {
             <H3 style={{ textAlign: 'center', marginBottom: 24 }}>Ranking G2 — Melhores Produtos de IA 2024</H3>
             <div style={{ maxWidth: 560, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 10 }}>
               {TESS_RANKING.map((r) => (
-                <GlassCard key={r.rank} style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '14px 20px', background: r.highlight ? 'rgba(108,99,255,0.1)' : undefined, borderColor: r.highlight ? 'rgba(108,99,255,0.4)' : undefined }}>
-                  <div style={{ fontFamily: "'JetBrains Mono', monospace", fontWeight: 800, fontSize: '1.4rem', width: 56, flexShrink: 0, textAlign: 'center', color: r.highlight ? '#C8F135' : 'rgba(255,255,255,0.25)' }}>{r.rank}</div>
-                  <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 14, color: r.highlight ? '#fff' : 'rgba(255,255,255,0.45)' }}>{r.name}</div>
+                <GlassCard key={r.rank} style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '14px 20px', background: r.highlight ? 'rgba(19,16,12,0.04)' : undefined, borderColor: r.highlight ? LIME_DIM : undefined }}>
+                  <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 800, fontSize: '1.4rem', width: 56, flexShrink: 0, textAlign: 'center', color: r.highlight ? LIME_DIM : G400 }}>{r.rank}</div>
+                  <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 14, color: r.highlight ? G900 : G400 }}>{r.name}</div>
                   {r.highlight && <div style={{ marginLeft: 'auto', padding: '3px 10px', borderRadius: 99, background: V, fontFamily: "'DM Sans', sans-serif", fontSize: 10, fontWeight: 700, color: '#13100C', letterSpacing: '0.1em' }}>NOSSA PLATAFORMA</div>}
                 </GlassCard>
               ))}
@@ -341,10 +341,10 @@ export default function Sobre() {
                   {TESS_BENCHMARKS.map((b, i) => (
                     <tr key={b.area} style={{ background: i % 2 === 0 ? 'rgba(255,255,255,0.015)' : 'transparent', borderBottom: '1px solid #DDD7CF' }}>
                       <td style={{ padding: '12px 20px', fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: '#4A4540', fontWeight: 600 }}>{b.area}</td>
-                      <td style={{ padding: '12px 16px', textAlign: 'center', fontFamily: "'JetBrains Mono', monospace", fontSize: 13, color: '#C8F135', fontWeight: 700 }}>{b.tess}</td>
-                      <td style={{ padding: '12px 16px', textAlign: 'center', fontFamily: "'JetBrains Mono', monospace", fontSize: 13, color: 'rgba(136,146,164,0.5)' }}>{b.gpt4}</td>
-                      <td style={{ padding: '12px 16px', textAlign: 'center', fontFamily: "'JetBrains Mono', monospace", fontSize: 13, color: 'rgba(136,146,164,0.5)' }}>{b.gemini}</td>
-                      <td style={{ padding: '12px 16px', textAlign: 'center', fontFamily: "'JetBrains Mono', monospace", fontSize: 13, color: 'rgba(136,146,164,0.5)' }}>{b.llama}</td>
+                      <td style={{ padding: '12px 16px', textAlign: 'center', fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: '#C8F135', fontWeight: 700 }}>{b.tess}</td>
+                      <td style={{ padding: '12px 16px', textAlign: 'center', fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: 'rgba(136,146,164,0.5)' }}>{b.gpt4}</td>
+                      <td style={{ padding: '12px 16px', textAlign: 'center', fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: 'rgba(136,146,164,0.5)' }}>{b.gemini}</td>
+                      <td style={{ padding: '12px 16px', textAlign: 'center', fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: 'rgba(136,146,164,0.5)' }}>{b.llama}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -391,7 +391,7 @@ export default function Sobre() {
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-8%' }} variants={stagger} style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
               {TIMELINE.map((item, i) => (
                 <motion.div key={item.year} variants={staggerItem} style={{ display: 'flex', gap: 32, paddingLeft: 32, position: 'relative' }}>
-                  <div style={{ position: 'absolute', left: 0, top: 12, width: 64, height: 64, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'JetBrains Mono', monospace", fontSize: 10, fontWeight: 800, flexShrink: 0, background: i === TIMELINE.length - 1 ? `linear-gradient(135deg, ${V}, ${C})` : 'rgba(108,99,255,0.15)', border: '2px solid rgba(108,99,255,0.4)', color: i === TIMELINE.length - 1 ? '#000' : V }}>{item.year}</div>
+                  <div style={{ position: 'absolute', left: 0, top: 12, width: 64, height: 64, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'DM Sans', sans-serif", fontSize: 10, fontWeight: 800, flexShrink: 0, background: i === TIMELINE.length - 1 ? `linear-gradient(135deg, ${V}, ${C})` : 'rgba(108,99,255,0.15)', border: '2px solid rgba(108,99,255,0.4)', color: i === TIMELINE.length - 1 ? '#000' : V }}>{item.year}</div>
                   <div style={{ paddingTop: 12, paddingBottom: 24, marginLeft: 40 }}>
                     <div style={{ fontFamily: "'Playfair Display', Georgia, serif", fontWeight: 700, fontSize: 16, color: '#13100C', marginBottom: 8 }}>{item.title}</div>
                     <Body muted style={{ fontSize: 13 }}>{item.description}</Body>

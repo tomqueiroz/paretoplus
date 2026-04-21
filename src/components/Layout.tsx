@@ -29,6 +29,7 @@ const WA_LINK = 'https://api.whatsapp.com/send/?phone=5511915513210&text&type=ph
 /* ─── HEADER ────────────────────────────────────────────────────────── */
 export function Header() {
   const [scrolled, setScrolled]   = useState(false);
+  const [visible, setVisible]     = useState(false);
   const [menuOpen, setMenuOpen]   = useState(false);
   const [casesOpen, setCasesOpen] = useState(false);
   const location  = useLocation();
@@ -36,7 +37,11 @@ export function Header() {
   const isHome    = location.pathname === '/';
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 32);
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 32);
+      setVisible(y > 64);
+    };
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
@@ -83,7 +88,13 @@ export function Header() {
     <>
       <header
         className={`glass-nav ${scrolled ? 'scrolled' : ''}`}
-        style={{ display: 'flex', alignItems: 'center' }}>
+        style={{
+          display: 'flex', alignItems: 'center',
+          opacity: visible ? 1 : 0,
+          transform: visible ? 'translateY(0)' : 'translateY(-8px)',
+          pointerEvents: visible ? 'auto' : 'none',
+          transition: 'opacity 0.3s ease, transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease',
+        }}>
         <div style={{
           maxWidth: 1200, margin: '0 auto', padding: '0 32px',
           width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
@@ -91,13 +102,9 @@ export function Header() {
 
           {/* Logo */}
           <button onClick={handleLogoClick}
-            style={{ display: 'flex', alignItems: 'center', gap: 10, background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
-            <img src="/images/logo_white.png" alt="Pareto"
-              style={{ height: 28, width: 'auto', objectFit: 'contain', filter: 'invert(1) brightness(0)' }} />
-            <span style={{
-              fontFamily: "'DM Sans', sans-serif", fontWeight: 500, fontSize: 11,
-              letterSpacing: '0.22em', textTransform: 'uppercase', color: G400,
-            }}>Plus</span>
+            style={{ display: 'flex', alignItems: 'center', gap: 8, background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
+            <img src="/images/logo-dark.png" alt="Pareto"
+              style={{ height: 28, width: 'auto', objectFit: 'contain' }} />
           </button>
 
           {/* Desktop nav */}
@@ -293,7 +300,7 @@ export function Footer() {
 
           {/* Brand */}
           <div style={{ gridColumn: 'span 2' }}>
-            <img src="/images/logo_white.png" alt="Pareto"
+            <img src="/images/logo-white.png" alt="Pareto"
               style={{ height: 26, width: 'auto', marginBottom: 16, objectFit: 'contain' }} />
             <p style={{
               fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 300,

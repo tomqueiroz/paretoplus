@@ -4,6 +4,26 @@ import { ArrowRight, Calendar, Star, Award, Zap, Shield, Globe, CheckCircle, Ext
 import { CALENDLY_URL, TESS_MODELS } from '@/lib/index';
 import { staggerContainer, staggerItem, scaleIn } from '@/lib/motion';
 
+const TSVG: Record<string, string> = {
+  zap: 'M13 2L3 14h9l-1 8 10-12h-9l1-8z',
+  shield: 'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z',
+  cpu: 'M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18',
+  brain: 'M12 5a3 3 0 00-3 3v.5a1 1 0 01-1 1H7a2 2 0 100 4h1a1 1 0 011 1v.5a3 3 0 006 0V14a1 1 0 011-1h1a2 2 0 100-4h-1a1 1 0 01-1-1V8a3 3 0 00-3-3z',
+  target: 'M22 12h-4 M6 12H2 M12 6V2 M12 22v-4 M12 12m-3 0a3 3 0 106 0 3 3 0 00-6 0 M12 12m-7 0a7 7 0 1014 0 7 7 0 00-14 0',
+  globe: 'M12 22a10 10 0 100-20 10 10 0 000 20z M2 12h20 M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z',
+  star: 'M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z',
+  settings: 'M12 15a3 3 0 100-6 3 3 0 000 6z M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z',
+  layers: 'M12 2L2 7l10 5 10-5-10-5z M2 17l10 5 10-5 M2 12l10 5 10-5',
+};
+function IconSVG({ name, size = 24, color = 'currentColor' }: { name: string; size?: number; color?: string }) {
+  const d = TSVG[name] || TSVG.settings;
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+      {d.split(' M').map((part, i) => <path key={i} d={i === 0 ? part : 'M' + part} />)}
+    </svg>
+  );
+}
+
 function Tag({ children, color = '#CDFF00' }: { children: React.ReactNode; color?: string }) {
   return (
     <div className="inline-flex items-center gap-2 mb-5">
@@ -14,8 +34,8 @@ function Tag({ children, color = '#CDFF00' }: { children: React.ReactNode; color
 }
 function Heading({ children, className = '' }: { children: React.ReactNode; className?: string }) {
   return (
-    <h2 className={`font-black text-white leading-tight ${className}`}
-      style={{ letterSpacing: '-0.03em', fontFamily: 'var(--font-heading)' }}>{children}</h2>
+    <h2 className={`font-black leading-tight ${className}`}
+      style={{ letterSpacing: '-0.03em', fontFamily: 'var(--font-heading)', color: '#13100C' }}>{children}</h2>
   );
 }
 function Body({ children, className = '' }: { children: React.ReactNode; className?: string }) {
@@ -40,23 +60,23 @@ const FEATURES = [
     title: 'Três modelos debatem. O melhor vence.',
     desc: 'Model Council orquestra múltiplos modelos (GPT-5, Claude 4, Gemini 3) em debate paralelo. O sistema identifica consenso, divergências e o resultado mais confiável. Reduz alucinações e aumenta drasticamente a precisão em tarefas críticas.',
     highlight: true, color: '#CDFF00' },
-  { icon: '⚡', name: 'Agentic Execution', tag: 'Agent Computer',
+  { icon: 'zap', name: 'Agentic Execution', tag: 'Agent Computer',
     title: 'Até 40 operações autônomas por chamada.',
     desc: 'Um único agente executa tarefas longas e complexas de forma autônoma em uma VM isolada: pesquisa profunda, planilhas, dashboards, relatórios, código. Sem necessidade de supervisão humana a cada passo.',
     highlight: true, color: '#8800FF' },
-  { icon: '🎨', name: 'Brand Voice', tag: 'Memory Collections',
+  { icon: 'star', name: 'Brand Voice', tag: 'Memory Collections',
     title: 'IA que fala com a voz da sua marca.',
     desc: 'O sistema assimila tom de voz, diretrizes, persona e restrições da sua marca em todas as interações. Cada output respeita sua identidade — sem treinamento técnico, sem código.',
     color: '#CDFF00' },
-  { icon: '🏗️', name: 'AI Studio', tag: 'Agent Studio',
+  { icon: 'settings', name: 'AI Studio', tag: 'Agent Studio',
     title: 'Crie agentes de IA sem programar.',
     desc: 'Ambiente no-code para criação de agentes personalizados para cada workflow do negócio. Qualquer analista consegue criar, testar e publicar automações em horas.',
     color: '#8800FF' },
-  { icon: '📋', name: 'AI Steps', tag: 'Skills',
+  { icon: 'layers', name: 'AI Steps', tag: 'Skills',
     title: 'Procedimentos modulares de IA para cada processo.',
     desc: 'Skills são roteiros modulares que guiam a IA na execução de tarefas complexas com revelação progressiva de contexto. Precisão de um especialista humano, velocidade de uma máquina.',
     color: '#CDFF00' },
-  { icon: '🔒', name: 'Enterprise Security', tag: 'SOC2 · LGPD · GDPR',
+  { icon: 'shield', name: 'Enterprise Security', tag: 'SOC2 · LGPD · GDPR',
     title: 'Dados que nunca saem do seu ambiente.',
     desc: 'Arquitetura de isolamento por cliente. Seus dados não treinam nenhum modelo de terceiro. SOC2, LGPD, GDPR. SSO, audit trail, criptografia em trânsito e em repouso.',
     color: '#8800FF' },
@@ -81,7 +101,7 @@ export default function TessAI() {
   const [activeModel, setActiveModel] = useState<string | null>(null);
 
   return (
-    <div style={{ background: 'var(--bg-base)', fontFamily: 'var(--font-heading)', color: '#fff' }}>
+    <div style={{ background: 'var(--bg-base)', fontFamily: 'var(--font-heading)', color: '#13100C' }}>
 
       {/* ═══ HERO ════════════════════════════════════════════════ */}
       <section className="relative min-h-screen flex items-center overflow-hidden">
@@ -92,7 +112,7 @@ export default function TessAI() {
         </div>
         {/* Grid */}
         <div className="absolute inset-0" style={{
-          backgroundImage: 'linear-gradient(rgba(205,255,0,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(205,255,0,0.05) 1px, transparent 1px)',
+          backgroundImage: 'none',
           backgroundSize: '48px 48px'
         }} />
         {/* Glows */}
@@ -219,7 +239,7 @@ export default function TessAI() {
                   <div className="absolute top-0 left-0 right-0 h-px" style={{ background: `linear-gradient(90deg, transparent, ${f.color}, transparent)` }} />
                 )}
                 <div className="flex items-start gap-3 mb-4">
-                  <span className="text-3xl flex-shrink-0">{f.icon}</span>
+                  <span className="text-3xl flex-shrink-0"><IconSVG name={f.icon as string} size={28} color={f.color} /></span>
                   <div>
                     <div className="text-[10px] font-black tracking-widest uppercase mb-0.5" style={{ color: `${f.color}90` }}>{f.tag}</div>
                     <div className="text-sm font-black text-white">{f.name}</div>
