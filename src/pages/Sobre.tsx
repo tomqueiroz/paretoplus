@@ -3,6 +3,12 @@ import { motion, useInView, useScroll, useTransform } from 'framer-motion';
 import { Award, ExternalLink, ArrowRight, Calendar, Zap, Brain, Settings, Users } from 'lucide-react';
 import { TIMELINE, AWARDS, TESS_MODELS, WHATSAPP_URL, CALENDLY_URL, KEY_STATS } from '@/lib/index';
 
+// ─── Design tokens ──────────────────────────────────────────────────────────
+const G900 = '#13100C'; const G800 = '#241F1A'; const G600 = '#4A4540';
+const G400 = '#8A8278'; const G200 = '#BFB8AE'; const G100 = '#DDD7CF';
+const OFF = '#F8F6F3'; const WHITE = '#FFFFFF';
+const LIME = '#CBEC2E'; const LIME_DIM = '#A8C41E';
+
 // ─── Design Tokens (same as Home) ────────────────────────────────────────────
 const V = '#6C63FF';
 const C = '#00D4FF';
@@ -71,15 +77,15 @@ function H1({ children, style = {} }: { children: React.ReactNode; style?: React
 }
 
 function H2({ children, style = {} }: { children: React.ReactNode; style?: React.CSSProperties }) {
-  return <h2 style={{ fontFamily: "'Montserrat', 'Space Grotesk', sans-serif", fontWeight: 700, fontSize: 'clamp(1.6rem, 3vw, 2.8rem)', letterSpacing: '-0.02em', lineHeight: 1.1, margin: 0, color: '#fff', ...style }}>{children}</h2>;
+  return <h2 style={{ fontFamily: "'Montserrat', 'Space Grotesk', sans-serif", fontWeight: 700, fontSize: 'clamp(1.6rem, 3vw, 2.8rem)', letterSpacing: '-0.02em', lineHeight: 1.1, margin: 0, color: '#13100C', ...style }}>{children}</h2>;
 }
 
 function H3({ children, style = {} }: { children: React.ReactNode; style?: React.CSSProperties }) {
-  return <h3 style={{ fontFamily: "'Montserrat', 'Space Grotesk', sans-serif", fontWeight: 700, fontSize: 'clamp(1.1rem, 2vw, 1.5rem)', letterSpacing: '-0.015em', lineHeight: 1.25, margin: 0, color: '#fff', ...style }}>{children}</h3>;
+  return <h3 style={{ fontFamily: "'Montserrat', 'Space Grotesk', sans-serif", fontWeight: 700, fontSize: 'clamp(1.1rem, 2vw, 1.5rem)', letterSpacing: '-0.015em', lineHeight: 1.25, margin: 0, color: '#13100C', ...style }}>{children}</h3>;
 }
 
 function Body({ children, muted = false, style = {} }: { children: React.ReactNode; muted?: boolean; style?: React.CSSProperties }) {
-  return <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 15, lineHeight: 1.75, color: muted ? 'rgba(136,146,164,0.65)' : '#8892A4', margin: 0, fontWeight: 400, ...style }}>{children}</p>;
+  return <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 15, lineHeight: 1.75, color: muted ? 'rgba(136,146,164,0.65)' : '#8892A4', margin: 0, fontWeight: 400, ...style }}>{children}</p>;
 }
 
 function GlassCard({ children, style = {} }: { children: React.ReactNode; style?: React.CSSProperties }) {
@@ -92,7 +98,7 @@ function GlassCard({ children, style = {} }: { children: React.ReactNode; style?
 
 function PrimaryBtn({ href, children }: { href: string; children: React.ReactNode }) {
   return (
-    <a href={href} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '12px 28px', borderRadius: 6, fontFamily: "'Inter', sans-serif", fontWeight: 700, fontSize: 14, color: '#0B0D14', textDecoration: 'none', background: '#C8F135', border: 'none', transition: 'all 0.2s ease' }}
+    <a href={href} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '12px 28px', borderRadius: 6, fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 14, color: '#0B0D14', textDecoration: 'none', background: '#C8F135', border: 'none', transition: 'all 0.2s ease' }}
       onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'; (e.currentTarget as HTMLElement).style.boxShadow = '0 0 24px rgba(200,241,53,0.45)'; }}
       onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = ''; (e.currentTarget as HTMLElement).style.boxShadow = ''; }}>
       {children}
@@ -153,7 +159,7 @@ const SOLUTIONS = [
 
 export default function Sobre() {
   return (
-    <main style={{ background: BG, color: '#fff', fontFamily: "'Inter', sans-serif" }}>
+    <main style={{ background: BG, color: '#13100C', fontFamily: "'DM Sans', sans-serif" }}>
 
       {/* ── HERO ─────────────────────────────────────────────────── */}
       <section style={{ position: 'relative', minHeight: '60vh', display: 'flex', alignItems: 'center', overflow: 'hidden', paddingTop: 100 }}>
@@ -181,7 +187,7 @@ export default function Sobre() {
             </motion.div>
             <motion.div variants={staggerItem} style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
               <PrimaryBtn href={WA_LINK}><Calendar size={15} /> Falar com Especialista</PrimaryBtn>
-              <a href="https://tess.im" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '11px 22px', borderRadius: 6, border: '1px solid rgba(108,99,255,0.3)', color: 'rgba(255,255,255,0.75)', fontFamily: "'Inter', sans-serif", fontSize: 14, fontWeight: 500, textDecoration: 'none', transition: 'all 0.2s ease' }}>
+              <a href="https://tess.im" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '11px 22px', borderRadius: 6, border: '1px solid rgba(108,99,255,0.3)', color: 'rgba(255,255,255,0.75)', fontFamily: "'DM Sans', sans-serif", fontSize: 14, fontWeight: 500, textDecoration: 'none', transition: 'all 0.2s ease' }}>
                 Conhecer a Tess AI <ExternalLink size={13} />
               </a>
             </motion.div>
@@ -226,18 +232,18 @@ export default function Sobre() {
                     </div>
                     <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9, fontWeight: 600, letterSpacing: '0.18em', textTransform: 'uppercase', color: s.color, padding: '3px 8px', borderRadius: 4, background: `${s.color}12`, border: `1px solid ${s.color}20` }}>{s.tag}</span>
                   </div>
-                  <H3 style={{ fontSize: 18, marginBottom: 8, color: '#fff' }}>{s.name}</H3>
-                  <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 13, color: s.color, fontWeight: 600, marginBottom: 10, lineHeight: 1.5 }}>{s.headline}</p>
+                  <H3 style={{ fontSize: 18, marginBottom: 8, color: '#13100C' }}>{s.name}</H3>
+                  <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: s.color, fontWeight: 600, marginBottom: 10, lineHeight: 1.5 }}>{s.headline}</p>
                   <Body muted style={{ fontSize: 13, flex: 1, marginBottom: 18 }}>{s.desc}</Body>
                   <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 20px', display: 'flex', flexDirection: 'column', gap: 7 }}>
                     {s.items.map((item) => (
-                      <li key={item} style={{ display: 'flex', gap: 8, fontFamily: "'Inter', sans-serif", fontSize: 12, color: '#8892A4' }}>
+                      <li key={item} style={{ display: 'flex', gap: 8, fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: '#8892A4' }}>
                         <span style={{ color: C, flexShrink: 0 }}>✓</span>{item}
                       </li>
                     ))}
                   </ul>
                   <a href={s.link} target="_blank" rel="noopener noreferrer"
-                    style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontFamily: "'Inter', sans-serif", fontSize: 13, fontWeight: 600, color: s.color, textDecoration: 'none', marginTop: 'auto' }}
+                    style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 600, color: s.color, textDecoration: 'none', marginTop: 'auto' }}
                     onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.gap = '10px'; }}
                     onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.gap = '6px'; }}>
                     Explorar <ArrowRight size={13} />
@@ -265,7 +271,7 @@ export default function Sobre() {
                     <Award size={16} style={{ color: award.highlight ? '#C8F135' : 'rgba(255,255,255,0.3)' }} />
                   </div>
                   <div>
-                    <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 13, fontWeight: 700, color: '#fff', marginBottom: 4, lineHeight: 1.4 }}>{award.title}</div>
+                    <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 700, color: '#13100C', marginBottom: 4, lineHeight: 1.4 }}>{award.title}</div>
                     <Mono color="rgba(136,146,164,0.5)" size={11}>{award.org} · {award.year}</Mono>
                   </div>
                 </GlassCard>
@@ -293,8 +299,8 @@ export default function Sobre() {
                 ))}
               </div>
               <div style={{ padding: '18px 22px', borderRadius: 12, background: 'rgba(108,99,255,0.07)', border: '1px solid rgba(108,99,255,0.18)', textAlign: 'center', marginBottom: 20 }}>
-                <blockquote style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 700, fontSize: 'clamp(1rem, 1.8vw, 1.35rem)', color: '#fff', margin: 0 }} className="hero-shimmer-text">"O futuro da IA é colaborativo."</blockquote>
-                <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 11, color: 'rgba(136,146,164,0.5)', marginTop: 6, marginBottom: 0 }}>— Pareto · Tess AI Platform Philosophy</p>
+                <blockquote style={{ fontFamily: "'Playfair Display', Georgia, serif", fontWeight: 700, fontSize: 'clamp(1rem, 1.8vw, 1.35rem)', color: '#13100C', margin: 0 }} className="hero-shimmer-text">"O futuro da IA é colaborativo."</blockquote>
+                <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 11, color: 'rgba(136,146,164,0.5)', marginTop: 6, marginBottom: 0 }}>— Pareto · Tess AI Platform Philosophy</p>
               </div>
               <a href="https://tess.im" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 700, color: V, textDecoration: 'none' }}>Conhecer a Tess AI <ExternalLink size={13} /></a>
             </Reveal>
@@ -312,8 +318,8 @@ export default function Sobre() {
               {TESS_RANKING.map((r) => (
                 <GlassCard key={r.rank} style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '14px 20px', background: r.highlight ? 'rgba(108,99,255,0.1)' : undefined, borderColor: r.highlight ? 'rgba(108,99,255,0.4)' : undefined }}>
                   <div style={{ fontFamily: "'JetBrains Mono', monospace", fontWeight: 800, fontSize: '1.4rem', width: 56, flexShrink: 0, textAlign: 'center', color: r.highlight ? '#C8F135' : 'rgba(255,255,255,0.25)' }}>{r.rank}</div>
-                  <div style={{ fontFamily: "'Inter', sans-serif", fontWeight: 600, fontSize: 14, color: r.highlight ? '#fff' : 'rgba(255,255,255,0.45)' }}>{r.name}</div>
-                  {r.highlight && <div style={{ marginLeft: 'auto', padding: '3px 10px', borderRadius: 99, background: V, fontFamily: "'Inter', sans-serif", fontSize: 10, fontWeight: 700, color: '#fff', letterSpacing: '0.1em' }}>NOSSA PLATAFORMA</div>}
+                  <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 14, color: r.highlight ? '#fff' : 'rgba(255,255,255,0.45)' }}>{r.name}</div>
+                  {r.highlight && <div style={{ marginLeft: 'auto', padding: '3px 10px', borderRadius: 99, background: V, fontFamily: "'DM Sans', sans-serif", fontSize: 10, fontWeight: 700, color: '#13100C', letterSpacing: '0.1em' }}>NOSSA PLATAFORMA</div>}
                 </GlassCard>
               ))}
             </div>
@@ -325,16 +331,16 @@ export default function Sobre() {
               <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                 <thead>
                   <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
-                    <th style={{ textAlign: 'left', padding: '14px 20px', fontFamily: "'Inter', sans-serif", fontSize: 12, color: 'rgba(136,146,164,0.5)', fontWeight: 500 }}>Área</th>
+                    <th style={{ textAlign: 'left', padding: '14px 20px', fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: 'rgba(136,146,164,0.5)', fontWeight: 500 }}>Área</th>
                     {[{ l: 'Tess AI v3', c: '#C8F135' }, { l: 'GPT-4 Turbo', c: 'rgba(136,146,164,0.5)' }, { l: 'Gemini Ultra', c: 'rgba(136,146,164,0.5)' }, { l: 'Llama 2', c: 'rgba(136,146,164,0.5)' }].map((h) => (
-                      <th key={h.l} style={{ textAlign: 'center', padding: '14px 16px', fontFamily: "'Inter', sans-serif", fontSize: 12, color: h.c, fontWeight: 700 }}>{h.l}</th>
+                      <th key={h.l} style={{ textAlign: 'center', padding: '14px 16px', fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: h.c, fontWeight: 700 }}>{h.l}</th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
                   {TESS_BENCHMARKS.map((b, i) => (
-                    <tr key={b.area} style={{ background: i % 2 === 0 ? 'rgba(255,255,255,0.015)' : 'transparent', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
-                      <td style={{ padding: '12px 20px', fontFamily: "'Inter', sans-serif", fontSize: 13, color: 'rgba(255,255,255,0.65)', fontWeight: 600 }}>{b.area}</td>
+                    <tr key={b.area} style={{ background: i % 2 === 0 ? 'rgba(255,255,255,0.015)' : 'transparent', borderBottom: '1px solid #DDD7CF' }}>
+                      <td style={{ padding: '12px 20px', fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: '#4A4540', fontWeight: 600 }}>{b.area}</td>
                       <td style={{ padding: '12px 16px', textAlign: 'center', fontFamily: "'JetBrains Mono', monospace", fontSize: 13, color: '#C8F135', fontWeight: 700 }}>{b.tess}</td>
                       <td style={{ padding: '12px 16px', textAlign: 'center', fontFamily: "'JetBrains Mono', monospace", fontSize: 13, color: 'rgba(136,146,164,0.5)' }}>{b.gpt4}</td>
                       <td style={{ padding: '12px 16px', textAlign: 'center', fontFamily: "'JetBrains Mono', monospace", fontSize: 13, color: 'rgba(136,146,164,0.5)' }}>{b.gemini}</td>
@@ -344,7 +350,7 @@ export default function Sobre() {
                 </tbody>
               </table>
             </GlassCard>
-            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 11, color: 'rgba(136,146,164,0.35)', textAlign: 'center', marginTop: 12 }}>AES-256 · SOC 2 compliant · Dados de clientes não usados para treino de modelos</p>
+            <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 11, color: 'rgba(136,146,164,0.35)', textAlign: 'center', marginTop: 12 }}>AES-256 · SOC 2 compliant · Dados de clientes não usados para treino de modelos</p>
           </Reveal>
         </div>
       </section>
@@ -387,7 +393,7 @@ export default function Sobre() {
                 <motion.div key={item.year} variants={staggerItem} style={{ display: 'flex', gap: 32, paddingLeft: 32, position: 'relative' }}>
                   <div style={{ position: 'absolute', left: 0, top: 12, width: 64, height: 64, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'JetBrains Mono', monospace", fontSize: 10, fontWeight: 800, flexShrink: 0, background: i === TIMELINE.length - 1 ? `linear-gradient(135deg, ${V}, ${C})` : 'rgba(108,99,255,0.15)', border: '2px solid rgba(108,99,255,0.4)', color: i === TIMELINE.length - 1 ? '#000' : V }}>{item.year}</div>
                   <div style={{ paddingTop: 12, paddingBottom: 24, marginLeft: 40 }}>
-                    <div style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 700, fontSize: 16, color: '#fff', marginBottom: 8 }}>{item.title}</div>
+                    <div style={{ fontFamily: "'Playfair Display', Georgia, serif", fontWeight: 700, fontSize: 16, color: '#13100C', marginBottom: 8 }}>{item.title}</div>
                     <Body muted style={{ fontSize: 13 }}>{item.description}</Body>
                   </div>
                 </motion.div>

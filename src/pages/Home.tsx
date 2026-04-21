@@ -9,13 +9,25 @@ import {
   scrollToSection,
 } from '@/lib/index';
 
-// ─── Design Tokens ────────────────────────────────────────────────────────────
-const V = '#6C63FF';   // violet
-const C = '#00D4FF';   // cyan
-const A = '#FF6B35';   // amber
-const BG = '#0B0D14';
-const S1 = '#12151F';
-const S2 = '#1A1E2E';
+// ─── Design Tokens (Pareto Design System v2 — Light Editorial) ────────────────
+const G900 = '#13100C';
+const G800 = '#241F1A';
+const G600 = '#4A4540';
+const G400 = '#8A8278';
+const G200 = '#BFB8AE';
+const G100 = '#DDD7CF';
+const OFF  = '#F8F6F3';
+const WHITE = '#FFFFFF';
+const LIME  = '#CBEC2E';
+const LIME_DIM = '#A8C41E';
+
+// Semantic aliases — mapped to new palette
+const V  = G900;       // primary dark (was violet)
+const C  = LIME;       // accent lime (was cyan)
+const A  = LIME_DIM;   // accent dim (was amber)
+const BG = OFF;        // light background
+const S1 = WHITE;      // white surface
+const S2 = '#EDE9E4';  // g50 surface
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
@@ -29,7 +41,7 @@ const scaleIn = { hidden: { opacity: 0, scale: 0.94 }, visible: { opacity: 1, sc
 
 function Mono({ children, color = C, size = 12 }: { children: React.ReactNode; color?: string; size?: number }) {
   return (
-    <span className="eyebrow-text" style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: size, fontWeight: 500, color, letterSpacing: '0.04em' }}>
+    <span className="eyebrow-text" style={{ fontFamily: "'DM Sans', monospace", fontSize: size, fontWeight: 500, color, letterSpacing: '0.04em' }}>
       {children}
     </span>
   );
@@ -38,7 +50,7 @@ function Mono({ children, color = C, size = 12 }: { children: React.ReactNode; c
 function EyebrowLabel({ children }: { children: React.ReactNode }) {
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
-      <div style={{ width: 20, height: 1, background: V, opacity: 0.7 }} />
+      <div style={{ width: 20, height: 1, background: G900, opacity: 0.35 }} />
       <Mono color={C} size={17}>{children}</Mono>
     </div>
   );
@@ -46,7 +58,7 @@ function EyebrowLabel({ children }: { children: React.ReactNode }) {
 
 function H1({ children, style = {} }: { children: React.ReactNode; style?: React.CSSProperties }) {
   return (
-    <h1 style={{ fontFamily: "'Montserrat', 'Space Grotesk', sans-serif", fontWeight: 800, fontSize: 'clamp(2rem, 4.5vw, 3.8rem)', letterSpacing: '-0.025em', lineHeight: 1.06, margin: 0, ...style }}>
+    <h1 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontWeight: 700, fontSize: 'clamp(2rem, 4.5vw, 3.8rem)', letterSpacing: '-2px', lineHeight: 1.05, margin: 0, ...style }}>
       {children}
     </h1>
   );
@@ -54,7 +66,7 @@ function H1({ children, style = {} }: { children: React.ReactNode; style?: React
 
 function H2({ children, style = {} }: { children: React.ReactNode; style?: React.CSSProperties }) {
   return (
-    <h2 style={{ fontFamily: "'Montserrat', 'Space Grotesk', sans-serif", fontWeight: 700, fontSize: 'clamp(1.6rem, 3vw, 2.8rem)', letterSpacing: '-0.02em', lineHeight: 1.1, margin: 0, color: '#fff', ...style }}>
+    <h2 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontWeight: 700, fontSize: 'clamp(1.6rem, 3vw, 2.8rem)', letterSpacing: '-1.5px', lineHeight: 1.1, margin: 0, color: G900, ...style }}>
       {children}
     </h2>
   );
@@ -62,7 +74,7 @@ function H2({ children, style = {} }: { children: React.ReactNode; style?: React
 
 function H3({ children, style = {} }: { children: React.ReactNode; style?: React.CSSProperties }) {
   return (
-    <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 500, fontSize: 'clamp(1.1rem, 2vw, 1.5rem)', letterSpacing: '-0.015em', lineHeight: 1.25, margin: 0, color: '#fff', ...style }}>
+    <h3 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontWeight: 700, fontSize: 18, letterSpacing: '-0.3px', lineHeight: 1.3, margin: 0, color: G900, ...style }}>
       {children}
     </h3>
   );
@@ -70,7 +82,7 @@ function H3({ children, style = {} }: { children: React.ReactNode; style?: React
 
 function Body({ children, muted = false, style = {} }: { children: React.ReactNode; muted?: boolean; style?: React.CSSProperties }) {
   return (
-    <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 15, lineHeight: 1.75, color: muted ? 'rgba(136,146,164,0.65)' : '#8892A4', margin: 0, fontWeight: 400, ...style }}>
+    <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 15, lineHeight: 1.75, color: muted ? G400 : G400, margin: 0, fontWeight: 300, ...style }}>
       {children}
     </p>
   );
@@ -113,26 +125,26 @@ function AnimatedNumber({ value, suffix = '', prefix = '' }: { value: number; su
   return <span ref={ref}>{prefix}{count}{suffix}</span>;
 }
 
-// Lime-yellow brand color for primary CTAs
-const LIME = '#C8F135';
+// Primary CTA color — from Design System
 
 function PrimaryBtn({ href, onClick, children }: { href?: string; onClick?: () => void; children: React.ReactNode }) {
   const base: React.CSSProperties = {
     display: 'inline-flex', alignItems: 'center', gap: 8,
-    padding: '12px 28px', borderRadius: 6, fontFamily: "'Inter', sans-serif",
-    fontWeight: 700, fontSize: 14, color: '#0B0D14', textDecoration: 'none', cursor: 'pointer',
-    background: LIME, border: 'none', boxShadow: '0 0 0 rgba(200,241,53,0)',
+    padding: '14px 32px', borderRadius: 50, fontFamily: "'DM Sans', sans-serif",
+    fontWeight: 500, fontSize: 14, letterSpacing: '0.04em', textTransform: 'uppercase',
+    color: LIME, textDecoration: 'none', cursor: 'pointer',
+    background: G900, border: 'none', boxShadow: '0 2px 12px rgba(0,0,0,0.15)',
     transition: 'box-shadow 0.25s ease, transform 0.2s ease, background 0.2s ease',
   };
   const enter = (e: React.MouseEvent<HTMLElement>) => {
-    (e.currentTarget as HTMLElement).style.boxShadow = '0 0 28px rgba(200,241,53,0.45)';
-    (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)';
-    (e.currentTarget as HTMLElement).style.background = '#d6f74a';
+    (e.currentTarget as HTMLElement).style.boxShadow = '0 4px 20px rgba(0,0,0,0.25)';
+    (e.currentTarget as HTMLElement).style.transform = 'translateY(-1px)';
+    (e.currentTarget as HTMLElement).style.background = G800;
   };
   const leave = (e: React.MouseEvent<HTMLElement>) => {
-    (e.currentTarget as HTMLElement).style.boxShadow = '0 0 0 rgba(200,241,53,0)';
+    (e.currentTarget as HTMLElement).style.boxShadow = '0 2px 12px rgba(0,0,0,0.15)';
     (e.currentTarget as HTMLElement).style.transform = '';
-    (e.currentTarget as HTMLElement).style.background = LIME;
+    (e.currentTarget as HTMLElement).style.background = G900;
   };
   if (href) return <a href={href} target="_blank" rel="noopener noreferrer" style={base} onMouseEnter={enter} onMouseLeave={leave}>{children}</a>;
   return <button onClick={onClick} style={base} onMouseEnter={enter} onMouseLeave={leave}>{children}</button>;
@@ -147,31 +159,32 @@ function CalendlyPrimaryBtn({ children }: { children: React.ReactNode }) {
 function GhostBtn({ href, onClick, children }: { href?: string; onClick?: () => void; children: React.ReactNode }) {
   const base: React.CSSProperties = {
     display: 'inline-flex', alignItems: 'center', gap: 8,
-    padding: '11px 24px', borderRadius: 6, fontFamily: "'Inter', sans-serif",
-    fontWeight: 500, fontSize: 14, color: 'rgba(255,255,255,0.75)',
-    textDecoration: 'none', cursor: 'pointer', background: 'rgba(108,99,255,0.05)',
-    border: `1px solid rgba(108,99,255,0.25)`, transition: 'all 0.25s ease',
+    padding: '11px 24px', borderRadius: 50, fontFamily: "'DM Sans', sans-serif",
+    fontWeight: 500, fontSize: 14, color: G600,
+    textDecoration: 'none', cursor: 'pointer', background: 'transparent',
+    border: `1px solid ${G200}`, transition: 'all 0.25s ease',
   };
   const enter = (e: React.MouseEvent<HTMLElement>) => {
-    (e.currentTarget as HTMLElement).style.color = '#fff';
-    (e.currentTarget as HTMLElement).style.borderColor = `rgba(108,99,255,0.5)`;
-    (e.currentTarget as HTMLElement).style.background = 'rgba(108,99,255,0.10)';
+    (e.currentTarget as HTMLElement).style.color = G900;
+    (e.currentTarget as HTMLElement).style.borderColor = G400;
+    (e.currentTarget as HTMLElement).style.background = WHITE;
   };
   const leave = (e: React.MouseEvent<HTMLElement>) => {
-    (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.75)';
-    (e.currentTarget as HTMLElement).style.borderColor = `rgba(108,99,255,0.25)`;
-    (e.currentTarget as HTMLElement).style.background = 'rgba(108,99,255,0.05)';
+    (e.currentTarget as HTMLElement).style.color = G600;
+    (e.currentTarget as HTMLElement).style.borderColor = G200;
+    (e.currentTarget as HTMLElement).style.background = 'transparent';
   };
   if (href) return <a href={href} target="_blank" rel="noopener noreferrer" style={base} onMouseEnter={enter} onMouseLeave={leave}>{children}</a>;
-  return <button onClick={onClick} style={{ ...base, border: `1px solid rgba(108,99,255,0.25)` }} onMouseEnter={enter} onMouseLeave={leave}>{children}</button>;
+  return <button onClick={onClick} style={{ ...base, border: `1px solid ${G200}` }} onMouseEnter={enter} onMouseLeave={leave}>{children}</button>;
 }
 
 function GlassCard({ children, style = {}, hover = true }: { children: React.ReactNode; style?: React.CSSProperties; hover?: boolean }) {
   return (
     <div className={hover ? 'glass-card' : ''} style={{
-      background: 'rgba(18,21,31,0.80)', backdropFilter: 'blur(12px)',
-      border: '1px solid rgba(255,255,255,0.07)', borderRadius: 16,
-      boxShadow: '0 8px 32px rgba(0,0,0,0.30), 0 1px 0 rgba(255,255,255,0.05) inset',
+      background: WHITE,
+      border: `1px solid ${G100}`,
+      borderRadius: 16,
+      boxShadow: '0 2px 12px rgba(0,0,0,0.06)',
       ...style,
     }}>
       {children}
@@ -181,8 +194,8 @@ function GlassCard({ children, style = {}, hover = true }: { children: React.Rea
 
 function IconBadge({ icon: Icon, color = V }: { icon: React.ElementType; color?: string }) {
   return (
-    <div className="icon-badge" style={{ background: `linear-gradient(135deg, ${color}20, ${C}10)`, borderColor: `${color}30` }}>
-      <Icon size={26} />
+    <div className="icon-badge" style={{ background: OFF, borderColor: G100 }}>
+      <Icon size={22} style={{ color: G900 }} />
     </div>
   );
 }
@@ -267,7 +280,7 @@ function ClientNamesBg() {
           animate={{ opacity: [0, 0.22, 0.14, 0.22], y: [0, -12, 0] }}
           transition={{ opacity: { delay: item.delay + 0.6, duration: 2, repeat: Infinity, repeatDelay: 4 }, y: { duration: item.dur, repeat: Infinity, ease: 'easeInOut', delay: item.delay } }}
           style={{ position: 'absolute', left: item.x, top: item.y }}>
-          <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, fontWeight: 500, color: 'rgba(200,241,53,0.55)', letterSpacing: '0.08em', whiteSpace: 'nowrap', textTransform: 'uppercase' }}>
+          <span style={{ fontFamily: "'DM Sans', monospace", fontSize: 11, fontWeight: 500, color: 'rgba(200,241,53,0.55)', letterSpacing: '0.08em', whiteSpace: 'nowrap', textTransform: 'uppercase' }}>
             {item.name}
           </span>
         </motion.div>
@@ -365,7 +378,7 @@ function ParallaxStrip({ img, height = 300, overlay, children }: {
 
 function BadgesBar() {
   return (
-    <div style={{ background: 'rgba(12,14,22,0.9)', borderTop: '1px solid rgba(255,255,255,0.05)', borderBottom: '1px solid rgba(255,255,255,0.05)', padding: '14px 24px' }}>
+    <div style={{ background: G900, borderTop: '1px solid rgba(255,255,255,0.05)', borderBottom: '1px solid rgba(255,255,255,0.05)', padding: '14px 24px' }}>
       <div style={{ maxWidth: 1280, margin: '0 auto', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center', gap: 12 }}>
         <Mono color="rgba(136,146,164,0.35)" size={10}>Parceiro oficial:</Mono>
         {PARTNER_BADGES.map((b) =>
@@ -404,13 +417,13 @@ function ExitPopup({ onClose }: { onClose: () => void }) {
         initial={{ scale: 0.88, opacity: 0, y: 40 }} animate={{ scale: 1, opacity: 1, y: 0 }} exit={{ scale: 0.88, opacity: 0 }}
         transition={{ type: 'spring', stiffness: 280, damping: 28 }}
         onClick={(e) => e.stopPropagation()}
-        style={{ position: 'relative', width: '100%', maxWidth: 480, padding: 40, borderRadius: 20, background: S1, border: `1px solid rgba(108,99,255,0.45)`, boxShadow: `0 0 80px rgba(108,99,255,0.22)` }}>
+        style={{ position: 'relative', width: '100%', maxWidth: 480, padding: 40, borderRadius: 20, background: WHITE, border: `1px solid ${G100}`, boxShadow: '0 16px 48px rgba(0,0,0,0.12)' }}>
         <button onClick={onClose} style={{ position: 'absolute', top: 16, right: 16, background: 'none', border: 'none', color: 'rgba(255,255,255,0.35)', cursor: 'pointer' }}>
           <X size={20} />
         </button>
         {!done ? (
           <>
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '6px 14px', borderRadius: 99, background: 'rgba(0,212,255,0.08)', border: '1px solid rgba(0,212,255,0.22)', marginBottom: 20 }}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '6px 14px', borderRadius: 99, background: OFF, border: `1px solid ${G100}`, marginBottom: 20 }}>
               <span style={{ width: 6, height: 6, borderRadius: '50%', background: C, display: 'inline-block' }} className="pulse-glow" />
               <Mono color={C} size={10}>Antes de sair</Mono>
             </div>
@@ -418,10 +431,10 @@ function ExitPopup({ onClose }: { onClose: () => void }) {
             <Body style={{ marginBottom: 24 }}>Diagnóstico gratuito de 30 minutos: mapeamos onde a IA gera retorno imediato no seu negócio. Sem compromisso. Sem pitch genérico.</Body>
             <form onSubmit={submit} style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
               <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required placeholder="E-mail corporativo" autoFocus
-                style={{ padding: '12px 16px', borderRadius: 8, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(108,99,255,0.25)', color: '#fff', fontFamily: "'Inter', sans-serif", fontSize: 14, outline: 'none' }} />
+                style={{ padding: '12px 16px', borderRadius: 8, background: OFF, border: `1px solid ${G100}`, color: G900, fontFamily: "'Inter', sans-serif", fontSize: 14, outline: 'none' }} />
               <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="WhatsApp com DDD"
-                style={{ padding: '12px 16px', borderRadius: 8, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(108,99,255,0.15)', color: '#fff', fontFamily: "'Inter', sans-serif", fontSize: 14, outline: 'none' }} />
-              <button type="submit" style={{ padding: '13px', borderRadius: 8, background: V, color: '#fff', fontFamily: "'Inter', sans-serif", fontWeight: 600, fontSize: 14, border: 'none', cursor: 'pointer', boxShadow: '0 0 24px rgba(108,99,255,0.35)' }}>
+                style={{ padding: '12px 16px', borderRadius: 8, background: OFF, border: `1px solid ${G100}`, color: G900, fontFamily: "'Inter', sans-serif", fontSize: 14, outline: 'none' }} />
+              <button type="submit" style={{ padding: '13px', borderRadius: 50, background: G900, color: LIME, fontFamily: "'Inter', sans-serif", fontWeight: 600, fontSize: 14, border: 'none', cursor: 'pointer', boxShadow: '0 0 24px rgba(108,99,255,0.35)' }}>
                 Quero Meu Diagnóstico Gratuito
               </button>
               <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 11, color: 'rgba(136,146,164,0.45)', textAlign: 'center' }}>Operações com múltiplos processos manuais · LGPD</p>
@@ -446,14 +459,14 @@ function CasesPopupButton() {
     <>
       <button onClick={() => setOpen(true)} style={{
         display: 'inline-flex', alignItems: 'center', gap: 8,
-        padding: '12px 28px', borderRadius: 8, border: '1px solid rgba(200,241,53,0.4)',
-        background: 'rgba(200,241,53,0.08)', color: '#C8F135',
+        padding: '12px 28px', borderRadius: 8, border: `1px solid ${G200}`,
+        background: WHITE, color: G900,
         fontFamily: "'Inter', sans-serif", fontWeight: 700, fontSize: 14,
         letterSpacing: '0.02em', cursor: 'pointer', transition: 'all 0.22s ease',
       }}
         onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = 'rgba(200,241,53,0.18)'; (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'; }}
         onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = 'rgba(200,241,53,0.08)'; (e.currentTarget as HTMLElement).style.transform = ''; }}>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8F135" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={G900} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
         Ver todos os Cases
       </button>
       <AnimatePresence>
@@ -482,13 +495,13 @@ function ContactForm() {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const inputStyle: React.CSSProperties = {
     width: '100%', padding: '12px 16px', borderRadius: 8, boxSizing: 'border-box',
-    background: 'rgba(18,21,31,0.8)', border: '1px solid rgba(255,255,255,0.1)',
-    color: '#fff', fontFamily: "'Inter', sans-serif", fontSize: 14, outline: 'none',
+    background: OFF, border: `1px solid ${G100}`,
+    color: G900, fontFamily: "'DM Sans', sans-serif", fontSize: 14, outline: 'none',
     transition: 'border-color 0.2s ease',
   };
   const labelStyle: React.CSSProperties = {
     display: 'block', fontFamily: "'Inter', sans-serif", fontSize: 12, fontWeight: 600,
-    letterSpacing: '0.08em', textTransform: 'uppercase', color: 'rgba(136,146,164,0.7)',
+    letterSpacing: '0.15em', textTransform: 'uppercase', color: G400,
     marginBottom: 6,
   };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -531,26 +544,26 @@ function ContactForm() {
           <div>
             <label style={labelStyle}>Nome *</label>
             <input required name="name" value={form.name} onChange={handleChange} placeholder="Seu nome" style={inputStyle}
-              onFocus={(e) => { e.currentTarget.style.borderColor = 'rgba(108,99,255,0.5)'; }}
-              onBlur={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'; }} />
+              onFocus={(e) => { e.currentTarget.style.borderColor = G400; }}
+              onBlur={(e) => { e.currentTarget.style.borderColor = G100; }} />
           </div>
           <div>
             <label style={labelStyle}>Empresa *</label>
             <input required name="company" value={form.company} onChange={handleChange} placeholder="Nome da empresa" style={inputStyle}
-              onFocus={(e) => { e.currentTarget.style.borderColor = 'rgba(108,99,255,0.5)'; }}
-              onBlur={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'; }} />
+              onFocus={(e) => { e.currentTarget.style.borderColor = G400; }}
+              onBlur={(e) => { e.currentTarget.style.borderColor = G100; }} />
           </div>
           <div>
             <label style={labelStyle}>E-mail *</label>
             <input required type="email" name="email" value={form.email} onChange={handleChange} placeholder="seu@email.com" style={inputStyle}
-              onFocus={(e) => { e.currentTarget.style.borderColor = 'rgba(108,99,255,0.5)'; }}
-              onBlur={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'; }} />
+              onFocus={(e) => { e.currentTarget.style.borderColor = G400; }}
+              onBlur={(e) => { e.currentTarget.style.borderColor = G100; }} />
           </div>
           <div>
             <label style={labelStyle}>WhatsApp</label>
             <input name="phone" value={form.phone} onChange={handleChange} placeholder="+55 11 9 0000-0000" style={inputStyle}
-              onFocus={(e) => { e.currentTarget.style.borderColor = 'rgba(108,99,255,0.5)'; }}
-              onBlur={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'; }} />
+              onFocus={(e) => { e.currentTarget.style.borderColor = G400; }}
+              onBlur={(e) => { e.currentTarget.style.borderColor = G100; }} />
           </div>
         </div>
         <div style={{ marginBottom: 28 }}>
@@ -558,15 +571,15 @@ function ContactForm() {
           <textarea name="challenge" value={form.challenge} onChange={handleChange} rows={4}
             placeholder="Descreva brevemente: qual processo operacional mais consome tempo/custo na sua empresa?"
             style={{ ...inputStyle, resize: 'vertical', lineHeight: 1.6 }}
-            onFocus={(e) => { e.currentTarget.style.borderColor = 'rgba(108,99,255,0.5)'; }}
-            onBlur={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'; }} />
+            onFocus={(e) => { e.currentTarget.style.borderColor = G400; }}
+            onBlur={(e) => { e.currentTarget.style.borderColor = G100; }} />
         </div>
         <div style={{ display: 'flex', gap: 16, alignItems: 'center', flexWrap: 'wrap' }}>
           <button type="submit" disabled={status === 'loading'} style={{
             display: 'inline-flex', alignItems: 'center', gap: 8,
             padding: '12px 28px', borderRadius: 6, fontFamily: "'Inter', sans-serif",
-            fontWeight: 700, fontSize: 14, color: '#0B0D14', cursor: status === 'loading' ? 'not-allowed' : 'pointer',
-            background: status === 'loading' ? 'rgba(200,241,53,0.5)' : '#C8F135', border: 'none',
+            fontWeight: 500, fontSize: 14, cursor: status === 'loading' ? 'not-allowed' : 'pointer',
+            background: status === 'loading' ? G800 : G900, color: LIME, border: 'none',
             transition: 'all 0.2s ease', opacity: status === 'loading' ? 0.7 : 1,
           }}>
             <Calendar size={15} /> {status === 'loading' ? 'Enviando…' : 'Solicitar Diagnóstico Gratuito'}
@@ -597,7 +610,7 @@ function BackToTop() {
           transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           aria-label="Voltar ao topo"
-          style={{ position: 'fixed', bottom: 28, right: 28, zIndex: 9999, width: 44, height: 44, borderRadius: '50%', background: 'linear-gradient(135deg, #6C63FF, #00D4FF)', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 20px rgba(108,99,255,0.45)', transition: 'transform 0.2s ease' }}
+          style={{ position: 'fixed', bottom: 28, right: 28, zIndex: 9999, width: 44, height: 44, borderRadius: '50%', background: G900, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 16px rgba(0,0,0,0.25)', transition: 'transform 0.2s ease' }}
           onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.transform = 'scale(1.12)'; }}
           onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = 'scale(1)'; }}>
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 12V4M4 8l4-4 4 4" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -632,7 +645,7 @@ export default function Home() {
     <>
       <AnimatePresence>{showExit && <ExitPopup onClose={closeExit} />}</AnimatePresence>
 
-      <main style={{ background: BG, color: '#fff', fontFamily: "'Inter', sans-serif" }}>
+      <main style={{ background: OFF, color: G900, fontFamily: "'DM Sans', sans-serif" }}>
 
         {/* ══════════════════════════════════════════════════════
             01 · HERO — Deep Space, Neural Network BG
@@ -640,7 +653,7 @@ export default function Home() {
         <section id="hero" style={{ position: 'relative', minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', overflow: 'hidden' }}>
 
           {/* Layer 0: hero gradient */}
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, #0B0D14 0%, #1A1040 50%, #0D1929 100%)' }} />
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, #13100C 0%, #241F1A 50%, #1A130A 100%)' }} />
 
           {/* Layer 1: logos dos clientes flutuando */}
           <FloatingLogoBg />
@@ -679,13 +692,13 @@ export default function Home() {
 
               {/* H1 — AI First. GRANDE | H2 — 2026... MENOR */}
               <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.28, duration: 0.85, ease }}>
-                <h1 className="hero-shimmer-text" style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 900, fontSize: 'clamp(2.8rem, 6.3vw, 5.25rem)', letterSpacing: '-0.04em', lineHeight: 0.92, margin: '0 0 18px 0', display: 'block' }}>AI First.</h1>
-                <h2 style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 800, fontSize: 'clamp(1.5rem, 3vw, 2.5rem)', letterSpacing: '-0.025em', lineHeight: 1.12, margin: '0 0 24px 0', color: '#fff' }}>2026 é o último ano<br />em que isso ainda é opcional.</h2>
+                <h1 className="hero-shimmer-text" style={{ fontFamily: "'Playfair Display', Georgia, serif", fontWeight: 700, fontSize: 'clamp(2.8rem, 6.3vw, 5.25rem)', letterSpacing: '-0.04em', lineHeight: 0.92, margin: '0 0 18px 0', display: 'block' }}>AI First.</h1>
+                <h2 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontWeight: 700, fontSize: 'clamp(1.5rem, 3vw, 2.5rem)', letterSpacing: '-1px', lineHeight: 1.12, margin: '0 0 24px 0', color: '#fff' }}>2026 é o último ano<br />em que isso ainda é opcional.</h2>
               </motion.div>
 
               {/* Subline */}
               <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45, duration: 0.7, ease }}>
-                <Body style={{ fontSize: 16, lineHeight: 1.75, marginBottom: 36, maxWidth: 580, color: '#8892A4' }}>
+                <Body style={{ fontSize: 16, lineHeight: 1.75, marginBottom: 36, maxWidth: 580, color: G400 }}>
                   A Pareto é a holding especializada em <span style={{ color: '#fff', fontWeight: 500 }}>IA Aplicada a Negócios</span> que opera desde 2013. Não entregamos aplicativos genéricos — entendemos a sua operação em profundidade e construímos inteligência integrada que reduz custo, acelera equipes e gera resultado mensurável, com os seus dados.
                 </Body>
               </motion.div>
@@ -707,7 +720,7 @@ export default function Home() {
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.85 }}
                 style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }} className="badges-row">
                 {['#6 G2 Best AI 2024', '16 Google Awards', '#1 Brasil Marketing IA', 'US$5M Seed 2025'].map((b) => (
-                  <div key={b} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '5px 12px', borderRadius: 99, background: 'rgba(108,99,255,0.08)', border: '1px solid rgba(108,99,255,0.2)' }}>
+                  <div key={b} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '5px 12px', borderRadius: 99, background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.15)' }}>
                     <div style={{ width: 5, height: 5, borderRadius: '50%', background: C }} />
                     <Mono color="rgba(255,255,255,0.55)" size={10}>{b}</Mono>
                   </div>
@@ -746,18 +759,18 @@ export default function Home() {
 
 <SectionDivider />
         <section id="argumento" style={{ padding: '96px 24px', position: 'relative', overflow: 'hidden' }}>
-          <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(ellipse 60% 50% at 20% 50%, rgba(108,99,255,0.07) 0%, transparent 70%)`, pointerEvents: 'none' }} />
+          <div style={{ position: 'absolute', inset: 0, background: 'none', pointerEvents: 'none' }} />
           <div style={{ maxWidth: 1200, margin: '0 auto' }}>
 
             <Reveal className="text-center" style={{ marginBottom: 64 }}>
               <EyebrowLabel>A Lógica Fria dos Números</EyebrowLabel>
-              <div style={{ fontFamily: "'JetBrains Mono', monospace", fontWeight: 600, fontSize: 'clamp(4rem, 10vw, 8rem)', color: C, letterSpacing: '-0.04em', lineHeight: 1, marginBottom: 20 }}>
+              <div style={{ fontFamily: "'DM Sans', monospace", fontWeight: 600, fontSize: 'clamp(4rem, 10vw, 8rem)', color: LIME, letterSpacing: '-0.04em', lineHeight: 1, marginBottom: 20 }}>
                 71<span style={{ fontSize: '0.42em', verticalAlign: 'super' }}>%</span>
               </div>
               <H2 style={{ marginBottom: 16, maxWidth: 600, marginLeft: 'auto', marginRight: 'auto' }}>
                 das empresas brasileiras não atingiram suas metas de marketing em 2024.
               </H2>
-              <Body style={{ maxWidth: 520, margin: '0 auto', color: '#8892A4' }}>
+              <Body style={{ maxWidth: 520, margin: '0 auto', color: G400 }}>
                 Não foi falta de esforço. Não foi falta de verba. Foi o modelo errado — construído para um mercado que não existe mais.
               </Body>
             </Reveal>
@@ -772,7 +785,7 @@ export default function Home() {
               ].map((c) => (
                 <motion.div key={c.label} variants={staggerItem}>
                   <GlassCard style={{ padding: 28 }}>
-                    <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'clamp(1.8rem, 4vw, 2.6rem)', fontWeight: 600, color: c.accent, letterSpacing: '-0.03em', marginBottom: 10 }}>
+                    <div style={{ fontFamily: "'DM Sans', monospace", fontSize: 'clamp(1.8rem, 4vw, 2.6rem)', fontWeight: 600, color: c.accent, letterSpacing: '-0.03em', marginBottom: 10 }}>
                       {c.stat}
                     </div>
                     <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 500, fontSize: 14, color: '#fff', marginBottom: 10 }}>{c.label}</div>
@@ -890,7 +903,7 @@ export default function Home() {
 
               {/* Big stat card */}
               <GlassCard style={{ padding: '32px 36px', textAlign: 'center', background: 'rgba(108,99,255,0.07)', borderColor: 'rgba(108,99,255,0.3)' }}>
-                <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'clamp(3rem, 6vw, 4.5rem)', fontWeight: 600, color: V, letterSpacing: '-0.04em', lineHeight: 1, marginBottom: 10 }}>
+                <div style={{ fontFamily: "'DM Sans', monospace", fontSize: 'clamp(3rem, 6vw, 4.5rem)', fontWeight: 600, color: V, letterSpacing: '-0.04em', lineHeight: 1, marginBottom: 10 }}>
                   <AnimatedNumber value={285} suffix="%" />
                 </div>
                 <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 500, fontSize: 14, color: '#fff', marginBottom: 6 }}>ROI médio com stack de IA bem implementado</div>
@@ -905,7 +918,7 @@ export default function Home() {
                   { v: '12m',  l: 'Payback médio de automação IA',   c: A },
                 ].map((s) => (
                   <GlassCard key={s.l} style={{ padding: '18px 14px', textAlign: 'center' }}>
-                    <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '1.4rem', fontWeight: 600, color: s.c, marginBottom: 6 }}>{s.v}</div>
+                    <div style={{ fontFamily: "'DM Sans', monospace", fontSize: '1.4rem', fontWeight: 600, color: s.c, marginBottom: 6 }}>{s.v}</div>
                     <Body muted style={{ fontSize: 10, lineHeight: 1.45 }}>{s.l}</Body>
                   </GlassCard>
                 ))}
@@ -930,7 +943,7 @@ export default function Home() {
             02 · O ARGUMENTO — A LÓGICA DOS NÚMEROS
         ══════════════════════════════════════════════════════ */}
         
-        <section id="problema" style={{ padding: '96px 24px', position: 'relative', background: `${S1}80` }}>
+        <section id="problema" style={{ padding: '96px 24px', position: 'relative', background: WHITE }}>
           <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(ellipse 70% 50% at 50% 100%, rgba(0,212,255,0.05) 0%, transparent 70%)`, pointerEvents: 'none' }} />
           <div style={{ maxWidth: 1200, margin: '0 auto' }}>
             <Reveal style={{ textAlign: 'center', marginBottom: 64 }}>
@@ -990,7 +1003,7 @@ export default function Home() {
                     </div>
                     <ul style={{ padding: '20px 28px', listStyle: 'none', margin: 0, display: 'flex', flexDirection: 'column', gap: 14, flex: 1 }}>
                       {s.items.map((item) => (
-                        <li key={item} style={{ display: 'flex', gap: 10, fontFamily: "'Inter', sans-serif", fontSize: 13, lineHeight: 1.65, color: '#8892A4' }}>
+                        <li key={item} style={{ display: 'flex', gap: 10, fontFamily: "'Inter', sans-serif", fontSize: 13, lineHeight: 1.65, color: G400 }}>
                           <span style={{ flexShrink: 0, marginTop: 6, width: 5, height: 5, borderRadius: '50%', background: s.color, display: 'inline-block' }} />
                           {item}
                         </li>
@@ -1037,7 +1050,7 @@ export default function Home() {
                   <GlassCard style={{ padding: 26, height: '100%', display: 'flex', flexDirection: 'column' }}>
                     <IconBadge icon={s.icon} />
                     <div style={{ marginTop: 18, marginBottom: 10 }}>
-                      <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9, fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase', padding: '3px 9px', borderRadius: 99, background: `${V}12`, color: V, border: `1px solid ${V}22` }}>
+                      <span style={{ fontFamily: "'DM Sans', monospace", fontSize: 9, fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase', padding: '3px 9px', borderRadius: 99, background: OFF, color: G600, border: `1px solid ${G200}` }}>
                         {s.tag}
                       </span>
                     </div>
@@ -1080,7 +1093,7 @@ export default function Home() {
             05 · A PARETO — PROVA, NÃO PROMESSA
         ══════════════════════════════════════════════════════ */}
         <SectionDivider />
-        <section id="pareto" style={{ padding: '96px 24px', position: 'relative', background: `${S1}60` }}>
+        <section id="pareto" style={{ padding: '96px 24px', position: 'relative', background: OFF }}>
           <div style={{ maxWidth: 1200, margin: '0 auto' }}>
             <Reveal style={{ textAlign: 'center', marginBottom: 64 }}>
               <EyebrowLabel>Quem implementa</EyebrowLabel>
@@ -1096,7 +1109,7 @@ export default function Home() {
               {KEY_STATS.map((s) => (
                 <motion.div key={s.label} variants={staggerItem}>
                   <GlassCard style={{ padding: '24px 20px', textAlign: 'center' }}>
-                    <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 600, letterSpacing: '-0.02em', marginBottom: 6 }}
+                    <div style={{ fontFamily: "'DM Sans', monospace", fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 600, letterSpacing: '-0.02em', marginBottom: 6 }}
                       className="gradient-text">
                       <AnimatedNumber value={s.value} prefix={s.prefix} suffix={s.suffix} />
                     </div>
@@ -1113,7 +1126,7 @@ export default function Home() {
               </div>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, justifyContent: 'center' }}>
                 {AWARDS.filter((a) => a.highlight).map((a) => (
-                  <div key={a.title} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '7px 14px', borderRadius: 99, background: 'rgba(108,99,255,0.07)', border: '1px solid rgba(108,99,255,0.2)' }}>
+                  <div key={a.title} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '7px 14px', borderRadius: 99, background: 'rgba(108,99,255,0.07)', border: `1px solid ${G100}` }}>
                     <Award size={13} style={{ color: C, flexShrink: 0 }} />
                     <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 12, color: 'rgba(255,255,255,0.65)' }}>{a.title}</span>
                     <Mono color={V} size={11}>— {a.org} {a.year}</Mono>
@@ -1133,7 +1146,7 @@ export default function Home() {
                 <Body style={{ marginBottom: 28 }}>
                   Isso significa acesso unificado a +200 modelos líderes — GPT-4o, Claude 3.5, Gemini, Midjourney, Runway — com segurança enterprise, Brand Voice exclusiva e automação de workflows personalizada para o seu negócio.
                 </Body>
-              <div style={{ marginTop: 32, padding: '20px 24px', borderRadius: 12, background: 'rgba(108,99,255,0.07)', border: '1px solid rgba(108,99,255,0.18)', textAlign: 'center' }}>
+              <div style={{ marginTop: 32, padding: '20px 24px', borderRadius: 12, background: OFF, border: `1px solid ${G100}`, textAlign: 'center' }}>
                 <blockquote style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 700, fontSize: 'clamp(1.1rem, 2vw, 1.5rem)', color: '#fff', margin: 0, lineHeight: 1.35 }}>
                   <span className="hero-shimmer-text">"O futuro da IA é colaborativo."</span>
                 </blockquote>
@@ -1142,7 +1155,7 @@ export default function Home() {
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(110px, 1fr))', gap: 12 }}>
                   {[['#6', 'Global G2 2024'], ['+200', 'Modelos de IA'], ['+2M', 'Usuários Ativos']].map(([v, l]) => (
                     <GlassCard key={l} style={{ padding: '16px 12px', textAlign: 'center' }}>
-                      <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '1.4rem', fontWeight: 600, color: C, marginBottom: 4 }}>{v}</div>
+                      <div style={{ fontFamily: "'DM Sans', monospace", fontSize: '1.4rem', fontWeight: 600, color: C, marginBottom: 4 }}>{v}</div>
                       <Body muted style={{ fontSize: 11 }}>{l}</Body>
                     </GlassCard>
                   ))}
@@ -1150,7 +1163,7 @@ export default function Home() {
               </Reveal>
               {/* Tess AI image — below text, full width */}
               <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={scaleIn}>
-                <div style={{ position: 'relative', borderRadius: 16, overflow: 'hidden', border: '1px solid rgba(108,99,255,0.2)', maxWidth: 720, margin: '0 auto' }}>
+                <div style={{ position: 'relative', borderRadius: 16, overflow: 'hidden', border: `1px solid ${G100}`, maxWidth: 720, margin: '0 auto' }}>
                   <img src="/images/tess_ai_illustration.png" alt="Tess AI" style={{ width: '100%', display: 'block', filter: 'grayscale(0.55) contrast(1.08)' }} loading="lazy" />
                   <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(108,99,255,0.22) 0%, rgba(0,212,255,0.08) 100%)', pointerEvents: 'none' }} />
                   <div style={{ position: 'absolute', inset: 0, boxShadow: 'inset 0 0 50px rgba(108,99,255,0.22)', pointerEvents: 'none' }} />
@@ -1162,7 +1175,7 @@ export default function Home() {
 
         {/* ─── Client Marquee ───────────────────────────────────── */}
         <SectionDivider />
-        <section style={{ padding: '56px 0', background: `${BG}` }}>
+        <section style={{ padding: '56px 0', background: OFF }}>
           <Reveal style={{ textAlign: 'center', marginBottom: 32, padding: '0 24px' }}>
             <Mono color="rgba(108,99,255,0.55)" size={10}>Portfólio</Mono>
             <Body muted style={{ marginTop: 6 }}>As marcas mais exigentes do mundo escolheram a Pareto.</Body>
@@ -1176,21 +1189,21 @@ export default function Home() {
         {/* ══════════════════════════════════════════════════════
             McKINSEY — 80% fracassam
         ══════════════════════════════════════════════════════ */}
-        <section style={{ padding: '80px 24px', background: 'rgba(11,13,20,0.95)', position: 'relative', overflow: 'hidden' }}>
+        <section style={{ padding: '80px 24px', background: G900, position: 'relative', overflow: 'hidden' }}>
           <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 60% 70% at 50% 50%, rgba(108,99,255,0.09) 0%, transparent 70%)', pointerEvents: 'none' }} />
           <div className="data-grid" />
           <div style={{ maxWidth: 860, margin: '0 auto', textAlign: 'center', position: 'relative', zIndex: 2 }}>
             <Reveal>
-              <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'clamp(3rem, 8vw, 6rem)', fontWeight: 800, color: 'rgba(255,255,255,0.06)', letterSpacing: '-0.04em', lineHeight: 1, marginBottom: 8, userSelect: 'none' }}>80%</div>
+              <div style={{ fontFamily: "'DM Sans', monospace", fontSize: 'clamp(3rem, 8vw, 6rem)', fontWeight: 800, color: 'rgba(255,255,255,0.06)', letterSpacing: '-0.04em', lineHeight: 1, marginBottom: 8, userSelect: 'none' }}>80%</div>
               <blockquote style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 700, fontSize: 'clamp(1.4rem, 3vw, 2.4rem)', color: '#fff', lineHeight: 1.25, margin: '0 0 12px', letterSpacing: '-0.02em' }}>
                 "80% dos projetos de IA fracassam."
               </blockquote>
               <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 13, color: 'rgba(136,146,164,0.6)', marginBottom: 32, fontStyle: 'italic' }}>
                 — McKinsey &amp; Company. The State of AI.
               </p>
-              <div style={{ width: 48, height: 2, background: 'linear-gradient(to right, #6C63FF, #00D4FF)', margin: '0 auto 32px' }} />
+              <div style={{ width: 48, height: 2, background: G900, margin: '0 auto 32px' }} />
               <p style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 600, fontSize: 'clamp(1.1rem, 2.5vw, 1.6rem)', color: '#fff', lineHeight: 1.4, marginBottom: 40 }}>
-                Seja cliente Pareto e esteja entre os <span style={{ color: '#C8F135' }}>20%</span>.
+                Seja cliente Pareto e esteja entre os <span style={{ color: LIME }}>20%</span>.
               </p>
               <CalendlyPrimaryBtn>
                 <Calendar size={16} /> Quero meu Diagnóstico Gratuito
@@ -1225,7 +1238,7 @@ export default function Home() {
                 <motion.div key={c.client} variants={staggerItem}>
                   <GlassCard style={{ overflow: 'hidden' }}>
                     <div style={{ padding: '28px 28px 20px', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                      <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 'clamp(2.4rem, 5vw, 3.2rem)', fontWeight: 600, color: C, letterSpacing: '-0.03em', lineHeight: 1, marginBottom: 6 }}>
+                      <div style={{ fontFamily: "'DM Sans', monospace", fontSize: 'clamp(2.4rem, 5vw, 3.2rem)', fontWeight: 600, color: C, letterSpacing: '-0.03em', lineHeight: 1, marginBottom: 6 }}>
                         {c.sign}<AnimatedNumber value={parseInt(c.value)} suffix={parseInt(c.value) > 9 ? '%' : ''} />
                       </div>
                       <Mono color="rgba(136,146,164,0.55)" size={10}>{c.sector}</Mono>
@@ -1266,7 +1279,7 @@ export default function Home() {
             07 · A PARCERIA
         ══════════════════════════════════════════════════════ */}
         <SectionDivider />
-        <section id="parceria" style={{ padding: '96px 24px', position: 'relative', background: `${S1}60` }}>
+        <section id="parceria" style={{ padding: '96px 24px', position: 'relative', background: OFF }}>
           <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(ellipse 55% 45% at 15% 50%, rgba(108,99,255,0.07) 0%, transparent 70%)`, pointerEvents: 'none' }} />
           <div style={{ maxWidth: 1200, margin: '0 auto' }}>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(24px,5vw,80px)', alignItems: 'center' }} className="grid-cols-1 lg:grid-cols-2">
@@ -1353,9 +1366,9 @@ export default function Home() {
                 { ok: false, text: 'Se você busca resultados sem processo, sem dados e sem comprometimento' },
               ].map((item) => (
                 <motion.div key={item.text} variants={staggerItem}>
-                  <GlassCard style={{ display: 'flex', gap: 14, padding: '14px 18px', background: item.ok ? 'rgba(0,212,255,0.04)' : 'rgba(255,100,100,0.04)', borderColor: item.ok ? 'rgba(0,212,255,0.15)' : 'rgba(255,100,100,0.15)' }} hover={false}>
-                    <span style={{ fontSize: 15, flexShrink: 0 }}>{item.ok ? '✓' : '✕'}</span>
-                    <Body style={{ fontSize: 13, color: item.ok ? 'rgba(255,255,255,0.72)' : 'rgba(255,100,100,0.62)' }}>{item.text}</Body>
+                  <GlassCard style={{ display: 'flex', gap: 14, padding: '14px 18px', background: item.ok ? 'rgba(19,16,12,0.03)' : 'rgba(255,100,100,0.03)', borderColor: item.ok ? G100 : 'rgba(220,80,80,0.2)' }} hover={false}>
+                    <span style={{ fontSize: 15, flexShrink: 0, color: item.ok ? LIME_DIM : 'rgba(180,50,50,0.7)', fontWeight: 600 }}>{item.ok ? '✓' : '✗'}</span>
+                    <Body style={{ fontSize: 13, color: item.ok ? G600 : 'rgba(180,50,50,0.75)' }}>{item.text}</Body>
                   </GlassCard>
                 </motion.div>
               ))}
@@ -1383,7 +1396,7 @@ export default function Home() {
             09 · PARCERIA SOB CONSULTA + FORM
         ══════════════════════════════════════════════════════ */}
         <SectionDivider />
-        <section id="modelos" style={{ padding: '96px 24px', position: 'relative', background: `${S1}50` }}>
+        <section id="modelos" style={{ padding: '96px 24px', position: 'relative', background: OFF }}>
           <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(ellipse 65% 50% at 50% 0%, rgba(108,99,255,0.08) 0%, transparent 65%)`, pointerEvents: 'none' }} />
           <div style={{ maxWidth: 1100, margin: '0 auto' }}>
             <Reveal style={{ textAlign: 'center', marginBottom: 56 }}>
@@ -1423,7 +1436,7 @@ export default function Home() {
             10 · CTA FINAL
         ══════════════════════════════════════════════════════ */}
         <SectionDivider />
-        <section style={{ padding: '120px 24px', position: 'relative', overflow: 'hidden', background: `${BG}` }}>
+        <section style={{ padding: '120px 24px', position: 'relative', overflow: 'hidden', background: OFF }}>
           <div className="data-grid" />
           <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 70% 60% at 50% 50%, rgba(108,99,255,0.12) 0%, transparent 70%)', pointerEvents: 'none' }} />
           <div style={{ position: 'relative', zIndex: 2, maxWidth: 760, margin: '0 auto', textAlign: 'center' }}>
@@ -1436,7 +1449,7 @@ export default function Home() {
                 Quanto custa, por mês,<br />
                 <span className="shimmer-text">não ter IA na sua operação?</span>
               </H1>
-              <Body style={{ fontSize: 16, maxWidth: 520, margin: '0 auto 40px', color: '#8892A4' }}>
+              <Body style={{ fontSize: 16, maxWidth: 520, margin: '0 auto 40px', color: G400 }}>
                 Em 30 minutos de diagnóstico, nossos especialistas identificam onde a IA gera retorno imediato no seu negócio. Sem pitch genérico. Sem compromisso. Com clareza real sobre o seu cenário específico.
               </Body>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, justifyContent: 'center' }}>
