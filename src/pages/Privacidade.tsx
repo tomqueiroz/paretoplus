@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Shield, FileText, ChevronDown, ChevronUp, ExternalLink, Mail, Phone } from 'lucide-react';
@@ -42,9 +42,38 @@ const TU_SECTIONS = [
 
 /* ── Accordion item ── */
 function Accordion({ id, title, children }: { id: string; title: string; children: React.ReactNode }) {
-  const [open, setOpen] = useState(false);
+  // Abre automaticamente se a URL contém o hash correspondente
+  const [open, setOpen] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.location.hash === `#${id}`;
+    }
+    return false;
+  });
+
+  // Também abre se o hash mudar (clique no índice)
+  useEffect(() => {
+    const handleHash = () => {
+      if (window.location.hash === `#${id}`) {
+        setOpen(true);
+        // Aguarda o accordion abrir e depois scrolla
+        setTimeout(() => {
+          document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 80);
+      }
+    };
+    window.addEventListener('hashchange', handleHash);
+    // Verifica no mount também
+    if (window.location.hash === `#${id}`) {
+      setOpen(true);
+      setTimeout(() => {
+        document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 200);
+    }
+    return () => window.removeEventListener('hashchange', handleHash);
+  }, [id]);
+
   return (
-    <div id={id} style={{ borderBottom: `1px solid ${G100}`, scrollMarginTop: 100 }}>
+    <div id={id} style={{ borderBottom: `1px solid ${G100}`, scrollMarginTop: 90 }}>
       <button
         onClick={() => setOpen(v => !v)}
         style={{
@@ -138,7 +167,7 @@ export default function Privacidade() {
               Privacidade & Termos de Uso
             </h1>
             <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 15, color: 'rgba(255,255,255,0.55)', margin: '0 0 28px', fontWeight: 300 }}>
-              Última atualização: {currentDate} · Pareto Soluções em Tecnologia Ltda.
+              Última atualização: {currentDate} · Pareto Plus Ltda.
             </p>
 
             {/* Badges legais */}
@@ -190,7 +219,13 @@ export default function Privacidade() {
               <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 11, fontWeight: 700, color: G400, textTransform: 'uppercase', letterSpacing: '0.14em', margin: '0 0 12px' }}>Índice</p>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '4px 24px' }}>
                 {PP_SECTIONS.map(s => (
-                  <a key={s.id} href={`#${s.id}`} style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: LIME_DIM, textDecoration: 'none', display: 'block', padding: '4px 0', fontWeight: 400 }}
+                  <a key={s.id} href={`#${s.id}`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      window.location.hash = s.id;
+                      window.dispatchEvent(new HashChangeEvent('hashchange'));
+                    }}
+                    style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: LIME_DIM, textDecoration: 'none', display: 'block', padding: '4px 0', fontWeight: 400, cursor: 'pointer' }}
                     onMouseEnter={e => (e.currentTarget.style.color = G900)}
                     onMouseLeave={e => (e.currentTarget.style.color = LIME_DIM)}>
                     {s.label}
@@ -202,7 +237,7 @@ export default function Privacidade() {
             {/* Introdução */}
             <div style={{ padding: '20px 24px', borderRadius: 12, background: 'rgba(168,196,30,0.06)', border: `1px solid ${LIME_DIM}40`, marginBottom: 32 }}>
               <P style={{ margin: 0 }}>
-                A <strong style={{ color: G900 }}>Pareto Soluções em Tecnologia Ltda.</strong>, inscrita no CNPJ sob o nº 15.515.184/0001-30, com sede na Av. Paulista, 2.022, 2º andar, Consolação, São Paulo/SP, CEP 01310-200 ("<strong style={{ color: G900 }}>Pareto</strong>", "<strong style={{ color: G900 }}>nós</strong>" ou "<strong style={{ color: G900 }}>nosso</strong>"), opera as plataformas <strong style={{ color: G900 }}>Pareto.io</strong> e <strong style={{ color: G900 }}>Pareto Plus</strong> e atua como <strong style={{ color: G900 }}>controladora</strong> dos dados pessoais tratados neste site, nos termos do Art. 5º, VI da Lei nº 13.709/2018 (LGPD).
+                A <strong style={{ color: G900 }}>Pareto Plus Ltda.</strong>, pessoa jurídica de direito privado, inscrita no CNPJ/MF sob o nº <strong style={{ color: G900 }}>49.512.854/0001-46</strong>, com sede na Avenida Oscar Niemeyer, nº 2.000, Bloco 1, Sala 401, Bairro Santo Cristo, Rio de Janeiro/RJ, CEP 20220-297 ("<strong style={{ color: G900 }}>Pareto</strong>", "<strong style={{ color: G900 }}>nós</strong>" ou "<strong style={{ color: G900 }}>nosso</strong>"), opera as plataformas <strong style={{ color: G900 }}>Pareto.io</strong> e <strong style={{ color: G900 }}>Pareto Plus</strong> e atua como <strong style={{ color: G900 }}>controladora</strong> dos dados pessoais tratados neste site, nos termos do Art. 5º, VI da Lei nº 13.709/2018 (LGPD).
               </P>
               <P style={{ margin: '10px 0 0' }}>
                 Esta Política descreve quais dados coletamos, por que coletamos, como são usados, com quem são compartilhados, por quanto tempo são retidos e quais são os seus direitos como titular — em cumprimento ao <strong style={{ color: G900 }}>Art. 9º da LGPD</strong> (dever de transparência).
@@ -214,9 +249,9 @@ export default function Privacidade() {
 
               <Accordion id="pp-intro" title="1. Quem Somos — Controlador dos Dados">
                 <H3>Controladora</H3>
-                <P><strong style={{ color: G900 }}>Pareto Soluções em Tecnologia Ltda.</strong><br />
-                CNPJ: 15.515.184/0001-30<br />
-                Av. Paulista, 2.022, 2º andar — Consolação, São Paulo/SP, CEP 01310-200<br />
+                <P><strong style={{ color: G900 }}>Pareto Plus Ltda.</strong><br />
+CNPJ/MF: 49.512.854/0001-46<br />
+Av. Oscar Niemeyer, 2.000, Bloco 1, Sala 401 — Santo Cristo, Rio de Janeiro/RJ, CEP 20220-297<br />
                 E-mail do DPO: <a href="mailto:privacidade@pareto.io" style={{ color: LIME_DIM }}>privacidade@pareto.io</a>
                 </P>
                 <H3>Operadoras</H3>
@@ -437,7 +472,13 @@ export default function Privacidade() {
               <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 11, fontWeight: 700, color: G400, textTransform: 'uppercase', letterSpacing: '0.14em', margin: '0 0 12px' }}>Índice</p>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '4px 24px' }}>
                 {TU_SECTIONS.map(s => (
-                  <a key={s.id} href={`#${s.id}`} style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: LIME_DIM, textDecoration: 'none', display: 'block', padding: '4px 0', fontWeight: 400 }}
+                  <a key={s.id} href={`#${s.id}`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      window.location.hash = s.id;
+                      window.dispatchEvent(new HashChangeEvent('hashchange'));
+                    }}
+                    style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: LIME_DIM, textDecoration: 'none', display: 'block', padding: '4px 0', fontWeight: 400, cursor: 'pointer' }}
                     onMouseEnter={e => (e.currentTarget.style.color = G900)}
                     onMouseLeave={e => (e.currentTarget.style.color = LIME_DIM)}>
                     {s.label}

@@ -22,7 +22,6 @@ const navLinks = [
   { label: 'Resultados',         action: 'scroll', id: 'resultados' },
   { label: 'Cases',              action: 'cases' },
   { label: 'Por que a Pareto?',  action: 'link',   href: ROUTE_PATHS.SOBRE },
-  { label: 'Privacidade',        action: 'link',   href: ROUTE_PATHS.PRIVACIDADE },
 ];
 
 const WA_LINK = 'https://api.whatsapp.com/send/?phone=5511915513210&text&type=phone_number&app_absent=0';
@@ -110,18 +109,9 @@ export function Header() {
                 <Link key={link.label}
                   to={link.href!}
                   onClick={() => { setMenuOpen(false); window.scrollTo({ top: 0 }); }}
-                  style={{
-                    ...linkStyle,
-                    ...(link.href === ROUTE_PATHS.PRIVACIDADE ? {
-                      fontSize: 10, color: G400, opacity: 0.7,
-                      borderLeft: `1px solid ${G200}`, paddingLeft: 20, marginLeft: -8,
-                    } : {}),
-                  }}
-                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = navHover; (e.currentTarget as HTMLElement).style.opacity = '1'; }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLElement).style.color = link.href === ROUTE_PATHS.PRIVACIDADE ? G400 : navColor;
-                    (e.currentTarget as HTMLElement).style.opacity = link.href === ROUTE_PATHS.PRIVACIDADE ? '0.7' : '1';
-                  }}>
+                  style={{ ...linkStyle }}
+                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = navHover; }}
+                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = navColor; }}>
                   {link.label}
                 </Link>
               ) : (
@@ -196,9 +186,9 @@ export function Header() {
                       style={{
                         padding: '12px 0',
                         fontFamily: "'DM Sans', sans-serif",
-                        fontWeight: link.href === ROUTE_PATHS.PRIVACIDADE ? 300 : 400,
-                        fontSize: link.href === ROUTE_PATHS.PRIVACIDADE ? 13 : 15,
-                        color: link.href === ROUTE_PATHS.PRIVACIDADE ? G400 : G600,
+                        fontWeight: 400,
+                        fontSize: 15,
+                        color: G600,
                         textDecoration: 'none',
                         borderBottom: `1px solid ${G100}`,
                       }}>
@@ -422,10 +412,10 @@ export function Footer() {
             }}>Contato</h4>
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 10 }}>
               <li style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 300, color: WHITE }}>
-                Av. Paulista, 2.022 - 2º andar
+                Av. Oscar Niemeyer, 2000, Bloco 1, Sala 401
               </li>
               <li style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 300, color: WHITE }}>
-                Consolação — São Paulo/SP
+                Santo Cristo — Rio de Janeiro/RJ
               </li>
               <li>
                 <a href="https://wa.me/5511915513210?text=Ol%C3%A1%21+Vim+pelo+site+Pareto+Plus."
@@ -496,7 +486,7 @@ export function Footer() {
             fontFamily: "'DM Sans', sans-serif",
             fontSize: 12, fontWeight: 300, color: WHITE,
           }}>
-            © 2026 Pareto Soluções em Tecnologia Ltda. Todos os direitos reservados.
+            © 2026 Pareto Plus Ltda. Todos os direitos reservados.
           </p>
           <div style={{ display: 'flex', gap: 20, alignItems: 'center' }}>
             <Link to={ROUTE_PATHS.PRIVACIDADE}
