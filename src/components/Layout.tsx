@@ -375,7 +375,7 @@ export function Footer() {
               {[
                 { label: 'Home',            to: ROUTE_PATHS.HOME, internal: true },
                 { label: 'Por que a Pareto?', to: ROUTE_PATHS.SOBRE, internal: true },
-                { label: 'Privacidade',     to: ROUTE_PATHS.PRIVACIDADE, internal: true },
+                { label: 'Privacidade & Termos',     to: ROUTE_PATHS.PRIVACIDADE, internal: true },
                 { label: 'Tess AI',         href: 'https://tess.im', external: true },
                 { label: 'pareto.io',       href: 'https://pareto.io', external: true },
                 { label: 'AI for Business', href: 'https://pareto.io/ai-for-business', external: true },
@@ -491,7 +491,7 @@ export function Footer() {
               style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, fontWeight: 300, color: WHITE, textDecoration: 'none', transition: 'color 0.2s ease' }}
               onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = LIME; }}
               onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = WHITE; }}>
-              Política de Privacidade
+              Privacidade & Termos de Uso
             </Link>
             <span style={{
               fontFamily: "'DM Sans', sans-serif",

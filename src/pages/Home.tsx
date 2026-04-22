@@ -4,9 +4,10 @@ import { useCalendly } from '@/components/CalendlyModal';
 import { motion, AnimatePresence, useInView, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight, Calendar, ChevronDown, X, Award, Quote, Zap, Brain, Settings, Users } from 'lucide-react';
 import { ParticleCanvas } from '@/components/ParticleCanvas';
+import { Link } from 'react-router-dom';
 import {
   WHATSAPP_URL, CALENDLY_URL, CASES, CLIENT_LOGOS, AWARDS, PARTNER_BADGES, KEY_STATS,
-  scrollToSection,
+  scrollToSection, ROUTE_PATHS,
 } from '@/lib/index';
 
 // ─── Design Tokens (Pareto Design System v2 — Light Editorial) ────────────────
@@ -625,7 +626,7 @@ function ContactForm() {
           }}>
             <Calendar size={15} /> {status === 'loading' ? 'Enviando…' : 'Solicitar Diagnóstico Gratuito'}
           </button>
-          <Body muted style={{ fontSize: 12 }}>LGPD Compliant · 100% confidencial</Body>
+          <Body muted style={{ fontSize: 12 }}>LGPD Compliant · 100% confidencial · <Link to={ROUTE_PATHS.PRIVACIDADE} style={{ color: LIME_DIM, textDecoration: 'none' }}>Política de Privacidade</Link></Body>
         </div>
         {status === 'error' && <Body style={{ color: '#ff6b6b', marginTop: 12, fontSize: 13 }}>Erro ao enviar. Tente pelo WhatsApp: +55 11 91551-3210</Body>}
       </form>
@@ -1254,7 +1255,7 @@ export default function Home() {
                 <Calendar size={16} /> Quero meu Diagnóstico Gratuito
               </CalendlyPrimaryBtn>
               <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 12, color: WHITE, marginTop: 16 }}>
-                30 min · Sem compromisso · LGPD Compliant
+                30 min · Sem compromisso · <Link to={ROUTE_PATHS.PRIVACIDADE} style={{ color: 'rgba(255,255,255,0.65)', textDecoration: 'underline', textUnderlineOffset: 3 }}>LGPD Compliant</Link>
               </p>
             </Reveal>
           </div>
@@ -1427,7 +1428,7 @@ export default function Home() {
 
             <Reveal>
               <CalendlyPrimaryBtn><Calendar size={15} /> Quero Meu Diagnóstico Gratuito</CalendlyPrimaryBtn>
-              <Body muted style={{ marginTop: 14, fontSize: 12 }}>30 minutos · Sem compromisso · LGPD Compliant</Body>
+              <Body muted style={{ marginTop: 14, fontSize: 12 }}>30 minutos · Sem compromisso · <Link to={ROUTE_PATHS.PRIVACIDADE} style={{ color: G400, textDecoration: 'none' }}>LGPD Compliant</Link></Body>
             </Reveal>
           </div>
         </section>
@@ -1507,7 +1508,7 @@ export default function Home() {
                 <CalendlyPrimaryBtn><Calendar size={16} /> Quero meu diagnóstico gratuito</CalendlyPrimaryBtn>
                 <GhostBtn href={WHATSAPP_URL}>WhatsApp <ArrowRight size={14} /></GhostBtn>
               </div>
-              <Body muted style={{ marginTop: 20, fontSize: 12 }}>LGPD Compliant · Privacidade garantida</Body>
+              <Body muted style={{ marginTop: 20, fontSize: 12 }}>LGPD Compliant · <Link to={ROUTE_PATHS.PRIVACIDADE} style={{ color: G400, textDecoration: 'none' }}>Privacidade garantida</Link></Body>
             </Reveal>
           </div>
         </section>
