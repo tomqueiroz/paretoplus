@@ -1327,7 +1327,7 @@ export default function Home() {
         <section id="parceria" style={{ padding: '96px 24px', position: 'relative', background: OFF }}>
           <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(ellipse 55% 45% at 15% 50%, rgba(108,99,255,0.07) 0%, transparent 70%)`, pointerEvents: 'none' }} />
           <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(24px,5vw,80px)', alignItems: 'center' }} className="grid-cols-1 lg:grid-cols-2">
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 'clamp(24px,5vw,80px)', alignItems: 'center' }}>
 
               <Reveal>
                 <EyebrowLabel>O que você está contratando</EyebrowLabel>
