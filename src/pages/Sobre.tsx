@@ -1,6 +1,6 @@
-import { useRef, useState } from 'react';
+import React, { useRef, useState, useCallback } from 'react';
 import { motion, useInView, useScroll, useTransform } from 'framer-motion';
-import { Award, ExternalLink, ArrowRight, Calendar, Zap, Brain, Settings, Users } from 'lucide-react';
+import { Award, ExternalLink, ArrowRight, Calendar, Zap, Brain, Settings, Users, X } from 'lucide-react';
 import { TIMELINE, AWARDS, TESS_MODELS, WHATSAPP_URL, CALENDLY_URL, KEY_STATS } from '@/lib/index';
 
 // ─── Design tokens ──────────────────────────────────────────────────────────
@@ -157,9 +157,124 @@ const SOLUTIONS = [
   },
 ];
 
+/* ─── External Link Popup ────────────────────────────────────────────────── */
+function ExternalPopup({ url, title, onClose }: { url: string; title: string; onClose: () => void }) {
+  // Se for WhatsApp ou link que não carrega em iframe, abrir em nova aba
+  const isWhatsApp = url.includes('whatsapp') || url.includes('wa.me') || url.includes('api.whatsapp');
+  const isCalendly = url.includes('calendly');
+
+  if (isWhatsApp || isCalendly) {
+    // Abrir direto e fechar modal — não faz sentido iframe para esses
+    window.open(url, '_blank', 'noopener,noreferrer');
+    onClose();
+    return null;
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
+      style={{
+        position: 'fixed', inset: 0, zIndex: 9999,
+        background: 'rgba(11,13,20,0.82)',
+        backdropFilter: 'blur(8px)',
+        WebkitBackdropFilter: 'blur(8px)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        padding: 'clamp(12px, 3vw, 32px)',
+      }}
+      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+    >
+      <motion.div
+        initial={{ opacity: 0, scale: 0.94, y: 24 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.94, y: 24 }}
+        transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+        style={{
+          width: '100%', maxWidth: 960, height: 'clamp(500px, 80vh, 780px)',
+          background: G900, borderRadius: 16,
+          border: `1px solid ${G800}`,
+          boxShadow: '0 32px 80px rgba(0,0,0,0.6)',
+          display: 'flex', flexDirection: 'column', overflow: 'hidden',
+        }}
+      >
+        {/* Barra superior */}
+        <div style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          padding: '12px 20px',
+          borderBottom: `1px solid ${G800}`,
+          background: 'rgba(255,255,255,0.03)',
+          flexShrink: 0,
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <div style={{ width: 8, height: 8, borderRadius: '50%', background: LIME_DIM }} />
+            <span style={{
+              fontFamily: "'DM Sans', sans-serif", fontSize: 12, fontWeight: 500,
+              color: G400, maxWidth: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+            }}>{url}</span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <a href={url} target="_blank" rel="noopener noreferrer"
+              title="Abrir em nova aba"
+              style={{
+                display: 'flex', alignItems: 'center', gap: 5, padding: '5px 12px',
+                borderRadius: 6, border: `1px solid ${G800}`,
+                fontFamily: "'DM Sans', sans-serif", fontSize: 11, fontWeight: 500,
+                color: G400, textDecoration: 'none', transition: 'all 0.2s ease',
+              }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = WHITE; (e.currentTarget as HTMLElement).style.borderColor = G600; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = G400; (e.currentTarget as HTMLElement).style.borderColor = G800; }}>
+              <ExternalLink size={11} /> Abrir em nova aba
+            </a>
+            <button onClick={onClose}
+              title="Fechar"
+              style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                width: 32, height: 32, borderRadius: 8,
+                background: 'rgba(255,255,255,0.05)', border: `1px solid ${G800}`,
+                color: G400, cursor: 'pointer', transition: 'all 0.2s ease',
+              }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = 'rgba(255,100,100,0.12)'; (e.currentTarget as HTMLElement).style.color = '#ff6464'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,100,100,0.3)'; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.05)'; (e.currentTarget as HTMLElement).style.color = G400; (e.currentTarget as HTMLElement).style.borderColor = G800; }}>
+              <X size={14} />
+            </button>
+          </div>
+        </div>
+        {/* iframe */}
+        <iframe
+          src={url}
+          title={title}
+          style={{ flex: 1, width: '100%', border: 'none', background: WHITE }}
+          sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox"
+          loading="lazy"
+        />
+      </motion.div>
+    </motion.div>
+  );
+}
+
+function useExternalPopup() {
+  const [popup, setPopup] = useState<{ url: string; title: string } | null>(null);
+  const open = useCallback((url: string, title = '') => setPopup({ url, title }), []);
+  const close = useCallback(() => setPopup(null), []);
+  return { popup, open, close };
+}
+
 export default function Sobre() {
+  const { popup, open: openPopup, close: closePopup } = useExternalPopup();
+
+  // Fechar popup com Escape
+  React.useEffect(() => {
+    const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') closePopup(); };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [closePopup]);
+
   return (
     <main style={{ background: BG, color: G900, fontFamily: "'DM Sans', sans-serif" }}>
+      {/* ── External Link Popup ── */}
+      {popup && <ExternalPopup url={popup.url} title={popup.title} onClose={closePopup} />}
 
       {/* ── HERO ──────────────────────────────────────────────────────────────── */}
       <section style={{ position: 'relative', minHeight: '60vh', display: 'flex', alignItems: 'center', overflow: 'hidden', paddingTop: 100 }}>
@@ -193,7 +308,7 @@ export default function Sobre() {
             </motion.div>
             <motion.div variants={staggerItem} style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
               <PrimaryBtn href={WA_LINK}><Calendar size={15} /> Falar com Especialista</PrimaryBtn>
-              <a href="https://tess.im" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '11px 22px', borderRadius: 6, border: '1px solid rgba(108,99,255,0.3)', color: 'rgba(255,255,255,0.75)', fontFamily: "'DM Sans', sans-serif", fontSize: 14, fontWeight: 500, textDecoration: 'none', transition: 'all 0.2s ease' }}>
+              <a href="https://tess.im" onClick={(e) => { e.preventDefault(); openPopup('https://tess.im', 'Tess AI'); }} style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '11px 22px', borderRadius: 6, border: '1px solid rgba(108,99,255,0.3)', color: 'rgba(255,255,255,0.75)', fontFamily: "'DM Sans', sans-serif", fontSize: 14, fontWeight: 500, textDecoration: 'none', transition: 'all 0.2s ease', cursor: 'pointer' }}>
                 Conhecer a Tess AI <ExternalLink size={13} />
               </a>
             </motion.div>
@@ -248,8 +363,8 @@ export default function Sobre() {
                       </li>
                     ))}
                   </ul>
-                  <a href={s.link} target="_blank" rel="noopener noreferrer"
-                    style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 700, color: LIME_DIM, textDecoration: 'none', marginTop: 'auto', borderTop: `1px solid ${G100}`, paddingTop: 14 }}
+                  <a href={s.link} onClick={(e) => { e.preventDefault(); openPopup(s.link, s.name); }}
+                    style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 700, color: LIME_DIM, textDecoration: 'none', marginTop: 'auto', borderTop: `1px solid ${G100}`, paddingTop: 14, cursor: 'pointer' }}
                     onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.gap = '10px'; }}
                     onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.gap = '6px'; }}>
                     Explorar <ArrowRight size={13} />
@@ -308,7 +423,7 @@ export default function Sobre() {
                 <blockquote style={{ fontFamily: "'Playfair Display', Georgia, serif", fontWeight: 700, fontSize: 'clamp(1rem, 1.8vw, 1.35rem)', color: '#fff', margin: 0 }} className="hero-shimmer-text">"O futuro da IA é colaborativo."</blockquote>
                 <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 11, color: WHITE, marginTop: 6, marginBottom: 0 }}>— Pareto · Tess AI Platform Philosophy</p>
               </div>
-              <a href="https://tess.im" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 700, color: V, textDecoration: 'none' }}>Conhecer a Tess AI <ExternalLink size={13} /></a>
+              <a href="https://tess.im" onClick={(e) => { e.preventDefault(); openPopup('https://tess.im', 'Tess AI'); }} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 700, color: V, textDecoration: 'none', cursor: 'pointer' }}>Conhecer a Tess AI <ExternalLink size={13} /></a>
             </Reveal>
             <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.7, ease }}>
               <div style={{ position: 'relative', borderRadius: 16, overflow: 'hidden', border: '1px solid rgba(108,99,255,0.2)' }}>
