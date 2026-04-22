@@ -291,7 +291,7 @@ export default function Sobre() {
       <section style={{ padding: '80px 24px', background: WHITE, position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 60% 50% at 60% 50%, rgba(168,196,30,0.05) 0%, transparent 70%)', pointerEvents: 'none' }} />
         <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(24px,5vw,64px)', alignItems: 'center', marginBottom: 64 }} className="grid-cols-1 lg:grid-cols-2">
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 'clamp(24px,5vw,64px)', alignItems: 'center', marginBottom: 64 }}>
             <Reveal>
               <EyebrowLabel>Tess AI — Nossa Plataforma</EyebrowLabel>
               <H2 style={{ marginBottom: 20 }}>A Maior Rede de IA<br /><span style={{ color: V }}>do Mundo. Num Único Lugar.</span></H2>

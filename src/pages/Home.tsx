@@ -382,7 +382,7 @@ function FloatingLogoBg() {
           <img
             src={HERO_LOGO_SRCS[i]}
             alt=""
-            style={{ width: 100, height: 'auto', maxHeight: 60, objectFit: 'contain', display: 'block', filter: 'grayscale(1) brightness(10)', opacity: 0.55 }}
+            style={{ width: 125, height: 'auto', maxHeight: 75, objectFit: 'contain', display: 'block', filter: 'grayscale(1) brightness(10)', opacity: 0.55 }}
           />
         </motion.div>
       ))}
@@ -845,7 +845,7 @@ export default function Home() {
                   label: 'O modelo que virou commodity',
                   quote: '"Contrato uma agência, ela executa um playbook padrão, reporta métricas de vaidade."',
                   result: 'Resultado: o mesmo pacote vendido para 40 clientes do mesmo segmento. Diferencial zero.',
-                  tone: 'dim',
+                  tone: 'dimWhite',
                 },
                 {
                   label: 'O modelo que constrói vantagem',
@@ -866,13 +866,13 @@ export default function Home() {
                     background: c.tone === 'bright' ? 'rgba(108,99,255,0.08)' : c.tone === 'urgent' ? 'rgba(255,107,53,0.05)' : 'rgba(18,21,31,0.8)',
                     borderColor: c.tone === 'bright' ? 'rgba(108,99,255,0.35)' : c.tone === 'urgent' ? 'rgba(255,107,53,0.2)' : 'rgba(255,255,255,0.07)',
                   }}>
-                    <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 10, fontWeight: 600, letterSpacing: '0.16em', textTransform: 'uppercase', color: c.tone === 'bright' ? V : c.tone === 'urgent' ? A : 'rgba(136,146,164,0.5)', marginBottom: 16 }}>
+                    <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 10, fontWeight: 600, letterSpacing: '0.16em', textTransform: 'uppercase', color: c.tone === 'bright' ? V : c.tone === 'urgent' ? A : WHITE, marginBottom: 16 }}>
                       {c.label}
                     </div>
-                    <blockquote style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 14, fontWeight: 500, color: c.tone === 'dim' ? 'rgba(255,255,255,0.9)' : 'rgba(160,170,160,0.9)', lineHeight: 1.6, marginBottom: 14, fontStyle: 'italic' }}>
+                    <blockquote style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 14, fontWeight: 500, color: (c.tone === 'dim' || c.tone === 'dimWhite') ? 'rgba(255,255,255,0.9)' : 'rgba(160,170,160,0.9)', lineHeight: 1.6, marginBottom: 14, fontStyle: 'italic' }}>
                       {c.quote}
                     </blockquote>
-                    <Body muted style={{ fontSize: 12, color: c.tone === 'dim' ? 'rgba(255,100,100,0.65)' : 'rgba(136,146,164,0.7)' }}>{c.result}</Body>
+                    <Body muted style={{ fontSize: 12, color: (c.tone === 'dim' || c.tone === 'dimWhite') ? 'rgba(255,100,100,0.65)' : 'rgba(136,146,164,0.7)' }}>{c.result}</Body>
                   </GlassCard>
                 </motion.div>
               ))}
@@ -884,7 +884,7 @@ export default function Home() {
         <ParallaxStrip img="/images/pareto_office1.png" height={300}>
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
             <Mono color={WHITE} size={10} >Pareto · São Paulo · Est. 2011</Mono>
-            <H2 style={{ marginTop: 12, marginBottom: 10 }}>
+            <H2 style={{ marginTop: 12, marginBottom: 10, color: WHITE }}>
               +160 especialistas.<br />
               <span style={{ color: C }}>Um único KPI: resultado financeiro.</span>
             </H2>
@@ -901,21 +901,29 @@ export default function Home() {
         ══════════════════════════════════════════════════════ */}
         <section id="sobre-pareto" style={{ padding: '80px 24px 72px', position: 'relative', overflow: 'hidden', background: WHITE }}>
           <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 65% 55% at 80% 50%, rgba(203,236,46,0.07) 0%, transparent 70%)', pointerEvents: 'none' }} />
-          <div style={{ maxWidth: 1280, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(24px,5vw,64px)', alignItems: 'center' }} className="grid-cols-1 lg:grid-cols-2">
+          <div style={{ maxWidth: 1280, margin: '0 auto' }}>
 
-            {/* Left — texto */}
-            <Reveal>
-              <EyebrowLabel>Pareto · AI for Business</EyebrowLabel>
-              <H2 style={{ marginBottom: 20, color: G900 }}>
+            {/* Header — coluna única centralizada */}
+            <Reveal style={{ textAlign: 'center', marginBottom: 48 }}>
+              <EyebrowLabel color={G600}>Pareto · AI for Business</EyebrowLabel>
+              <H2 style={{ marginBottom: 16, color: G900 }}>
                 <span style={{ color: G900 }}>Inteligência Artificial</span><br />
                 como ativo estratégico.
               </H2>
-              <Body style={{ fontSize: 16, lineHeight: 1.8, marginBottom: 28, color: G600 }}>
+              <Body style={{ fontSize: 16, lineHeight: 1.8, color: G600, maxWidth: 640, margin: '0 auto 28px' }}>
                 Expandindo internacionalmente com sua plataforma proprietária <span style={{ color: G900, fontWeight: 600 }}>Tess AI</span>, a Pareto implementa IA que gera retorno financeiro mensurável — não projetos-piloto sem fim. 13 anos de operação. 300+ empresas. Tess AI, a <span style={{ color: LIME_DIM, fontWeight: 600 }}>6ª melhor plataforma de IA do mundo</span> (G2 2024).
               </Body>
+              <div style={{ display: 'flex', justifyContent: 'center', gap: 12, flexWrap: 'wrap' }}>
+                <CalendlyPrimaryBtn><Calendar size={15} /> Agendar com Especialista</CalendlyPrimaryBtn>
+                <GhostBtn onClick={() => scrollToSection('solucoes')}>Ver soluções <ArrowRight size={13} /></GhostBtn>
+              </div>
+            </Reveal>
 
+            {/* Grid 2 colunas — ícones e métricas */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(24px,5vw,64px)', alignItems: 'start' }} className="grid-cols-1 lg:grid-cols-2">
+            <Reveal>
               {/* 4 ícones Premium — o que a Pareto faz */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 16, marginBottom: 32 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 16 }}>
                 {[
                   { icon: 'settings', label: 'Automação de Processos', desc: 'RPA, workflows e integrações 24/7 sem headcount extra' },
                   { icon: 'cpu', label: 'AI Workers', desc: 'Colaboradores digitais com funções e reporte real' },
@@ -930,11 +938,6 @@ export default function Home() {
                     <Body muted style={{ fontSize: 11, color: G400 }}>{item.desc}</Body>
                   </GlassCard>
                 ))}
-              </div>
-
-              <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-                <CalendlyPrimaryBtn><Calendar size={15} /> Agendar com Especialista</CalendlyPrimaryBtn>
-                <GhostBtn onClick={() => scrollToSection('solucoes')}>Ver soluções <ArrowRight size={13} /></GhostBtn>
               </div>
             </Reveal>
 
@@ -966,15 +969,16 @@ export default function Home() {
               </div>
 
               {/* Tess AI badge */}
-              <GlassCard style={{ padding: '20px 24px', display: 'flex', alignItems: 'center', gap: 20, background: G900, border: `1px solid ${G800}` }}>
-                <div style={{ width: 52, height: 52, borderRadius: 14, background: 'rgba(203,236,46,0.12)', border: `1px solid ${LIME_DIM}40`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><IconSVG name="award" size={24} color={LIME} /></div>
-                <div>
-                  <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, fontSize: 13, color: '#fff', marginBottom: 3 }}>Tess AI — G2 Best Software Awards 2024</div>
-                  <Body muted style={{ fontSize: 12, color: WHITE }}>#6 Melhor IA do mundo · Acima do ChatGPT (#10) e Google Gemini (#22)</Body>
+              <GlassCard style={{ padding: '20px 24px', textAlign: 'center', background: G900, border: `1px solid ${G800}` }}>
+                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 12 }}>
+                  <div style={{ width: 52, height: 52, borderRadius: 14, background: 'rgba(203,236,46,0.12)', border: `1px solid ${LIME_DIM}40`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}><IconSVG name="award" size={24} color={LIME} /></div>
                 </div>
+                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, fontSize: 13, color: '#fff', marginBottom: 3 }}>Tess AI — G2 Best Software Awards 2024</div>
+                <Body muted style={{ fontSize: 12, color: WHITE }}>#6 Melhor IA do mundo · Acima do ChatGPT (#10) e Google Gemini (#22)</Body>
               </GlassCard>
             </motion.div>
-          </div>
+          </div>{/* fim grid 2 colunas */}
+          </div>{/* fim maxWidth */}
         </section>
 
         {/* ─── Partner Badges Bar ──────────────────────────── */}
@@ -1218,7 +1222,7 @@ export default function Home() {
         <SectionDivider />
         <section style={{ padding: '56px 0', background: OFF }}>
           <Reveal style={{ textAlign: 'center', marginBottom: 32, padding: '0 24px' }}>
-            <Mono color="rgba(108,99,255,0.55)" size={10}>Portfólio</Mono>
+            <Mono color={LIME} size={20}>Portfólio</Mono>
             <Body muted style={{ marginTop: 6 }}>As marcas mais exigentes do mundo escolheram a Pareto.</Body>
           </Reveal>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
@@ -1431,7 +1435,7 @@ export default function Home() {
         {/* ── Parallax: AI Business ─────────────────────────────── */}
         <ParallaxStrip img="/images/ai_business1.jpg" height={300} overlay="linear-gradient(to right, rgba(255,107,53,0.2) 0%, rgba(108,99,255,0.15) 100%)">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} style={{ maxWidth: 600 }}>
-            <H2 style={{ marginBottom: 12 }}>
+            <H2 style={{ marginBottom: 12, color: WHITE }}>
               Cada processo manual na sua operação<br />
               <span style={{ color: A }}>é custo que você escolhe manter.</span>
             </H2>

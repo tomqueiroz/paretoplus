@@ -87,7 +87,7 @@ export function Header() {
     <>
       <header
         className={`glass-nav ${scrolled ? 'scrolled' : ''}`}
-        style={{ display: 'flex', alignItems: 'center', background: 'rgba(220,225,235,0.65)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}>
+        style={{ display: 'flex', alignItems: 'center', background: 'rgba(220,225,235,0.35)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}>
         <div style={{
           maxWidth: 1200, margin: '0 auto', padding: '0 32px',
           width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
