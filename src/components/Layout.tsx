@@ -377,7 +377,7 @@ export function Footer() {
               {[
                 { label: 'Home',            to: ROUTE_PATHS.HOME, internal: true },
                 { label: 'Por que a Pareto?', to: ROUTE_PATHS.SOBRE, internal: true },
-                { label: 'Privacidade & Termos',     to: ROUTE_PATHS.PRIVACIDADE, internal: true },
+                { label: 'Privacidade & Termos', to: ROUTE_PATHS.PRIVACIDADE, internal: true, scrollTop: true },
                 { label: 'Tess AI',         href: 'https://tess.im', external: true },
                 { label: 'pareto.io',       href: 'https://pareto.io', external: true },
                 { label: 'AI for Business', href: 'https://pareto.io/ai-for-business', external: true },
@@ -385,6 +385,7 @@ export function Footer() {
                 <li key={item.label}>
                   {item.internal ? (
                     <Link to={item.to!}
+                      onClick={() => { window.scrollTo({ top: 0 }); }}
                       style={mutedLink}
                       onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#fff'; }}
                       onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = 'rgba(138,130,120,0.8)'; }}>
@@ -412,10 +413,10 @@ export function Footer() {
             }}>Contato</h4>
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 10 }}>
               <li style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 300, color: WHITE }}>
-                Av. Oscar Niemeyer, 2000, Bloco 1, Sala 401
+                Pareto Plus&nbsp; |&nbsp; IA Multimodal
               </li>
               <li style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 300, color: WHITE }}>
-                Santo Cristo — Rio de Janeiro/RJ
+                Av. Paulista, 2022 — Consolação — São Paulo/SP
               </li>
               <li>
                 <a href="https://wa.me/5511915513210?text=Ol%C3%A1%21+Vim+pelo+site+Pareto+Plus."
@@ -490,6 +491,7 @@ export function Footer() {
           </p>
           <div style={{ display: 'flex', gap: 20, alignItems: 'center' }}>
             <Link to={ROUTE_PATHS.PRIVACIDADE}
+              onClick={() => window.scrollTo({ top: 0 })}
               style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, fontWeight: 300, color: WHITE, textDecoration: 'none', transition: 'color 0.2s ease' }}
               onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = LIME; }}
               onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = WHITE; }}>
