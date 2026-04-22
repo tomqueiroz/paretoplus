@@ -883,7 +883,7 @@ export default function Home() {
         {/* ── Parallax: Escritório ──────────────────────────────── */}
         <ParallaxStrip img="/images/pareto_office1.png" height={300}>
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-            <Mono color={WHITE} size={10} >Pareto · São Paulo · Est. 2011</Mono>
+            <Mono color={WHITE} size={10} >Pareto · São Paulo</Mono>
             <H2 style={{ marginTop: 12, marginBottom: 10, color: WHITE }}>
               +160 especialistas.<br />
               <span style={{ color: C }}>Um único KPI: resultado financeiro.</span>
