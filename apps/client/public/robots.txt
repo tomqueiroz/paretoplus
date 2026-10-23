@@ -1,0 +1,25 @@
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: *
+Allow: /
+
+# Public discovery resources
+Sitemap: https://pareto.business/sitemap.xml
+# LLM orientation: https://pareto.business/llms.txt
+# SEO entity map: https://pareto.business/seo.txt
+# Corporate training and executive services: https://pareto.business/#/treinamento-ia-negocios-marketing
+# AI applied to business hub: https://pareto.business/#/ia-aplicada
+# Companies: https://pareto.business/#/empresas
+# Executives: https://pareto.business/#/executivos
+# Executive education and upskilling: https://pareto.business/#/mentoria
+# Radar AI editorial hub: https://pareto.business/#/blog

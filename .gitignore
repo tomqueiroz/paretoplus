@@ -42,7 +42,8 @@ coverage/
 .nyc_output/
 
 # --- Build outputs / caches ---
-dist/
+apps/client/dist/
+dist-ssr/
 build/
 electron-dist/
 dist-electron/
@@ -61,6 +62,10 @@ temp/
 .rts2_cache_umd/
 .vite/
 .vite-inspect/
+.lov.tailwind.config.js
+src/tailwind.config.lov.json
+apps/client/.lov.tailwind.config.js
+apps/client/src/tailwind.config.lov.json
 
 # --- TypeScript ---
 *.tsbuildinfo
@@ -99,3 +104,15 @@ Thumbs.db
 # --- Uploaded Files ---
 uploaded_files/
 
+# --- Private platform state and data ---
+.skywork/
+*.pem
+*.key
+*.p12
+*.sqlite
+*.sqlite3
+*.db
+
+# !!! DO NOT DELETE OR ADJUST: required by FC deploy flow !!!
+!apps/server/dist/
+# !!! END: changing this will break FC deployment !!!
